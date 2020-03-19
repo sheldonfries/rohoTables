@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>CSL</title>
   </head>
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator.min.css"
@@ -61,11 +61,20 @@
           //set the initial sort order of the data
           { column: 'P', dir: 'desc' }
         ],
-        columns: columns.map(column => ({
-          title: column,
-          field: column,
-          align: 'left'
-        }))
+        columns: columns.map(column => {
+          const obj = {
+            title: column,
+            field: column,
+            align: 'left'
+          };
+          if (column === 'Name') {
+            obj.width = 175;
+          } else if (column === 'Team') {
+            obj.width = 100;
+          }
+
+          return obj;
+        })
       });
       let filters = [];
       // handle search input
