@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator.min.css"
+    rel="stylesheet"
+  />
+  <body>
+    <input type="text" id="search-input" />
+    <select id="team-select"
+      ><option value="">All</option></select
+    >
+    <div id="example-table"></div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://unpkg.com/tabulator-tables@4.5.3/dist/js/tabulator.min.js"
+  ></script>
+
+  <script>
+    start();
+    const columns = [
+      'Name',
+      'Team',
+      'Pos',
+      'GP',
+      'G',
+      'A',
+      'P',
+      '+/-',
+      'PIM',
+      'PPp',
+      'SHp',
+      'SOG',
+      'Sh',
+      'HT',
+      'FO',
+      'SB',
+      'ATOI'
+    ];
+    async function start() {
+      const res = await axios.get('/api/players');
+      console.log(res.data);
+      const players = res.data;
+      var table = new Tabulator('#example-table', {
+        data: players, //load row data from array
+        layout: 'fitColumns', //fit columns to width of table
+        responsiveLayout: 'hide', //hide columns that dont fit on the table
+        tooltips: true, //show tool tips on cells
+        history: true, //allow undo and redo actions on the table
+        pagination: 'local', //paginate the data
+        paginationSize: 25, //allow 7 rows per page of data
+        movableColumns: true, //allow column order to be changed
+        resizableRows: true, //allow row order to be changed
+        initialSort: [
+          //set the initial sort order of the data
+          { column: 'P', dir: 'desc' }
+        ],
+        columns: columns.map(column => ({
+          title: column,
+          field: column,
+          align: 'left'
+        }))
+      });
+      let filters = [];
+      // handle search input
+      const searchInput = document.querySelector('#search-input');
+      searchInput.addEventListener('input', event => {
+        const value = event.target.value;
+        // remove old
+        filters = filters.filter(filter => filter.field != 'Name');
+        if (value) {
+          filters.push({ field: 'Name', type: 'like', value });
+        }
+        table.setFilter(filters);
+      });
+
+      // handle team select
+      const teamSelect = document.querySelector('#team-select');
+      const teams = [...new Set(players.map(player => player.Team))].sort();
+      debugger;
+      teams.forEach(team => teamSelect.options.add(new Option(team, team)));
+      teamSelect.addEventListener('change', event => {
+        const value = event.target.value;
+        // remove old
+        filters = filters.filter(filter => filter.field != 'Team');
+        if (value) {
+          filters.push({ field: 'Team', type: '=', value });
+        }
+        table.setFilter(filters);
+      });
+    }
+  </script>
+</html>
