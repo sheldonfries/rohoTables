@@ -29,7 +29,7 @@
       const res = await axios.get('/api/goalies');
       const goalies = res.data;
       let columns = goalies[0];
-      delete columns.Id;
+      delete columns.id;
       columns = Object.keys(columns);
       var table = new Tabulator('#table', {
         data: goalies, //load row data from array
@@ -76,7 +76,6 @@
       // handle team select
       const teamSelect = document.querySelector('#team-select');
       const teams = [...new Set(goalies.map(player => player.Team))].sort();
-      debugger;
       teams.forEach(team => teamSelect.options.add(new Option(team, team)));
       teamSelect.addEventListener('change', event => {
         const value = event.target.value;
