@@ -11,20 +11,21 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json({ limit: '50mb' }));
 
-server.use(
-  '/static',
-  (req, res, next) => {
-    if (req.path.indexOf('.') === -1) {
-      req.url += '.html';
-    }
-    next();
-  },
-  express.static(path.join(__dirname, 'public'))
-);
+server.use((req, res, next) => {
+  if (req.path.indexOf('.') === -1) {
+    req.url += '.html';
+  }
+  next();
+}, express.static(path.join(__dirname, 'public')));
 
 server.get('/api/players', async (req, res) => {
   const players = await db('players');
   res.status(200).json(players);
+});
+
+server.get('/api/goalies', async (req, res) => {
+  const goalies = await db('goalies');
+  res.status(200).json(goalies);
 });
 
 server.post('/uploader', async (req, res) => {

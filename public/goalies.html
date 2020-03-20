@@ -24,31 +24,12 @@
 
   <script>
     start();
-    const columns = [
-      'Name',
-      'Team',
-      'Pos',
-      'GP',
-      'G',
-      'A',
-      'P',
-      '+/-',
-      'PIM',
-      'PPp',
-      'SHp',
-      'SOG',
-      'Sh',
-      'HT',
-      'FO',
-      'SB',
-      'ATOI'
-    ];
+
     async function start() {
-      const res = await axios.get('/api/players');
-      console.log(res.data);
-      const players = res.data;
+      const res = await axios.get('/api/goalies');
+      const goalies = res.data;
       var table = new Tabulator('#table', {
-        data: players, //load row data from array
+        data: goalies, //load row data from array
         layout: 'fitColumns', //fit columns to width of table
         responsiveLayout: 'hide', //hide columns that dont fit on the table
         tooltips: true, //show tool tips on cells
@@ -61,7 +42,7 @@
           //set the initial sort order of the data
           { column: 'P', dir: 'desc' }
         ],
-        columns: columns.map(column => {
+        columns: Object.keys(goalies).map(column => {
           const obj = {
             title: column,
             field: column,
@@ -91,7 +72,7 @@
 
       // handle team select
       const teamSelect = document.querySelector('#team-select');
-      const teams = [...new Set(players.map(player => player.Team))].sort();
+      const teams = [...new Set(goalies.map(player => player.Team))].sort();
       debugger;
       teams.forEach(team => teamSelect.options.add(new Option(team, team)));
       teamSelect.addEventListener('change', event => {
