@@ -42,7 +42,7 @@
           //set the initial sort order of the data
           { column: 'P', dir: 'desc' }
         ],
-        columns: Object.keys(goalies).map(column => {
+        columns: Object.keys(goalies[0]).map(column => {
           const obj = {
             title: column,
             field: column,
