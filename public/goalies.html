@@ -28,6 +28,9 @@
     async function start() {
       const res = await axios.get('/api/goalies');
       const goalies = res.data;
+      let columns = goalies[0];
+      delete columns.Id;
+      columns = Object.keys(columns);
       var table = new Tabulator('#table', {
         data: goalies, //load row data from array
         layout: 'fitColumns', //fit columns to width of table
@@ -42,7 +45,7 @@
           //set the initial sort order of the data
           { column: 'P', dir: 'desc' }
         ],
-        columns: Object.keys(goalies[0]).map(column => {
+        columns: columns.map(column => {
           const obj = {
             title: column,
             field: column,
