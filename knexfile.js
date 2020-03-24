@@ -1,7 +1,7 @@
 // Update with your config settings.
 console.log({
   database: process.env.DATABASE_IP,
-  port: process.env.PORT,
+  port: process.env.DATABASE_PORT,
   user: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD
 });
@@ -18,7 +18,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: process.env.DATABASE_IP,
-      port: process.env.PORT,
+      port: process.env.DATABASE_PORT,
       user: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD
     },
@@ -35,7 +35,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: process.env.DATABASE_IP,
-      port: process.env.PORT,
+      port: process.env.DATABASE_PORT,
       user: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD
     },
