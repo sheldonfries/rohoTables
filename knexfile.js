@@ -1,5 +1,4 @@
 // Update with your config settings.
-
 module.exports = {
   development: {
     client: 'sqlite3',
@@ -12,9 +11,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
+      database: process.env.DATABASE_IP,
+      port: process.env.PORT,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD
     },
     pool: {
       min: 2,
@@ -28,9 +28,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
+      database: process.env.DATABASE_IP,
+      port: process.env.PORT,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD
     },
     pool: {
       min: 2,
