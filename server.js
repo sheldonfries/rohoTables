@@ -94,6 +94,12 @@ async function addNewData(table, data, headers) {
     }
     for (row of data) {
       try {
+        switch (row.Team) {
+          case 'Houston':
+            row.Team = 'Wild';
+            break;
+        }
+
         await db('temp').insert(row);
       } catch (error) {
         console.log(error);
