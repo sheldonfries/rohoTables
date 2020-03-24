@@ -101,7 +101,7 @@ async function addNewData(table, data, headers) {
     }
     if (await db.schema.hasTable(table)) await db.schema.dropTable(table);
 
-    await db.raw(`ALTER TABLE 'temp' RENAME TO '${table}'`);
+    await db.raw(`ALTER TABLE temp RENAME TO ${table}`);
   } catch (error) {
     throw error;
   }
