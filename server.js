@@ -80,9 +80,9 @@ server.post('/uploader', async (req, res) => {
 
 async function addNewData(table, data, headers) {
   try {
-    await db.schema.dropTableIfExists('temp');
+    if (await db.schema.hasTable('temp')) await db.schema.dropTable('temp');
     try {
-      await db.schema.createTableIfNotExists('temp', table => {
+      await db.schema.createTable('temp', table => {
         table.increments('id');
         for (key of headers) {
           if (key === '') continue;
@@ -99,7 +99,8 @@ async function addNewData(table, data, headers) {
         console.log(error);
       }
     }
-    await db.schema.dropTableIfExists(table);
+    if (await db.schema.hasTable(table)) await db.schema.dropTable(table);
+
     await db.raw(`ALTER TABLE 'temp' RENAME TO '${table}'`);
   } catch (error) {
     throw error;
