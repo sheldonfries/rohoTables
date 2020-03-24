@@ -1,4 +1,10 @@
 // Update with your config settings.
+console.log({
+  database: process.env.DATABASE_IP,
+  port: process.env.PORT,
+  user: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD
+});
 module.exports = {
   development: {
     client: 'sqlite3',
