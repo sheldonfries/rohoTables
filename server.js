@@ -22,55 +22,59 @@ server.get('/api/goalies', async (req, res) => {
 });
 
 server.post('/uploader', async (req, res) => {
-  const { csvString } = req.body;
-  if (typeof csvString === 'string') {
-    const data = csv.parse(csvString);
-    // handle first part
-    let sectionCount = 1;
-    let lastWasDevider = false;
-    let headersPlayers = null;
-    let headersGoalies = null;
+  try {
+    const { csvString } = req.body;
+    if (typeof csvString === 'string') {
+      const data = csv.parse(csvString);
+      // handle first part
+      let sectionCount = 1;
+      let lastWasDevider = false;
+      let headersPlayers = null;
+      let headersGoalies = null;
 
-    const players = [];
-    const goalies = [];
-    for (let row of data) {
-      if (row[0].includes('-----')) {
-        sectionCount++;
-        lastWasDevider = true;
-        continue;
-      }
-      // players
-      else if (sectionCount === 3) {
-        if (lastWasDevider) {
-          headersPlayers = row;
-        } else {
-          const rowObj = headersPlayers.reduce(
-            (obj, header, i) => ({ ...obj, [header]: row[i] }),
-            {}
-          );
-          delete rowObj[''];
-          players.push(rowObj);
+      const players = [];
+      const goalies = [];
+      for (let row of data) {
+        if (row[0].includes('-----')) {
+          sectionCount++;
+          lastWasDevider = true;
+          continue;
         }
-        // goalies
-      } else if (sectionCount === 4) {
-        if (lastWasDevider) {
-          headersGoalies = row;
-        } else {
-          const rowObj = headersGoalies.reduce(
-            (obj, header, i) => ({ ...obj, [header]: row[i] }),
-            {}
-          );
-          delete rowObj[''];
-          goalies.push(rowObj);
+        // players
+        else if (sectionCount === 3) {
+          if (lastWasDevider) {
+            headersPlayers = row;
+          } else {
+            const rowObj = headersPlayers.reduce(
+              (obj, header, i) => ({ ...obj, [header]: row[i] }),
+              {}
+            );
+            delete rowObj[''];
+            players.push(rowObj);
+          }
+          // goalies
+        } else if (sectionCount === 4) {
+          if (lastWasDevider) {
+            headersGoalies = row;
+          } else {
+            const rowObj = headersGoalies.reduce(
+              (obj, header, i) => ({ ...obj, [header]: row[i] }),
+              {}
+            );
+            delete rowObj[''];
+            goalies.push(rowObj);
+          }
         }
+        lastWasDevider = false;
       }
-      lastWasDevider = false;
+      await addNewData('players', players, headersPlayers);
+      await addNewData('goalies', goalies, headersGoalies);
+      res.status(204).send();
+    } else {
+      res.status(400).send();
     }
-    await addNewData('players', players, headersPlayers);
-    await addNewData('goalies', goalies, headersGoalies);
-    res.status(204).send();
-  } else {
-    res.status(400).send();
+  } catch (error) {
+    console.log(error);
   }
 });
 
