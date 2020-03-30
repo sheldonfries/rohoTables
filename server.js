@@ -14,7 +14,7 @@ server.use(express.json({ limit: '50mb' }));
 server.get('/api/players', async (req, res) => {
   try {
     const isPlayoff = req.query.isPlayoff == '1';
-    const players = await db(isPlayoff ? 'playersPlayOff' : 'players');
+    const players = await db(isPlayoff ? 'playersplayoff' : 'players');
     res.status(200).json(players);
   } catch (error) {
     res.status(500).json(error);
@@ -24,7 +24,7 @@ server.get('/api/players', async (req, res) => {
 server.get('/api/goalies', async (req, res) => {
   try {
     const isPlayoff = req.query.isPlayoff == '1';
-    const goalies = await db(isPlayoff ? 'goaliesPlayoff' : 'goalies');
+    const goalies = await db(isPlayoff ? 'goaliesplayoff' : 'goalies');
     res.status(200).json(goalies);
   } catch (error) {
     res.status(500).json(error);
@@ -79,12 +79,12 @@ server.post('/uploader', async (req, res) => {
         lastWasDevider = false;
       }
       await addNewData(
-        isPlayoff ? 'playersPlayoff' : 'players',
+        isPlayoff ? 'playersplayoff' : 'players',
         players,
         headersPlayers
       );
       await addNewData(
-        isPlayoff ? 'goaliesPlayoff' : 'goalies',
+        isPlayoff ? 'goaliesolayoff' : 'goalies',
         goalies,
         headersGoalies
       );
