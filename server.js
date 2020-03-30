@@ -153,11 +153,7 @@ async function addNewData(table, data, headers) {
     }
     for (row of data) {
       try {
-        switch (row.Team) {
-          case 'Houston':
-            row.Team = 'Wild';
-            break;
-        }
+        checkTeam(row);
 
         await db('temp').insert(row);
       } catch (error) {
@@ -179,4 +175,92 @@ server.use((req, res, next) => {
   next();
 }, express.static(path.join(__dirname, 'public')));
 
+function checkTeam(row) {
+  switch (row.Team) {
+    case 'Albany':
+      row.Team = 'Devils';
+      break;
+    case 'Houston':
+      row.Team = 'Wild';
+      break;
+    case 'Binghamton':
+      row.Team = 'Senators';
+      break;
+    case 'Bridgeport':
+      row.Team = 'Islanders';
+      break;
+    case 'Chicago':
+      row.Team = 'Thrashers';
+      break;
+    case 'Grand Rapids':
+      row.Team = 'Red Wings';
+      break;
+    case 'Hamilton':
+      row.Team = 'Canadiens';
+      break;
+    case 'Hartford':
+      row.Team = 'Rangers';
+      break;
+    case 'Hershey':
+      row.Team = 'Capitals';
+      break;
+    case 'Iowa':
+      row.Team = 'Stars';
+      break;
+    case 'Lowell':
+      row.Team = 'Devils';
+      break;
+    case 'Manchester':
+      row.Team = 'Kings';
+      break;
+    case 'Manitoba':
+      row.Team = 'Canucks';
+      break;
+    case 'Milwaukee':
+      row.Team = 'Predators';
+      break;
+    case 'Norfolk':
+      row.Team = 'Blackhawks';
+      break;
+    case 'Omaha':
+      row.Team = 'Flames';
+      break;
+    case 'Peoria':
+      row.Team = 'Blues';
+      break;
+    case 'Philadelphia':
+      row.Team = 'Flyers';
+      break;
+    case 'Portland':
+      row.Team = 'Ducks';
+      break;
+    case 'Providence':
+      row.Team = 'Bruins';
+      break;
+    case 'Rochester':
+      row.Team = 'Sabres';
+      break;
+    case 'San Antonio':
+      row.Team = 'Coyotes';
+      break;
+    case 'Springfield':
+      row.Team = 'Lightning';
+      break;
+    case 'Syracuse':
+      row.Team = 'Columbus';
+      break;
+    case 'Toronto':
+      row.Team = 'Maple Leafs';
+      break;
+    case 'Wilkes-Barre/Scranton':
+      row.Team = 'Penguins';
+      break;
+    case 'Worcester':
+      row.Team = 'Sharks';
+      break;
+    case 'Wilkes-Barre/Scranton':
+      row.Team = 'Penguins';
+      break;
+  }
+}
 module.exports = server;
