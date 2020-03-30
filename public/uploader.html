@@ -9,6 +9,11 @@
     <p>Click on the "Choose File" button to upload a file:</p>
 
     <form>
+      <select id="seasonType" defaultValue="normal">
+        <option value="normal">Normal Season</option>
+        <option value="playoffs">Playoffs</option>
+      </select>
+      <br />
       <input type="file" id="myFile" name="filename" />
       <input type="submit" />
     </form>
@@ -27,10 +32,13 @@
       if (file) {
         const reader = new FileReader();
         reader.readAsBinaryString(file);
-
+        const seasonType = document.querySelector('#seasonType').value;
         reader.onload = function(evt) {
           axios
-            .post('/uploader', { csvString: evt.target.result })
+            .post(
+              `/uploader?isPlayoff=${seasonType === 'playoffs' ? '1' : '0'}`,
+              { csvString: evt.target.result }
+            )
             .then(res => {
               const message = document.querySelector('#message');
               message.innerText = 'success';

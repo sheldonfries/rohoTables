@@ -12,17 +12,20 @@ server.use(cors());
 server.use(express.json({ limit: '50mb' }));
 
 server.get('/api/players', async (req, res) => {
-  const players = await db('players');
+  const isPlayoff = req.query.isPlayoff == '1';
+  const players = await db(isPlayoff ? 'playersPlayOff' : 'players');
   res.status(200).json(players);
 });
 
 server.get('/api/goalies', async (req, res) => {
-  const goalies = await db('goalies');
+  const isPlayoff = req.query.isPlayoff == '1';
+  const goalies = await db(isPlayoff ? 'goaliesPlayoff' : 'goalies');
   res.status(200).json(goalies);
 });
 
 server.post('/uploader', async (req, res) => {
   try {
+    const isPlayoff = req.query.isPlayoff == '1';
     const { csvString } = req.body;
     if (typeof csvString === 'string') {
       const data = csv.parse(csvString);
@@ -67,8 +70,16 @@ server.post('/uploader', async (req, res) => {
         }
         lastWasDevider = false;
       }
-      await addNewData('players', players, headersPlayers);
-      await addNewData('goalies', goalies, headersGoalies);
+      await addNewData(
+        isPlayoff ? 'playersPlayoff' : 'players',
+        players,
+        headersPlayers
+      );
+      await addNewData(
+        isPlayoff ? 'goaliesPlayoff' : 'goalies',
+        goalies,
+        headersGoalies
+      );
       res.status(204).send();
     } else {
       res.status(400).send();

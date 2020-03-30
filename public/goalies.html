@@ -10,6 +10,15 @@
     rel="stylesheet"
   />
   <body>
+    <select
+      id="seasonType"
+      defaultValue="normal"
+      onchange="onSeasonTypeChange()"
+    >
+      <option value="normal">Normal Season</option>
+      <option value="playoffs">Playoffs</option>
+    </select>
+    <br />
     <input type="text" id="search-input" placeholder="Search" />
     <select id="team-select"
       ><option value="">All</option></select
@@ -24,9 +33,15 @@
 
   <script>
     start();
+    function onSeasonTypeChange() {
+      start();
+    }
 
     async function start() {
-      const res = await axios.get('/api/goalies');
+      const seasonType = document.querySelector('#seasonType').value;
+      const res = await axios.get(
+        `/api/goalies?isPlayoff=${seasonType === 'playoffs' ? '1' : '0'}`
+      );
       const goalies = res.data;
       let columns = goalies[0];
       delete columns.id;
