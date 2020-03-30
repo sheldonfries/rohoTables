@@ -14,7 +14,9 @@ server.use(express.json({ limit: '50mb' }));
 server.get('/api/players', async (req, res) => {
   try {
     const isPlayoff = req.query.isPlayoff == '1';
-    const players = await db(isPlayoff ? 'playersplayoff' : 'players');
+    const players = await db('players').where({
+      season: isPlayoff ? 'playoff' : 'normal'
+    });
     res.status(200).json(players);
   } catch (error) {
     res.status(500).json(error);
@@ -24,7 +26,9 @@ server.get('/api/players', async (req, res) => {
 server.get('/api/goalies', async (req, res) => {
   try {
     const isPlayoff = req.query.isPlayoff == '1';
-    const goalies = await db(isPlayoff ? 'goaliesplayoff' : 'goalies');
+    const goalies = await db('goalies').where({
+      season: isPlayoff ? 'playoff' : 'normal'
+    });
     res.status(200).json(goalies);
   } catch (error) {
     res.status(500).json(error);
@@ -54,8 +58,9 @@ server.post('/uploader', async (req, res) => {
         // players
         else if (sectionCount === 3) {
           if (lastWasDevider) {
-            headersPlayers = row;
+            headersPlayers = [...row, 'season'];
           } else {
+            row.push('normal');
             const rowObj = headersPlayers.reduce(
               (obj, header, i) => ({ ...obj, [header]: row[i] }),
               {}
@@ -66,10 +71,45 @@ server.post('/uploader', async (req, res) => {
           // goalies
         } else if (sectionCount === 4) {
           if (lastWasDevider) {
-            headersGoalies = row;
+            headersGoalies = [...row, 'season'];
           } else {
+            row.push('normal');
             const rowObj = headersGoalies.reduce(
               (obj, header, i) => ({ ...obj, [header]: row[i] }),
+              {}
+            );
+            delete rowObj[''];
+            goalies.push(rowObj);
+          }
+          // players playoff
+        } else if (sectionCount === 6) {
+          if (lastWasDevider) {
+            headersPlayers = [...row, 'season'];
+          } else {
+            row.push('playoff');
+
+            const rowObj = headersPlayers.reduce(
+              (obj, header, i) => ({
+                ...obj,
+                [header]: row[i]
+              }),
+              {}
+            );
+            delete rowObj[''];
+            players.push(rowObj);
+          }
+          // goalies playoff
+        } else if (sectionCount === 7) {
+          if (lastWasDevider) {
+            headersGoalies = [...row, 'season'];
+          } else {
+            row.push('playoff');
+
+            const rowObj = headersGoalies.reduce(
+              (obj, header, i) => ({
+                ...obj,
+                [header]: row[i]
+              }),
               {}
             );
             delete rowObj[''];
