@@ -12,15 +12,23 @@ server.use(cors());
 server.use(express.json({ limit: '50mb' }));
 
 server.get('/api/players', async (req, res) => {
-  const isPlayoff = req.query.isPlayoff == '1';
-  const players = await db(isPlayoff ? 'playersPlayOff' : 'players');
-  res.status(200).json(players);
+  try {
+    const isPlayoff = req.query.isPlayoff == '1';
+    const players = await db(isPlayoff ? 'playersPlayOff' : 'players');
+    res.status(200).json(players);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 server.get('/api/goalies', async (req, res) => {
-  const isPlayoff = req.query.isPlayoff == '1';
-  const goalies = await db(isPlayoff ? 'goaliesPlayoff' : 'goalies');
-  res.status(200).json(goalies);
+  try {
+    const isPlayoff = req.query.isPlayoff == '1';
+    const goalies = await db(isPlayoff ? 'goaliesPlayoff' : 'goalies');
+    res.status(200).json(goalies);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 server.post('/uploader', async (req, res) => {
