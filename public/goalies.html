@@ -46,6 +46,7 @@
       let columns = goalies[0];
       delete columns.id;
       columns = Object.keys(columns);
+
       var table = new Tabulator('#table', {
         data: goalies, //load row data from array
         layout: 'fitColumns', //fit columns to width of table

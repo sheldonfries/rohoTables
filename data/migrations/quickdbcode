@@ -1,0 +1,93 @@
+PlayersStats
+------
+id PK
+name
+team
+lotsofdata
+
+GoalieStats
+------
+id PK
+name
+team
+lotsofdata
+
+Players
+------
+id PK
+name
+team
+age
+cap
+otherdata
+
+users
+------
+id PK
+normaluserdata
+
+
+teams
+------
+Id PK
+userId FK >- users.id
+
+
+draftpicks
+--------
+id PK
+OriginalTeamId FK >- teams.id
+CurrentTeamId FK >- teams.id
+year
+round
+
+
+
+
+
+transactions
+-------
+id pk
+playerId FK >- players.id
+teamId
+from(active,minor,waivers,buyout,retained)
+to(active,minor,waivers,buyout,retained)
+RunDt
+
+trades
+------
+Id
+team1Id FK >- teams.id
+team2Id FK >- teams.id
+Rundt
+
+tradeItems
+-------
+id pk
+TradeId FK >- trades.id
+DraftPickId FK >- draftpicks.id #one of these are null
+PlayerId FK >- players.id
+
+settings
+-------
+id pk
+currentseason
+salorycap
+floor
+
+#add later
+PlayerPay
+-------
+ID pk
+playerid 
+percentPay
+teamid
+durration
+
+# add later
+Awards
+-------
+id pk
+playerid FK >- players.id
+award
+season
