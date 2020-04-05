@@ -1,11 +1,15 @@
 const router = require('express').Router();
 const path = require('path');
 const csv = require('csv-string');
+const db = require('../db');
 
 router.post('/playerStats', async (req, res) => {
   try {
-    const { csvString, seasonId } = req.body;
-
+    const { csvString } = req.body;
+    // get the latest seasonId
+    const { id: seasonId } = await db('seasons')
+      .first()
+      .orderBy('season', 'desc');
     if (typeof csvString === 'string') {
       const data = csv.parse(csvString);
       // handle first part
@@ -89,8 +93,8 @@ router.post('/playerStats', async (req, res) => {
         }
         lastWasDevider = false;
       }
-      await addNewData('players_stats', players, headersPlayers);
-      await addNewData('goalies_stats', goalies, headersGoalies);
+      await addNewData('players_stats', players, headersPlayers, seasonId);
+      await addNewData('goalies_stats', goalies, headersGoalies, seasonId);
       res.status(204).send();
     } else {
       res.status(400).send();
@@ -100,32 +104,47 @@ router.post('/playerStats', async (req, res) => {
   }
 });
 
-async function addNewData(table, data, headers) {
+async function addNewData(table, data, headers, season_id) {
   try {
-    if (await db.schema.hasTable('temp')) await db.schema.dropTable('temp');
-    try {
-      await db.schema.createTable('temp', (table) => {
-        table.increments('id');
-        for (key of headers) {
-          if (key === '') continue;
-          table.string(key);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    for (row of data) {
-      try {
-        checkTeam(row);
+    if (await db.schema.hasTable(table)) {
+      await db(table).del().where({ season_id });
+      for (row of data) {
+        try {
+          checkTeam(row);
 
-        await db('temp').insert(row);
+          await db(table).insert(row);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      const tempTable = 'temp' + Date.now().toString();
+      if (await db.schema.hasTable(tempTable))
+        await db.schema.dropTable(tempTable);
+      try {
+        await db.schema.createTable(tempTable, (table) => {
+          table.increments('id').primary();
+          for (key of headers) {
+            if (key === '') continue;
+            table.string(key);
+          }
+        });
       } catch (error) {
         console.log(error);
       }
-    }
-    if (await db.schema.hasTable(table)) await db.schema.dropTable(table);
+      for (row of data) {
+        try {
+          checkTeam(row);
 
-    await db.raw(`ALTER TABLE temp RENAME TO ${table}`);
+          await db(tempTable).insert(row);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (await db.schema.hasTable(table)) await db.schema.dropTable(table);
+
+      await db.raw(`ALTER TABLE ${tempTable} RENAME TO ${table}`);
+    }
   } catch (error) {
     throw error;
   }
