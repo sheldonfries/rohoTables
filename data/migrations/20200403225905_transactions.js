@@ -8,7 +8,11 @@ exports.up = function (knex) {
       .unsigned()
       .notNullable();
     table.integer('team_id').references('teams.id').unsigned().notNullable();
-    table.integer('season').notNullable().unique();
+    table
+      .integer('season_id')
+      .references('seasons.id')
+      .unsigned()
+      .notNullable();
     table
       .enu('from', [
         'Minor',
