@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const path = require('path');
 const csv = require('csv-string');
 const db = require('../db');
+const removeAccents = require('remove-accents');
 
 router.post('/playerStats', async (req, res) => {
   try {
@@ -151,6 +151,7 @@ async function addNewData(table, data, headers, season_id) {
 }
 
 function checkTeam(row) {
+  row.Name = removeAccents(row.Name);
   switch (row.Team) {
     case 'Albany':
       row.Team = 'Devils';
