@@ -1,0 +1,31 @@
+id,user_id_gm,user_id_agm,name,city,abbreviation
+1,1,,Ducks,Anaheim,ANA
+2,2,,Thrashers,Atlanta,ATL
+3,3,,Bruins,Boston,BOS
+4,4,,Sabres,Buffalo,BUF
+5,5,,Flames,Calgary,CGY
+6,6,,Hurricanes,Carolina,CAR
+7,7,,Blackhawks,Chicago,CHI
+8,8,,Avalanche,Colorado,COL
+9,9,,Blue Jackets,Columbus,CLB
+10,10,,Stars,Dallas,DAL
+11,11,,Red Wings,Detroit,DET
+12,12,,Oilers,Edmonton,EDM
+13,13,,Panthers,Florida,FLA
+14,14,,Kings,Los Angeles,LAK
+15,15,,Wild,Minnesota,MIN
+16,16,,Canadiens,Montreal,MTL
+17,17,,Predators,Nashville,NSH
+18,18,,Devils,New Jersey,NJD
+19,19,,Islanders,New York,NYI
+20,20,,Rangers,New York,NYR
+21,21,,Senators,Ottawa,OTT
+22,22,,Flyers,Philadelphia,PHI
+23,23,,Coyotes,Phoenix,PHX
+24,24,,Penguins,Pittsburgh,PIT
+25,25,,Blues,St. Louis,STL
+26,26,,Sharks,San Jose,SJS
+27,27,,Lightning,Tampa Bay,TBL
+28,28,,Maple Leafs,Toronto,TOR
+29,29,,Canucks,Vancouver,VAN
+30,30,,Capitals,Washington,WSH 

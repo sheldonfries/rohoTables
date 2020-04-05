@@ -5,11 +5,13 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "csv-parser": "^2.3.2",
     "csv-string": "^3.1.8",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
     "knex": "^0.20.11",
+    "mysql": "^2.18.1",
     "pg": "^7.18.2",
     "sqlite3": "^4.1.1"
   }

@@ -1,9 +1,13 @@
 exports.up = function (knex) {
   return knex.schema.createTable('transactions', (table) => {
-    table.increments('id');
-    table.timestamps();
-    table.integer('player_id').references('players.id').notNullable();
-    table.integer('team_id').references('teams.id').notNullable();
+    table.increments('id').primary();
+    table.timestamps(true, true);
+    table
+      .integer('player_id')
+      .references('players.id')
+      .unsigned()
+      .notNullable();
+    table.integer('team_id').references('teams.id').unsigned().notNullable();
     table.integer('season').notNullable().unique();
     table
       .enu('from', [

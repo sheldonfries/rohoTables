@@ -1,24 +1,23 @@
 // Update with your config settings.
-console.log({
-  client: 'postgresql',
-  connection: process.env.DATABASE_URL,
-  searchPath: ['knex', 'public'],
+// console.log(process.env.DATABASE_IP);
+if (!process.env.DATABASE_IP) require('dotenv').config();
 
-  pool: {
-    min: 2,
-    max: 10,
-  },
-  migrations: {
-    tableName: 'knex_migrations',
-  },
+console.log({
+  database: process.env.DATABASE_IP,
+  port: process.env.DATABASE_PORT,
+  user: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
 });
 module.exports = {
   development: {
-    client: 'sqlite3',
+    client: 'mysql',
     connection: {
-      filename: './dev.sqlite3',
+      host: process.env.DATABASE_IP,
+      database: process.env.DATABASE_NAME,
+      port: process.env.DATABASE_PORT,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
     },
-    useNullAsDefault: true,
     migrations: {
       directory: './data/migrations',
     },
@@ -26,10 +25,12 @@ module.exports = {
       directory: './data/seeds',
     },
     pool: {
-      propagateCreateError: false,
-      afterCreate: (conn, done) => {
-        conn.run('PRAGMA foreign_keys = ON', done);
-      },
+      // propagateCreateError: false,
+      // afterCreate: (conn, done) => {
+      //   conn.run('PRAGMA foreign_keys = ON', done);
+      // },
+      min: 2,
+      max: 10,
     },
   },
 

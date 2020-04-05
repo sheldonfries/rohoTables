@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('seasons', (table) => {
-    table.increments('id');
-    table.timestamps();
+    table.increments('id').primary();
+    table.timestamps(true, true);
     table.integer('season').notNullable().unique();
     table.float('salary_max').notNullable();
     table.float('salary_min').notNullable();

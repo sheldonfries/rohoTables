@@ -1,9 +1,13 @@
 exports.up = function (knex) {
   return knex.schema.createTable('players', (table) => {
-    table.increments('id');
-    table.timestamps();
+    table.increments('id').primary();
+    table.timestamps(true, true);
     table.string('name').notNullable();
-    table.integer('team_id').references('teams.id').onDelete('SET NULL');
+    table
+      .integer('team_id')
+      .references('teams.id')
+      .unsigned()
+      .onDelete('SET NULL');
     table.integer('age').notNullable();
     table.string('country').notNullable();
     table.string('pos').notNullable();
