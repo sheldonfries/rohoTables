@@ -17,12 +17,12 @@ const routes = [
     Component: PlayerDetails,
     label: 'Player Details',
   },
-  {
-    path: '/players',
-    Component: PlayerStats,
-    mainNav: true,
-    label: 'Players',
-  },
+  // {
+  //   path: '/players',
+  //   Component: PlayerStats,
+  //   mainNav: true,
+  //   label: 'Players',
+  // },
   {
     path: '/teams/:id',
     Component: TeamDetails,
