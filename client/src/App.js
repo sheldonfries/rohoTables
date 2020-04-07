@@ -10,7 +10,9 @@ function App() {
       <Header />
       <Switch>
         {routes.map((route, index) => (
-          <Route key={index} {...route} />
+          <Route key={index} {...route}>
+            {<route.Component />}
+          </Route>
         ))}
       </Switch>
     </BrowserRouter>

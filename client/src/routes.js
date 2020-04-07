@@ -23,11 +23,11 @@ const routes = [
   //   mainNav: true,
   //   label: 'Players',
   // },
-  {
-    path: '/teams/:id',
-    Component: TeamDetails,
-    label: 'Team Details',
-  },
+  // {
+  //   path: '/teams/:id',
+  //   Component: TeamDetails,
+  //   label: 'Team Details',
+  // },
   {
     path: '/teams',
     Component: LeagueOverview,
