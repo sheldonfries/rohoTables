@@ -1,9 +1,21 @@
-module.exports = `SELECT
-*,
-(
+module.exports = {
+  getPlayersSql: `
+    SELECT p.country, p.name,
+        IFNULL((SELECT ps.pos
+        FROM players_stats ps
+        WHERE ps.Name =p.name
+        ORDER BY season_id DESC LIMIT 1 ), p.pos) AS position, p.age, p.salary, p.contract_duration, p.expiry_type
+    FROM players AS p
+    WHERE p.team_id = !!{teamId}!!
+    ORDER BY p.salary DESC
+    `,
+  getTeamDetailsSql: `
+    SELECT
+    *,
+    (
   (
     SELECT
-      s2.salary_max
+        s2.salary_max
     FROM seasons AS s2
     ORDER BY
       season DESC
@@ -11,15 +23,16 @@ module.exports = `SELECT
       1
   ) - t1.capHit
 ) AS capSpace,
-t1.forwardCount + t1.defenceCount + t1.goalieCount AS playerCount
+    t1.forwardCount + t1.defenceCount + t1.goalieCount AS playerCount
 FROM (
   SELECT
-    t.name,
+        t.id,
+        t.name,
     (
       SELECT
-        u2.username
-      FROM users u2
-      WHERE
+            u2.username
+        FROM users u2
+        WHERE
         u2.id = t.user_id_gm
       LIMIT
         1
@@ -59,11 +72,11 @@ FROM (
         AND p.contract_type = 'signed'
         AND (
           ps.Pos LIKE 'C%'
-          OR ps.Pos LIKE 'LW%'
-          OR ps.Pos LIKE 'RW%'
-          OR p.pos LIKE 'C%'
-          OR p.pos LIKE 'LW%'
-          OR p.pos LIKE 'RW%'
+        OR ps.Pos LIKE 'LW%'
+        OR ps.Pos LIKE 'RW%'
+        OR p.pos LIKE 'C%'
+        OR p.pos LIKE 'LW%'
+        OR p.pos LIKE 'RW%'
         ) THEN 1
         ELSE NULL
       END
@@ -74,9 +87,9 @@ FROM (
         AND p.contract_type = 'signed'
         AND (
           ps.Pos LIKE 'LD%'
-          OR ps.Pos LIKE 'RD%'
-          OR p.pos LIKE 'LD%'
-          OR p.pos LIKE 'RD%'
+        OR ps.Pos LIKE 'RD%'
+        OR p.pos LIKE 'LD%'
+        OR p.pos LIKE 'RD%'
         ) THEN 1
         ELSE NULL
       END
@@ -87,7 +100,7 @@ FROM (
         AND p.contract_type = 'signed'
         AND (
           p.pos LIKE 'G%'
-          OR gs.id
+        OR gs.id
         ) THEN 1
         ELSE NULL
       END
@@ -105,30 +118,36 @@ FROM (
         ELSE NULL
       END
     ) minorsCount
-  FROM teams AS t
+FROM teams AS t
   LEFT JOIN players AS p ON t.id = p.team_id
   LEFT JOIN players_stats AS ps ON ps.Name = p.name
-    AND ps.season_id = (
+    AND ps.season_id =
+(
       SELECT
-        s2.id
-      FROM seasons AS s2
-      ORDER BY
+    s2.id
+FROM seasons AS s2
+ORDER BY
         season
       LIMIT
         1
     )
-    AND ps.season_type = 'normal'
+    AND ps
+.season_type = 'normal'
   LEFT JOIN goalies_stats AS gs ON gs.Name = p.name
-    AND gs.season_id = (
+    AND gs.season_id =
+(
       SELECT
-        s2.id
-      FROM seasons AS s2
-      ORDER BY
+    s2.id
+FROM seasons AS s2
+ORDER BY
         season
       LIMIT
         1
     )
     AND gs.season_type = 'normal'
+    WHERE t.name = '!!{teamName}!!'
   GROUP BY
     t.name
-) AS t1 LIMIT 1`;
+) AS t1
+`,
+};
