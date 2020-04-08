@@ -13,7 +13,7 @@ const routes = [
     label: 'Home',
   },
   {
-    path: '/players/:id',
+    path: '/players/:name',
     Component: PlayerDetails,
     label: 'Player Details',
   },
@@ -23,11 +23,11 @@ const routes = [
   //   mainNav: true,
   //   label: 'Players',
   // },
-  // {
-  //   path: '/teams/:id',
-  //   Component: TeamDetails,
-  //   label: 'Team Details',
-  // },
+  {
+    path: '/teams/:name',
+    Component: TeamDetails,
+    label: 'Team Details',
+  },
   {
     path: '/teams',
     Component: LeagueOverview,

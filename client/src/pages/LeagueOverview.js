@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
 
 export default function LeagueOverview() {
   const [teams, setTeams] = useState([]);
-  console.log('hdsjakhfkjasdhfjkhaskjdhksjdfh');
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -23,7 +23,13 @@ export default function LeagueOverview() {
       <div style={{ maxWidth: '100%' }}>
         <MaterialTable
           columns={[
-            { title: 'Team', field: 'name' },
+            {
+              title: 'Team',
+              field: 'name',
+              render: (rowData) => (
+                <Link to={`/teams/${rowData.name}`}>{rowData.name}</Link>
+              ),
+            },
             { title: 'Manager', field: 'gmName' },
             { title: 'Cap Hit', field: 'capHit', type: 'numeric' },
             { title: 'buyout', field: 'buyout', type: 'numeric' },
@@ -37,7 +43,6 @@ export default function LeagueOverview() {
             { title: 'playerCount', field: 'playerCount', type: 'numeric' },
           ]}
           data={teams}
-          title="Demo Title"
         />
       </div>
       {teams.map((team) => team.name)}

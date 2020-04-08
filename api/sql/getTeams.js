@@ -131,4 +131,4 @@ FROM (
     AND gs.season_type = 'normal'
   GROUP BY
     t.name
-) AS t1 LIMIT 1`;
+) AS t1 `;
