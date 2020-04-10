@@ -26,10 +26,7 @@ const playerCols = [
 ];
 const goalieCols = [
   { title: 'Season', field: 'season' },
-  {
-    title: 'Team',
-    field: 'team_name',
-  },
+  { title: 'Team', field: 'team_name' },
   { title: 'GP', field: 'gp' },
   { title: 'W', field: 'w', type: 'numeric' },
   { title: 'L', field: 'l', type: 'numeric' },
