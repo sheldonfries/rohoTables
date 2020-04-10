@@ -11,11 +11,13 @@ export default function PlayersTable(props) {
       <div style={{ maxWidth: '100%' }}>
         <MaterialTable
           columns={[
-            //   {
-            //       title :'',
-            //       field:'country',
-
-            //   }
+            {
+              title: '',
+              field: 'country',
+              render: (rowData) => (
+                <img src={`/assets/flags/${rowData.country}.png`} />
+              ),
+            },
             {
               title: 'Name',
               field: 'name',
