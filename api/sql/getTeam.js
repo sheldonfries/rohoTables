@@ -1,6 +1,6 @@
 module.exports = {
   getPlayersSql: `
-    SELECT p.country, p.name,
+    SELECT p.country, p.name,  p.status, p.contract_type, 
         IFNULL((SELECT ps.pos
         FROM players_stats ps
         WHERE ps.Name =p.name

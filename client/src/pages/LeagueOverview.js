@@ -45,7 +45,6 @@ export default function LeagueOverview() {
           data={teams}
         />
       </div>
-      {teams.map((team) => team.name)}
     </div>
   );
 }
