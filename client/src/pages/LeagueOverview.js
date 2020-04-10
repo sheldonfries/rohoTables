@@ -24,6 +24,17 @@ export default function LeagueOverview() {
         <MaterialTable
           columns={[
             {
+              title: '',
+              field: '',
+              render: (rowData) => (
+                <img
+                  src={`/assets/logos/${rowData.name}.png`}
+                  width="30px"
+                  height="30px"
+                />
+              ),
+            },
+            {
               title: 'Team',
               field: 'name',
               render: (rowData) => (
