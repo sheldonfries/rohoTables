@@ -113,6 +113,13 @@ export default function PlayersTable(props) {
     <div>
       <div style={{ maxWidth: '100%' }}>
         <MaterialTable
+          options={{
+            search: false,
+            paging: false,
+            // showTitle: false,
+            padding: 'dense',
+            // toolbar: false,
+          }}
           columns={pos === 'G' ? goalieCols : playerCols}
           data={stats}
           title={`${title}`}

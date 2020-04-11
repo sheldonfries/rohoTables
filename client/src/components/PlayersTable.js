@@ -8,8 +8,17 @@ export default function PlayersTable(props) {
   if (players.length === 0) return null;
   return (
     <div>
-      <div style={{ maxWidth: '100%' }}>
+      <div style={{ maxWidth: '925px', margin: '10px auto' }}>
         <MaterialTable
+          options={{
+            search: false,
+            paging: false,
+            sorting: false,
+            // showTitle: false,
+            padding: 'dense',
+            // toolbar: false,
+            // tableLayout: 'fixed',
+          }}
           columns={[
             {
               title: '',
@@ -17,6 +26,16 @@ export default function PlayersTable(props) {
               render: (rowData) => (
                 <img src={`/assets/flags/${rowData.country}.png`} />
               ),
+              cellStyle: {
+                width: 35,
+                maxWidth: 35,
+                // paddingRight: 0,
+              },
+              headerStyle: {
+                // paddingRight: 0,
+                width: 35,
+                maxWidth: 35,
+              },
             },
             {
               title: 'Name',
