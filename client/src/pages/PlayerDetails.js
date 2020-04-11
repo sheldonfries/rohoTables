@@ -29,7 +29,7 @@ function PlayerDetails(props) {
 
       <PlayerStatsTable title="Playoffs" stats={player.playoffStats} />
       <PlayerStatsTable
-        title="Regular Season"
+        title="Playoffs"
         stats={player.goaliePlayoffStats}
         pos="G"
       />

@@ -20,12 +20,29 @@ export default function LeagueOverview() {
 
   return (
     <div>
-      <div style={{ maxWidth: '100%' }}>
+      <div style={{ maxWidth: '98%', margin: '10px auto' }}>
         <MaterialTable
+          options={{
+            search: false,
+            paging: false,
+            showTitle: false,
+            padding: 'dense',
+            toolbar: false,
+          }}
           columns={[
             {
               title: '',
               field: '',
+              cellStyle: {
+                // width: 35,
+                // maxWidth: 35,
+                paddingRight: 0,
+              },
+              headerStyle: {
+                paddingRight: 0,
+                // width: 35,
+                // maxWidth: 35,
+              },
               render: (rowData) => (
                 <img
                   src={`/assets/logos/${rowData.name}.png`}
