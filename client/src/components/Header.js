@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 function Header(props) {
-  const { location, history } = props;
+  const { location, history, match } = props;
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -47,6 +47,7 @@ function Header(props) {
     });
     console.log(match);
   });
+  console.log(match.params.name);
   return (
     <div className={classes.root}>
       <AppBar position="static">

@@ -1,7 +1,11 @@
 const router = require('express').Router();
 const db = require('../db');
 const getTeamsSql = require('./sql/getTeams');
-const { getPlayersSql, getTeamDetailsSql } = require('./sql/getTeam');
+const {
+  getPlayersSql,
+  getTeamDetailsSql,
+  getDraftPicksSQL,
+} = require('./sql/getTeam');
 
 router.get('/:name', async (req, res) => {
   try {
@@ -13,7 +17,10 @@ router.get('/:name', async (req, res) => {
     const [players] = await db.raw(
       getPlayersSql.replace('!!{teamId}!!', details.id)
     );
-    res.status(200).json({ ...details, players });
+    const [draftPicks] = await db.raw(
+      getDraftPicksSQL.replace('!!{teamId}!!', details.id)
+    );
+    res.status(200).json({ ...details, players, draftPicks });
   } catch (error) {
     res.status(500).json({ message: 'server error', error });
   }

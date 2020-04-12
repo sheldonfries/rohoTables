@@ -8,7 +8,7 @@ export default function PlayersTable(props) {
   if (players.length === 0) return null;
   return (
     <div>
-      <div style={{ maxWidth: '925px', margin: '10px auto' }}>
+      <div style={{ margin: '10px 0' }}>
         <MaterialTable
           options={{
             search: false,

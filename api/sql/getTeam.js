@@ -150,4 +150,17 @@ ORDER BY
     t.name
 ) AS t1
 `,
+  getDraftPicksSQL: `
+SELECT 
+dp.id, 
+t.name AS original_team_name,
+season ,
+round 
+FROM draft_picks dp 
+LEFT JOIN teams t 
+ON t.id = dp.team_id_original 
+WHERE dp.team_id_current = !!{teamId}!!
+ORDER BY dp.season , dp.round 
+
+`,
 };

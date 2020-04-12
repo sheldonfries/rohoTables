@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const db = require('../db');
-const { getPlayerStatsSql, getGoalieStatsSql } = require('./sql/getPlayer');
+const {
+  getPlayerStatsSql,
+  getGoalieStatsSql,
+  getPlayerAwardsSql,
+} = require('./sql/getPlayer');
 
 router.get('/:name', async (req, res) => {
   try {
@@ -11,8 +15,11 @@ router.get('/:name', async (req, res) => {
     const [goalieStats] = await db.raw(
       getGoalieStatsSql.replace('!!{playerName}!!', name)
     );
+    const [awards] = await db.raw(
+      getPlayerAwardsSql.replace('!!{playerName}!!', name)
+    );
     if (playerStats) {
-      const returnObj = {};
+      const returnObj = { awards };
 
       returnObj.goalieNormalStats = goalieStats.filter(
         (stats) => stats.season_type === 'normal'

@@ -61,4 +61,13 @@ WHERE p.name ='!!{playerName}!!'
 ORDER BY se.id
 
     `,
+  getPlayerAwardsSql: `
+ 
+SELECT a.id, s.season, s.id as season_id, a.award , t.name AS team_name 
+FROM awards a 
+JOIN seasons s on s.id = a.season_id
+JOIN players p on p.id = a.player_id 
+JOIN teams t on t.id = a.team_id 
+    WHERE p.name = '!!{playerName}!!'
+    `,
 };

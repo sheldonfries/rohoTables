@@ -38,7 +38,18 @@ const playerCols = [
 
 const goalieCols = [
   { title: 'Season', field: 'season' },
-  { title: 'Team', field: 'team_name' },
+  {
+    title: 'Team',
+    field: 'team_name',
+    render: (rowData) =>
+      rowData.team_name ? (
+        <img
+          src={`/assets/logos/${rowData.team_name}.png`}
+          width="30px"
+          height="30px"
+        />
+      ) : null,
+  },
   { title: 'GP', field: 'gp', type: 'numeric' },
   { title: 'W', field: 'w', type: 'numeric' },
   { title: 'L', field: 'l', type: 'numeric' },
