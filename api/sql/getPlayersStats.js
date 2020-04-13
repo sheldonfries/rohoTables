@@ -27,4 +27,24 @@ FROM
 players_stats AS ps
 WHERE ps.season_id = !!{seasonId}!! AND ps.season_type ='!!{seasonType}!!'
     `,
+  getGoalieStatsSql: `
+    SELECT gs.id,
+gs.Name as  name,
+gs.Team as team_name, 
+gs.gp,
+gs.w,
+gs.l,
+gs.t,
+gs.sha,
+gs.ga,
+gs.gaa,
+gs.sv,
+gs.so,
+gs.g,
+gs.a,
+gs.pim,
+gs.toi
+FROM  goalies_stats AS gs
+WHERE   gs.season_id = !!{seasonId}!! AND gs.season_type ='!!{seasonType}!!'
+    `,
 };

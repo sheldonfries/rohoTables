@@ -3,7 +3,7 @@ import LeagueOverview from './pages/LeagueOverview';
 import PlayerDetails from './pages/PlayerDetails';
 import PlayerStats from './pages/PlayerStats';
 import TeamDetails from './pages/TeamDetails';
-
+import MasterStats from './pages/MasterStats';
 const routes = [
   {
     path: '/',
@@ -33,6 +33,12 @@ const routes = [
     Component: LeagueOverview,
     mainNav: true,
     label: 'League Overview',
+  },
+  {
+    path: '/stats',
+    Component: MasterStats,
+    mainNav: true,
+    label: 'Master Stats',
   },
 ];
 
