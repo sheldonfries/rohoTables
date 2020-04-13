@@ -4,7 +4,6 @@ const path = require('path');
 const cors = require('cors');
 const csv = require('csv-string');
 const api = require('./api/index');
-
 const db = require('./db');
 
 const server = express();
@@ -19,5 +18,10 @@ server.use((req, res, next) => {
   }
   next();
 }, express.static(path.join(__dirname, 'public')));
+
+server.use('/client', express.static(path.join(__dirname, 'client', 'build')));
+server.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 module.exports = server;
