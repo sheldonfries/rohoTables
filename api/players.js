@@ -4,11 +4,15 @@ const {
   getPlayerStatsSql,
   getGoalieStatsSql,
   getPlayerAwardsSql,
+  getPlayerDetails,
 } = require('./sql/getPlayer');
 
 router.get('/:name', async (req, res) => {
   try {
     const { name } = req.params;
+    const [[details]] = await db.raw(
+      getPlayerDetails.replace('!!{playerName}!!', name)
+    );
     const [playerStats] = await db.raw(
       getPlayerStatsSql.replace('!!{playerName}!!', name)
     );
@@ -19,7 +23,7 @@ router.get('/:name', async (req, res) => {
       getPlayerAwardsSql.replace('!!{playerName}!!', name)
     );
     if (playerStats) {
-      const returnObj = { awards };
+      const returnObj = { ...details, awards };
 
       returnObj.goalieNormalStats = goalieStats.filter(
         (stats) => stats.season_type === 'normal'

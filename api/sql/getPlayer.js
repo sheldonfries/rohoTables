@@ -1,4 +1,10 @@
 module.exports = {
+  getPlayerDetails: `
+  SELECT *, 
+  (SELECT name from teams t WHERE t.id=p.draft_team_id) as draft_team_name, 
+  (SELECT season FROM seasons s WHERE s.id = p.draft_season_id) AS draft_season_name 
+  FROM players p WHERE name =  '!!{playerName}!!'
+    `,
   getPlayerStatsSql: `
   SELECT p.id,IFNULL(ps.pos,p.pos ) as pos, ps.season_id , 
 se.season ,
