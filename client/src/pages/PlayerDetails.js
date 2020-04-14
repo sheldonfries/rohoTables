@@ -35,23 +35,60 @@ function PlayerDetails(props) {
         stats={player.goaliePlayoffStats}
         pos="G"
       />
+      {player.awards.length > 0 ? (
+        <MaterialTable
+          title="Awards"
+          options={{
+            search: false,
+            paging: false,
+            sorting: false,
+            // showTitle: false,
+            padding: 'dense',
+            // toolbar: false,
+            // tableLayout: 'fixed',
+          }}
+          columns={[
+            { title: 'Season', field: 'season' },
+            { title: 'Team', field: 'team_name' },
+            { title: 'Award', field: 'award' },
+          ]}
+          data={player.awards}
+        />
+      ) : null}
       <MaterialTable
-        title="Awards"
+        title="Draft Info"
         options={{
           search: false,
           paging: false,
-          sorting: false,
           // showTitle: false,
           padding: 'dense',
           // toolbar: false,
-          // tableLayout: 'fixed',
         }}
         columns={[
-          { title: 'Season', field: 'season' },
-          { title: 'Team', field: 'team_name' },
-          { title: 'Award', field: 'award' },
+          { title: 'Season', field: 'draft_season_name' },
+          { title: 'Overall', field: 'draft_overall' },
+          {
+            title: 'Team',
+            field: 'draft_team_name',
+            render: (rowData) =>
+              rowData.draft_team_name ? (
+                <img
+                  src={`/assets/logos/${rowData.draft_team_name}.png`}
+                  width="30px"
+                  height="30px"
+                />
+              ) : null,
+          },
+          { title: 'Grade', field: 'rating' },
+          { title: 'Comparable', field: 'draft_comparable' },
         ]}
-        data={player.awards}
+        data={[{ ...player }]}
+        //         draft_team_id: 7
+        // draft_overall: 1
+        // draft_season_id: 1
+        // draft_comparable: "Joe Mullen"
+        // draft_team_name: "Blackhawks"
+        // draft_season_name: "2006-07"
       />
     </div>
   );
