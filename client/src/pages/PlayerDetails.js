@@ -66,7 +66,6 @@ function PlayerDetails(props) {
         }}
         columns={[
           { title: 'Season', field: 'draft_season_name' },
-          { title: 'Overall', field: 'draft_overall' },
           {
             title: 'Team',
             field: 'draft_team_name',
@@ -79,6 +78,7 @@ function PlayerDetails(props) {
                 />
               ) : null,
           },
+          { title: 'Overall', field: 'draft_overall' },
           { title: 'Grade', field: 'rating' },
           { title: 'Comparable', field: 'draft_comparable' },
         ]}
