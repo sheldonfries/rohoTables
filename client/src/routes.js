@@ -4,6 +4,8 @@ import PlayerDetails from './pages/PlayerDetails';
 import PlayerStats from './pages/PlayerStats';
 import TeamDetails from './pages/TeamDetails';
 import MasterStats from './pages/MasterStats';
+import AdminHome from './pages/AdminHome';
+
 const routes = [
   {
     path: '/',
@@ -39,6 +41,24 @@ const routes = [
     Component: MasterStats,
     mainNav: true,
     label: 'Master Stats',
+  },
+  {
+    path: '/stats',
+    Component: MasterStats,
+    mainNav: true,
+    label: 'Master Stats',
+  },
+  {
+    path: '/admin',
+    Component: AdminHome,
+    mainNav: false,
+    label: 'Home',
+  },
+  {
+    path: '/admin',
+    Component: AdminHome,
+    mainNav: false,
+    label: 'Home',
   },
 ];
 

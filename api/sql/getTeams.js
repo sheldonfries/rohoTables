@@ -14,6 +14,7 @@ module.exports = `SELECT
 t1.forwardCount + t1.defenceCount + t1.goalieCount AS playerCount
 FROM (
   SELECT
+  t.id,
     t.name,
     (
       SELECT

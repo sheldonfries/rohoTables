@@ -13,29 +13,39 @@ exports.up = function (knex) {
       .references('seasons.id')
       .unsigned()
       .notNullable();
-    table
-      .enu('from', [
-        'Minor',
-        'NHL',
-        'Buyout',
-        'Retained',
-        'Waivers',
-        'Claimed',
-        'Cleared',
-        'Captain',
-        'Alternate Captain',
-        'Player',
-        'Resign',
-        'Sign',
-        'Release',
-        'Drafted',
-      ])
-      .notNullable();
+    // table.enu('from', [
+    //   'Minor',
+    //   'NHL',
+    //   'Buyout',
+    //   'Retained',
+    //   'Waivers',
+    //   'Claimed',
+    //   'Cleared',
+    //   'Captain',
+    //   'Alternate Captain',
+    //   'Player',
+    //   'Resign',
+    //   'Sign',
+    //   'Release',
+    //   'Drafted',
+    // ]);
+
+    /*
+   
+  STATUS CHANGES
+  players.status
+   Minor(cleared), NHL, Retired, waivers,
+  TEAM CHANGE
+  Claimed, Release, 
+ */
+
+    // .notNullable();
     table
       .enu('to', [
         'Minor',
         'NHL',
         'Buyout',
+        'Retired',
         'Retained',
         'Waivers',
         'Claimed',
