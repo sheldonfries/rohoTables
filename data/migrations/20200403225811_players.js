@@ -17,7 +17,7 @@ exports.up = function (knex) {
     // table.enu('contract_type',[''])
     table.string('expiry_type').notNullable();
     table.string('rating');
-    table.enu('status', ['NHL', 'Minors', 'Retired', 'Waivers']);
+    table.enu('status', ['NHL', 'Minors', 'Retired', 'Waivers', 'Retained']);
   });
 };
 

@@ -57,14 +57,12 @@ function TeamDetails(props) {
         <PlayersTable
           title="Retained"
           players={team.players.filter(
-            (player) => player.contract_type === 'retained'
+            (player) => player.status === 'Retained'
           )}
         />
         <PlayersTable
           title="Buyouts"
-          players={team.players.filter(
-            (player) => player.contract_type === 'buyout'
-          )}
+          players={team.players.filter((player) => player.status === 'Buyout')}
         />
         <PlayersTable
           title="In The System"
@@ -84,8 +82,8 @@ function TeamDetails(props) {
         <SimpleTable
           title="Drafts"
           rows={team.draftPicks.map(
-            ({ id, season, round }) =>
-              `${season} ${team.name} ${converter.toOrdinal(round)}`
+            ({ id, season, round, original_team_name }) =>
+              `${season} ${original_team_name} ${converter.toOrdinal(round)}`
           )}
         />
       </Grid>
