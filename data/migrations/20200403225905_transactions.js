@@ -42,7 +42,7 @@ exports.up = function (knex) {
     // .notNullable();
     table
       .enu('to', [
-        'Minor',
+        'Minors',
         'NHL',
         'Buyout',
         'Retired',

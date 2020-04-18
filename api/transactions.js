@@ -43,6 +43,32 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const { season_id } = req.query;
+    const whereObj = {};
+    if (season_id) {
+      whereObj['t.season_id'] = season_id;
+    }
+    const transactions = await db('transactions as t')
+      .select(
+        't.*',
+        'p.name as player_name',
+        'te.name as team_name',
+        's.season as season_name'
+      )
+      .leftJoin('players as p', 't.player_id', '=', 'p.id')
+      .leftJoin('teams as te', 'te.id', '=', 't.team_id')
+      .leftJoin('seasons as s', 's.id', 't.season_id')
+      .where(whereObj)
+      .orderBy('created_at', 'desc');
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;
 
 // /teams , /teams/:id/players

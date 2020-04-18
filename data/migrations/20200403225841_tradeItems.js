@@ -8,6 +8,12 @@ exports.up = function (knex) {
       .notNullable()
       .references('trades.id')
       .onDelete('CASCADE');
+    table
+      .integer('receiving_team_id')
+      .notNullable()
+      .references('teams.id')
+      .unsigned();
+
     table.integer('draft_pick_id').references('draft_picks.id').unsigned();
     table.integer('player_id').references('players.id').unsigned();
   });
