@@ -59,11 +59,15 @@ export default function Transactions() {
     for (let selectedPlayerOption of selectedPlayerOptions) {
       const { value: id } = selectedPlayerOption;
       try {
-        debugger;
         await axios.post('/api/transactions', {
           playerId: id,
           ...templateBody,
         });
+        setTeamName('');
+        setPlayers([]);
+        setSelectedPlayerOptions([]);
+        setType('');
+        setClaimedTeamId('');
       } catch (error) {
         console.log(error);
       }

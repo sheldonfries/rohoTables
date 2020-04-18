@@ -1,5 +1,6 @@
 import React from 'react';
 import Transactions from '../components/admin/Transactions';
+import Trades from '../components/admin/Trades';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NavBar from '../components/admin/NavBar';
 
@@ -10,6 +11,7 @@ export const adminRoutes = [
     Component: Transactions,
     label: 'Transactions',
   },
+  { path: `${adminPrefix}/trades`, Component: Trades, label: 'Trades' },
 ];
 
 export default function AdminHome() {

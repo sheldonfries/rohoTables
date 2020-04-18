@@ -1,7 +1,6 @@
 import Home from './pages/Home';
 import LeagueOverview from './pages/LeagueOverview';
 import PlayerDetails from './pages/PlayerDetails';
-import PlayerStats from './pages/PlayerStats';
 import TeamDetails from './pages/TeamDetails';
 import MasterStats from './pages/MasterStats';
 import AdminHome from './pages/AdminHome';
@@ -42,18 +41,7 @@ const routes = [
     mainNav: true,
     label: 'Master Stats',
   },
-  {
-    path: '/stats',
-    Component: MasterStats,
-    mainNav: true,
-    label: 'Master Stats',
-  },
-  {
-    path: '/admin',
-    Component: AdminHome,
-    mainNav: false,
-    label: 'Home',
-  },
+
   {
     path: '/admin',
     Component: AdminHome,
