@@ -55,41 +55,43 @@ function PlayerDetails(props) {
           data={player.awards}
         />
       ) : null}
-      <MaterialTable
-        title="Draft Info"
-        options={{
-          search: false,
-          paging: false,
-          // showTitle: false,
-          padding: 'dense',
-          // toolbar: false,
-        }}
-        columns={[
-          { title: 'Season', field: 'draft_season_name' },
-          {
-            title: 'Team',
-            field: 'draft_team_name',
-            render: (rowData) =>
-              rowData.draft_team_name ? (
-                <img
-                  src={`/assets/logos/${rowData.draft_team_name}.png`}
-                  width="30px"
-                  height="30px"
-                />
-              ) : null,
-          },
-          { title: 'Overall', field: 'draft_overall' },
-          { title: 'Grade', field: 'rating' },
-          { title: 'Comparable', field: 'draft_comparable' },
-        ]}
-        data={[{ ...player }]}
-        //         draft_team_id: 7
-        // draft_overall: 1
-        // draft_season_id: 1
-        // draft_comparable: "Joe Mullen"
-        // draft_team_name: "Blackhawks"
-        // draft_season_name: "2006-07"
-      />
+      {player.draft_team_id ? (
+        <MaterialTable
+          title="Draft Info"
+          options={{
+            search: false,
+            paging: false,
+            // showTitle: false,
+            padding: 'dense',
+            // toolbar: false,
+          }}
+          columns={[
+            { title: 'Season', field: 'draft_season_name' },
+            {
+              title: 'Team',
+              field: 'draft_team_name',
+              render: (rowData) =>
+                rowData.draft_team_name ? (
+                  <img
+                    src={`/assets/logos/${rowData.draft_team_name}.png`}
+                    width="30px"
+                    height="30px"
+                  />
+                ) : null,
+            },
+            { title: 'Overall', field: 'draft_overall' },
+            { title: 'Grade', field: 'rating' },
+            { title: 'Comparable', field: 'draft_comparable' },
+          ]}
+          data={[{ ...player }]}
+          //         draft_team_id: 7
+          // draft_overall: 1
+          // draft_season_id: 1
+          // draft_comparable: "Joe Mullen"
+          // draft_team_name: "Blackhawks"
+          // draft_season_name: "2006-07"
+        />
+      ) : null}
     </div>
   );
 }

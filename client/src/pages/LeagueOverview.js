@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import tableIcons from '../tableIcons';
+
 import MaterialTable from 'material-table';
 
 export default function LeagueOverview() {
@@ -22,6 +24,7 @@ export default function LeagueOverview() {
     <div>
       <div style={{ maxWidth: '98%', margin: '10px auto' }}>
         <MaterialTable
+          icons={tableIcons}
           options={{
             search: false,
             paging: false,
@@ -60,15 +63,21 @@ export default function LeagueOverview() {
             },
             { title: 'Manager', field: 'gmName' },
             { title: 'Cap Hit', field: 'capHit', type: 'numeric' },
-            { title: 'buyout', field: 'buyout', type: 'numeric' },
-            { title: 'averageAge', field: 'averageAge', type: 'numeric' },
-            { title: 'forwardCount', field: 'forwardCount', type: 'numeric' },
-            { title: 'defenceCount', field: 'defenceCount', type: 'numeric' },
-            { title: 'goalieCount', field: 'goalieCount', type: 'numeric' },
-            { title: 'contractCount', field: 'contractCount', type: 'numeric' },
-            { title: 'minorsCount', field: 'minorsCount', type: 'numeric' },
-            { title: 'capSpace', field: 'capSpace', type: 'numeric' },
-            { title: 'playerCount', field: 'playerCount', type: 'numeric' },
+            { title: 'Cap Space', field: 'capSpace', type: 'numeric' },
+            { title: 'Buyout', field: 'buyout', type: 'numeric' },
+            { title: 'Retained', field: 'retained', type: 'numeric' },
+            { title: 'Average Age', field: 'averageAge', type: 'numeric' },
+            { title: 'Forwards', field: 'forwardCount', type: 'numeric' },
+            { title: 'Defences', field: 'defenceCount', type: 'numeric' },
+            { title: 'Goalies', field: 'goalieCount', type: 'numeric' },
+
+            { title: 'Minors', field: 'minorsCount', type: 'numeric' },
+            { title: 'Players', field: 'playerCount', type: 'numeric' },
+            {
+              title: 'Contracts',
+              field: 'contractCount',
+              type: 'numeric',
+            },
           ]}
           data={teams}
         />

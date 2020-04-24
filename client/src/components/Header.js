@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 function Header(props) {
-  const { location, history, match } = props;
+  const { location, history } = props;
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,15 +39,30 @@ function Header(props) {
     history.push(path);
     handleClose();
   };
-  const currentRoute = routes.find((route) => {
-    const match = matchPath(location, {
-      path: route.path,
-      exact: false,
+
+  let match = null;
+  let route = null;
+  routes.forEach((r) => {
+    const m = matchPath(location.pathname, {
+      path: r.path,
+      exact: true,
       strict: false,
     });
-    console.log(match);
+    if (m) {
+      match = m;
+      route = r;
+    }
   });
-  console.log(match.params.name);
+  let title = 'RGMG';
+  if (match && match.params && match.params.name) {
+    title = match.params.name;
+  } else if (route) {
+    title = route.label;
+  }
+  // set title
+  let t = document.querySelector('title');
+  t.innerHTML = `RGMG - ${title}`;
+  // console.log(match.params.name);
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -77,7 +92,7 @@ function Header(props) {
             </Menu>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Current Page
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -11,7 +11,7 @@ exports.up = function (knex) {
     table.integer('age').notNullable();
     table.string('country').notNullable();
     table.string('pos').notNullable();
-    table.float('salary');
+    table.decimal('salary', 6, 3);
     table.integer('contract_duration');
     table.string('contract_type').notNullable();
     // table.enu('contract_type',[''])

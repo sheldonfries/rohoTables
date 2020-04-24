@@ -1,10 +1,16 @@
 module.exports = {
   getPlayersSql: `
-    SELECT p.id, p.country, p.name,  p.status, p.contract_type, 
-        IFNULL((SELECT ps.pos
-        FROM players_stats ps
-        WHERE ps.Name =p.name
-        ORDER BY season_id DESC LIMIT 1 ), p.pos) AS position, p.age, p.salary, p.contract_duration, p.expiry_type
+    SELECT p.id, 
+    p.country,
+     p.name, 
+     p.status,
+     p.contract_type, 
+    IFNULL((SELECT ps.pos
+      FROM players_stats ps
+      WHERE ps.Name =p.name
+      ORDER BY season_id DESC LIMIT 1 ), p.pos) AS position
+      , p.age, 
+      p.salary, p.contract_duration, p.expiry_type
     FROM players AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC

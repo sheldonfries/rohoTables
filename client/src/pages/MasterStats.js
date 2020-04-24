@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
+import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -11,8 +12,11 @@ const playerCols = [
   {
     title: 'Name',
     field: 'name',
-    cellStyle: { whiteSpace: 'nowrap' }, //minWidth: 200, width: 200 },
+    cellStyle: { whiteSpace: 'nowrap' },
     // headerStyle: { whiteSpace: 'nowrap', minWidth: 200, width: 200 },
+    render: (rowData) => (
+      <Link to={`/players/${rowData.name}`}>{rowData.name}</Link>
+    ),
   },
   {
     title: 'Team',
@@ -29,6 +33,9 @@ const playerCols = [
         />
       ) : null,
   },
+
+  { title: 'Pos', field: 'pos' },
+
   { title: 'GP', field: 'gp', type: 'numeric' },
   { title: 'G', field: 'g', type: 'numeric' },
   { title: 'A', field: 'a', type: 'numeric' },
@@ -166,7 +173,10 @@ export default function MasterStats() {
             pageSizeOptions: [25, 50, 100, 500, 1000],
             emptyRowsWhenPaging: false,
             padding: 'dense',
-
+            exportButton: true,
+            exportAllData: true,
+            exportFileName: `${playerType}Season${seasonId}`,
+            showTitle: false,
             // fixedColumns: {
             //   // left: 1,
             //   //   // right: 0

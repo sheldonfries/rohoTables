@@ -130,6 +130,7 @@ FROM (
         1
     )
     AND gs.season_type = 'normal'
+    WHERE t.id <> 31
   GROUP BY
     t.name
 ) AS t1 `;
