@@ -9,7 +9,8 @@ const {
 
 router.get('/:name', async (req, res) => {
   try {
-    const { name } = req.params;
+    let { name } = req.params;
+    name = name.replace("'", "''");
     const [[details]] = await db.raw(
       getPlayerDetails.replace('!!{playerName}!!', name)
     );
