@@ -16,7 +16,6 @@ export default function PlayersTable(props) {
             sorting: false,
             // showTitle: false,
             padding: 'dense',
-            exportButton: true,
 
             // toolbar: false,
             // tableLayout: 'fixed',

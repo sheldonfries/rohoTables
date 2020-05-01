@@ -64,7 +64,7 @@ ON p.name =gs.Name
 LEFT JOIN seasons AS se 
 ON se.id =gs.season_id 
 WHERE p.name ='!!{playerName}!!'
-ORDER BY se.id
+ORDER BY se.id DESC
 
     `,
   getPlayerAwardsSql: `
@@ -74,6 +74,7 @@ FROM awards a
 JOIN seasons s on s.id = a.season_id
 JOIN players p on p.id = a.player_id 
 JOIN teams t on t.id = a.team_id 
-    WHERE p.name = '!!{playerName}!!'
+WHERE p.name = '!!{playerName}!!'
+ORDER BY s.id DESC
     `,
 };

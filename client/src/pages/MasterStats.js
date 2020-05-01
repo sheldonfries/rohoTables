@@ -57,7 +57,15 @@ const playerCols = [
 ];
 
 const goalieCols = [
-  { title: 'Name', field: 'name', cellStyle: { whiteSpace: 'nowrap' } },
+  {
+    title: 'Name',
+    field: 'name',
+    cellStyle: { whiteSpace: 'nowrap' },
+    // headerStyle: { whiteSpace: 'nowrap', minWidth: 200, width: 200 },
+    render: (rowData) => (
+      <Link to={`/players/${rowData.name}`}>{rowData.name}</Link>
+    ),
+  },
   {
     title: 'Team',
     field: 'team_name',

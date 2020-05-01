@@ -1,6 +1,6 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import GeneralTransactionCard from './GeneralTransactionCard';
+import { Link } from 'react-router-dom';
 
 export default function Trade({ trade }) {
   const players1String = trade.trade_items
@@ -49,82 +49,12 @@ export default function Trade({ trade }) {
     ' and'
   );
   return (
-    <Grid container spacing={2} style={{ padding: '0 30px' }}>
-      <Grid column xs={2}>
-        <p>{trade.created_at}</p>
-      </Grid>
-
-      <Grid column xs={2}>
-        <img
-          src={`/assets/logos/${trade.team_name_1}.png`}
-          width="30px"
-          height="30px"
-        />
-        <img
-          src={`/assets/logos/${trade.team_name_2}.png`}
-          width="30px"
-          height="30px"
-        />
-      </Grid>
-      <Grid column xs={8}>
-        <p>{`${trade.team_name_1} trades ${items1String} to ${trade.team_name_2} in exchange for  ${items2String}`}</p>
-      </Grid>
-      {/* <Paper elevation={3}>
-          <h2>{trade.team_name_1}</h2>
-          <h3>Traded Players</h3>
-          {trade.trade_items
-            .filter(
-              (item) =>
-                item.draft_round === null &&
-                item.receiving_team_id === trade.team_id_2
-            )
-            .map((player) => (
-              <p>{player.name}</p>
-            ))}
-          <h3>Draft Picks</h3>
-          {trade.trade_items
-            .filter(
-              (item) =>
-                item.draft_round !== null &&
-                item.receiving_team_id === trade.team_id_2
-            )
-            .map((draft) => (
-              <p>
-                {draft.draft_season} {draft.draft_original_team_name}{' '}
-                {draft.draft_round}
-              </p>
-            ))}
-        </Paper>
-      </Grid>
-      <Grid column xs={6}>
-        <Paper elevation={3}>
-          <h2>{trade.team_name_2}</h2>
-          <h3>Traded Players</h3>
-          {trade.trade_items
-            .filter(
-              (item) =>
-                item.draft_round === null &&
-                item.receiving_team_id === trade.team_id_1
-            )
-            .map((player) => (
-              <p>{player.name}</p>
-            ))}
-          <h3>Draft Picks</h3>
-          {trade.trade_items
-            .filter(
-              (item) =>
-                item.draft_round !== null &&
-                item.receiving_team_id === trade.team_id_1
-            )
-            .map((draft) => (
-              <p>
-                {draft.draft_season} {draft.draft_original_team_name}{' '}
-                {draft.draft_round}
-              </p>
-            ))}
-        </Paper> */}
-      {/* </Grid> */}
-    </Grid>
+    <GeneralTransactionCard
+      date={trade.created_at}
+      team1={trade.team_name_1}
+      team2={trade.team_name_2}
+      text={`${trade.team_name_1} trades ${items1String} to ${trade.team_name_2} in exchange for  ${items2String}`}
+    />
   );
 }
 // receiving_team_id: 29

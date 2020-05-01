@@ -20,6 +20,14 @@ router.post('/', async (req, res) => {
     const { playerId, teamId, status, type } = req.body;
     const season = await db('seasons').orderBy('id', 'desc').first();
     const updateObj = {};
+    let oldTeamId;
+    if (teamId === 31) {
+      player = await db('players')
+        .select('team_id')
+        .where({ id: playerId })
+        .first();
+      oldTeamId = player.team_id;
+    }
     if (teamId) updateObj.team_id = teamId;
     if (
       status === 'Minors' ||
@@ -33,7 +41,7 @@ router.post('/', async (req, res) => {
 
     await db('transactions').insert({
       player_id: playerId,
-      team_id: teamId ? teamId : null,
+      team_id: teamId ? (teamId !== 31 ? teamId : oldTeamId) : null,
       season_id: season.id,
       to: type,
     });

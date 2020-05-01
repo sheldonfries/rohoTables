@@ -65,6 +65,10 @@ function TeamDetails(props) {
           players={team.players.filter((player) => player.status === 'Buyout')}
         />
         <PlayersTable
+          title="Waivers"
+          players={team.players.filter((player) => player.status === 'Waivers')}
+        />
+        <PlayersTable
           title="In The System"
           players={team.players.filter(
             (player) =>

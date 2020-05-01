@@ -49,7 +49,18 @@ function PlayerDetails(props) {
           }}
           columns={[
             { title: 'Season', field: 'season' },
-            { title: 'Team', field: 'team_name' },
+            {
+              title: 'Team',
+              field: 'team_name',
+              render: (rowData) =>
+                rowData.team_name ? (
+                  <img
+                    src={`/assets/logos/${rowData.team_name}.png`}
+                    width="30px"
+                    height="30px"
+                  />
+                ) : null,
+            },
             { title: 'Award', field: 'award' },
           ]}
           data={player.awards}
