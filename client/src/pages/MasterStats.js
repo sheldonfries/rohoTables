@@ -99,13 +99,16 @@ export default function MasterStats() {
   const [seasonType, setSeasonType] = useState('normal');
   const [playerType, setPlayerType] = useState('players');
   const [players, setPlayers] = useState([]);
+  const [positionFilter, setPositionFilter] = useState('all');
   useEffect(() => {
     fetchSeasons();
   }, []);
   useEffect(() => {
     fetchPlayers();
   }, [seasonId, seasonType, playerType]);
-
+  useEffect(() => {
+    setPositionFilter('all');
+  }, [playerType]);
   async function fetchSeasons() {
     try {
       const res = await axios.get('/api/seasons');
@@ -127,6 +130,22 @@ export default function MasterStats() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function filterPlayers(players) {
+    if (!players || typeof players !== 'object') return [];
+    debugger;
+    return players.filter((player) => {
+      if (positionFilter === 'D') {
+        return player?.pos.includes('LD') || player?.pos.includes('RD');
+      } else if (positionFilter === 'C') {
+        return 'C' === player?.pos[0];
+      } else if (positionFilter === 'all') {
+        return true;
+      } else {
+        return positionFilter === player?.pos.slice(0, 2);
+      }
+    });
   }
 
   return (
@@ -169,12 +188,25 @@ export default function MasterStats() {
             <MenuItem value="normal">Normal</MenuItem>
             <MenuItem value="playoff">Playoffs</MenuItem>
           </Select>
+          {playerType !== 'goalies' ? (
+            <Select
+              style={{ marginRight: 10 }}
+              value={positionFilter}
+              onChange={(event) => setPositionFilter(event.target.value)}
+            >
+              <MenuItem value="all">All Players</MenuItem>
+              <MenuItem value="C">Center</MenuItem>
+              <MenuItem value="LW">Left Wing</MenuItem>
+              <MenuItem value="RW">Right Wing</MenuItem>
+              <MenuItem value="D">Defence</MenuItem>
+            </Select>
+          ) : null}
         </FormGroup>
       </FormControl>
       {
         <MaterialTable
           icons={tableIcons}
-          data={players}
+          data={filterPlayers(players)}
           columns={playerType === 'players' ? playerCols : goalieCols}
           options={{
             pageSize: 25,

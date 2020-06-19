@@ -39,7 +39,7 @@ export default function TransactionCard({ transaction }) {
       text = `${team_name} releases ${player_name}`;
       break;
     }
-    case 'Retire': {
+    case 'Retired': {
       text = `${player_name} retires`;
       break;
     }

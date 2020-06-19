@@ -41,11 +41,11 @@ export default function Transactions() {
   async function submit() {
     const templateBody = { type };
     templateBody.teamId = teams.find((team) => team.name === teamName).id;
-    debugger;
     if (type === 'Release') {
       templateBody.teamId = 31;
     } else if (type === 'Claimed') {
       templateBody.teamId = claimedTeamId;
+      templateBody.status = 'NHL';
     }
     if (type === 'Cleared' || type === 'Minors') {
       templateBody.status = 'Minors';
@@ -73,6 +73,49 @@ export default function Transactions() {
       }
     }
   }
+
+  function filterPlayers() {
+    return players.filter((player) => {
+      switch (type) {
+        case '': {
+          return false;
+        }
+        case 'Release': {
+          return player.salary === 0 && player.status !== 'Retired';
+        }
+        case 'Claimed': {
+          return player.status === 'Waivers';
+        }
+        case 'Cleared': {
+          return player.status === 'Waivers';
+        }
+        case 'Minors': {
+          return (
+            player.age <= 24 && player.salary <= 1.75 && player.status === 'NHL'
+          );
+        }
+        case 'NHL': {
+          return player.status === 'Minors';
+        }
+        case 'Waivers': {
+          return (
+            player.age > 24 && player.salary <= 1.75 && player.status === 'NHL'
+          );
+        }
+        case 'Waivers': {
+          return (
+            player.age > 24 && player.salary <= 1.75 && player.status === 'NHL'
+          );
+        }
+        case 'Retired': {
+          return player.age > 34 && player.status !== 'Retired';
+        }
+        default:
+          return true;
+      }
+    });
+  }
+
   return (
     <div>
       <select
@@ -88,20 +131,7 @@ export default function Transactions() {
           </option>
         ))}
       </select>
-
-      <Select
-        isMulti
-        name="players"
-        value={selectedPlayerOptions}
-        onChange={(options) => {
-          setSelectedPlayerOptions(options);
-        }}
-        options={players.map((player) => ({
-          value: player.id,
-          label: player.name,
-        }))}
-      />
-
+      <br />
       <select value={type} onChange={(event) => setType(event.target.value)}>
         <option value="" disable>
           SELECT A TYPE
@@ -114,7 +144,6 @@ export default function Transactions() {
         <option value="Release">Released</option>
         <option value="Retired">Retired</option>
       </select>
-
       {type === 'Claimed' ? (
         <select
           value={claimedTeamId}
@@ -132,6 +161,19 @@ export default function Transactions() {
             ))}
         </select>
       ) : null}
+      <Select
+        isMulti
+        name="players"
+        value={selectedPlayerOptions}
+        onChange={(options) => {
+          setSelectedPlayerOptions(options);
+        }}
+        options={filterPlayers().map((player) => ({
+          value: player.id,
+          label: player.name,
+        }))}
+      />
+
       <button onClick={submit}>SUBMIT</button>
     </div>
   );

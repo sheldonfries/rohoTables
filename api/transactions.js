@@ -37,6 +37,7 @@ router.post('/', async (req, res) => {
     ) {
       updateObj.status = status;
     }
+
     await db('players').update(updateObj).where({ id: playerId });
 
     await db('transactions').insert({
