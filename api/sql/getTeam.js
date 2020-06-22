@@ -10,7 +10,7 @@ module.exports = {
       WHERE ps.Name =p.name
       ORDER BY season_id DESC LIMIT 1 ), p.pos) AS position
       , p.age, 
-      p.salary, p.contract_duration, p.expiry_type
+      p.salary, p.contract_duration, p.expiry_type, p.role, p.handedness
     FROM players AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC
