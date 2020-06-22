@@ -91,7 +91,7 @@ export default function Transactions() {
         }
         case 'Minors': {
           return (
-            player.age <= 24 && player.salary <= 1.75 && player.status === 'NHL'
+            player.age <= 24 && player.status === 'NHL'
           );
         }
         case 'NHL': {
@@ -99,13 +99,9 @@ export default function Transactions() {
         }
         case 'Waivers': {
           return (
-            player.age > 24 && player.salary <= 1.75 && player.status === 'NHL'
+            player.age > 24 && player.salary <= 2 && player.status === 'NHL'
           );
         }
-        case 'Waivers': {
-          return (
-            player.age > 24 && player.salary <= 1.75 && player.status === 'NHL'
-          );
         }
         case 'Retired': {
           return player.age > 34 && player.status !== 'Retired';
