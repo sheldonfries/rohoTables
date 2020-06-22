@@ -46,6 +46,8 @@ export default function PlayersTable(props) {
               ),
             },
             { title: 'Pos', field: 'position' },
+            { title: 'Type', field: 'type' },
+            { title: 'Handedness', field: 'handedness' },
             { title: 'Age', field: 'age', type: 'numeric' },
             { title: 'Cap', field: 'salary', type: 'numeric' },
             { title: 'Years', field: 'contract_duration', type: 'numeric' },
