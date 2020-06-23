@@ -51,13 +51,13 @@ FROM (
     ) AS capHit,
     SUM(
       CASE
-        AND p.status = 'Retained' THEN p.salary
+        WHEN p.status = 'Retained' THEN p.salary
         ELSE 0
       END
     ) AS retained,
     SUM(
       CASE
-        AND p.status = 'Buyout' THEN p.salary
+        WHEN p.status = 'Buyout' THEN p.salary
         ELSE 0
       END
     ) AS buyout,
