@@ -10,7 +10,7 @@ module.exports = {
       WHERE ps.Name =p.name
       ORDER BY season_id DESC LIMIT 1 ), p.pos) AS position
       , p.age, 
-      p.salary, p.contract_duration, p.expiry_type, p.role, p.handedness
+      p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness
     FROM players AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC
@@ -45,21 +45,19 @@ FROM (
     ) AS gmName,
     SUM(
       CASE
-        WHEN p.status = 'NHL' THEN p.salary
+        WHEN p.status IN ('NHL', 'Retained', 'Buyout') THEN p.salary
         ELSE 0
       END
     ) AS capHit,
     SUM(
       CASE
-        WHEN p.contract_type = 'retained'
-        AND p.status = 'NHL' THEN p.salary
+        WHEN p.status = 'Retained' THEN p.salary
         ELSE 0
       END
     ) AS retained,
     SUM(
       CASE
-        WHEN p.contract_type = 'buyout'
-        AND p.status = 'NHL' THEN p.salary
+        WHEN p.status = 'Buyout' THEN p.salary
         ELSE 0
       END
     ) AS buyout,

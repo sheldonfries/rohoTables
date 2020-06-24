@@ -27,21 +27,19 @@ FROM (
     ) AS gmName,
     SUM(
       CASE
-        WHEN p.status = 'NHL' THEN p.salary
+        WHEN p.status IN ('NHL', 'Retained', 'Buyout') THEN p.salary
         ELSE 0
       END
     ) AS capHit,
     SUM(
       CASE
-        WHEN p.contract_type = 'retained'
-        AND p.status = 'NHL' THEN p.salary
+        WHEN p.status = 'Retained' THEN p.salary
         ELSE 0
       END
     ) AS retained,
     SUM(
       CASE
-        WHEN p.contract_type = 'buyout'
-        AND p.status = 'NHL' THEN p.salary
+        WHEN p.status = 'Buyout' THEN p.salary
         ELSE 0
       END
     ) AS buyout,
