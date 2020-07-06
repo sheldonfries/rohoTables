@@ -38,6 +38,7 @@ ON p.name =ps.Name
 LEFT JOIN seasons AS se 
 ON se.id =ps.season_id 
 WHERE p.name ='!!{playerName}!!'
+AND p.status NOT IN ('Retained', 'Buyout')
 ORDER BY se.id DESC
     `,
   getGoalieStatsSql: `
