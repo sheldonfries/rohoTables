@@ -65,6 +65,7 @@ ON p.name =gs.Name
 LEFT JOIN seasons AS se 
 ON se.id =gs.season_id 
 WHERE p.name ='!!{playerName}!!'
+AND p.status NOT IN ('Retained', 'Buyout')
 ORDER BY se.id DESC
 
     `,
