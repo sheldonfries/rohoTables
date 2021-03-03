@@ -2,12 +2,6 @@
 // console.log(process.env.DATABASE_IP);
 if (!process.env.DATABASE_IP) require('dotenv').config();
 
-console.log({
-  database: process.env.DATABASE_IP,
-  port: process.env.DATABASE_PORT,
-  user: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-});
 module.exports = {
   development: {
     client: 'mysql',
