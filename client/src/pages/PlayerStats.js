@@ -8,15 +8,12 @@ function PlayerStats(props) {
   const { match } = props;
   const [player, setPlayer] = useState(null);
   useEffect(() => {
-    debugger;
     fetchPlayer(match.params.name);
   }, []);
   async function fetchPlayer(name) {
     try {
-      debugger;
       const res = await axios.get(`/api/players/${name}`);
       setPlayer(res.data);
-      debugger;
     } catch (error) {
       console.log(error);
     }

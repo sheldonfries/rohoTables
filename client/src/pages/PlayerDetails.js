@@ -10,9 +10,10 @@ function PlayerDetails(props) {
   const [player, setPlayer] = useState(null);
   useEffect(() => {
     fetchPlayer(match.params.name);
-  }, []);
+  }, [match.params.name]);
   async function fetchPlayer(name) {
     try {
+      setPlayer(null);
       const res = await axios.get(`/api/players/${name}`);
       setPlayer(res.data);
     } catch (error) {
@@ -22,22 +23,22 @@ function PlayerDetails(props) {
   if (!player) return null;
   return (
     <div>
-      <PlayerStatsTable title="Regular Season" stats={player.normalStats} />
+      <PlayerStatsTable title='Regular Season' stats={player.normalStats} />
       <PlayerStatsTable
-        title="Regular Season"
+        title='Regular Season'
         stats={player.goalieNormalStats}
-        pos="G"
+        pos='G'
       />
 
-      <PlayerStatsTable title="Playoffs" stats={player.playoffStats} />
+      <PlayerStatsTable title='Playoffs' stats={player.playoffStats} />
       <PlayerStatsTable
-        title="Playoffs"
+        title='Playoffs'
         stats={player.goaliePlayoffStats}
-        pos="G"
+        pos='G'
       />
       {player.awards.length > 0 ? (
         <MaterialTable
-          title="Awards"
+          title='Awards'
           options={{
             search: false,
             paging: false,
@@ -56,8 +57,8 @@ function PlayerDetails(props) {
                 rowData.team_name ? (
                   <img
                     src={`/assets/logos/${rowData.team_name}.png`}
-                    width="30px"
-                    height="30px"
+                    width='30px'
+                    height='30px'
                   />
                 ) : null,
             },
@@ -68,7 +69,7 @@ function PlayerDetails(props) {
       ) : null}
       {player.draft_team_id ? (
         <MaterialTable
-          title="Draft Info"
+          title='Draft Info'
           options={{
             search: false,
             paging: false,
@@ -85,26 +86,32 @@ function PlayerDetails(props) {
                 rowData.draft_team_name ? (
                   <img
                     src={`/assets/logos/${rowData.draft_team_name}.png`}
-                    width="30px"
-                    height="30px"
+                    width='30px'
+                    height='30px'
                   />
                 ) : null,
             },
             { title: 'Overall', field: 'draft_overall' },
             { title: 'Grade', field: 'rating' },
-            { title: 'Comparable', field: 'draft_comparable' },
+            {
+              title: 'Comparable',
+              field: 'draft_comparable',
+              render: ({ is_draft_comparable_local, draft_comparable }) => {
+                if (is_draft_comparable_local)
+                  return (
+                    <Link to={`/players/${draft_comparable}`}>
+                      {draft_comparable}
+                    </Link>
+                  );
+                return <p>{draft_comparable}</p>;
+              },
+            },
           ]}
           data={[{ ...player }]}
-          //         draft_team_id: 7
-          // draft_overall: 1
-          // draft_season_id: 1
-          // draft_comparable: "Joe Mullen"
-          // draft_team_name: "Blackhawks"
-          // draft_season_name: "2006-07"
         />
       ) : null}
     </div>
   );
 }
-
+// is_draft_comparable_local
 export default withRouter(PlayerDetails);

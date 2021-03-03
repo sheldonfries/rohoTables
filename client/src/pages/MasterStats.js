@@ -28,8 +28,8 @@ const playerCols = [
       rowData.team_name ? (
         <img
           src={`/assets/logos/${rowData.team_name}.png`}
-          width="30px"
-          height="30px"
+          width='30px'
+          height='30px'
         />
       ) : null,
   },
@@ -73,8 +73,8 @@ const goalieCols = [
       rowData.team_name ? (
         <img
           src={`/assets/logos/${rowData.team_name}.png`}
-          width="30px"
-          height="30px"
+          width='30px'
+          height='30px'
         />
       ) : null,
   },
@@ -134,7 +134,6 @@ export default function MasterStats() {
 
   function filterPlayers(players) {
     if (!players || typeof players !== 'object') return [];
-    debugger;
     return players.filter((player) => {
       if (positionFilter === 'D') {
         return player?.pos.includes('LD') || player?.pos.includes('RD');
@@ -150,25 +149,25 @@ export default function MasterStats() {
 
   return (
     <div>
-      <FormControl fullWidth margin="normal">
+      <FormControl fullWidth margin='normal'>
         <FormGroup row>
           <Select
             value={playerType}
             onChange={(event) => setPlayerType(event.target.value)}
             style={{ marginLeft: 10, marginRight: 10 }}
           >
-            <MenuItem disabled value="">
+            <MenuItem disabled value=''>
               SELECT A PLAYER TYPE
             </MenuItem>
-            <MenuItem value="players">Players</MenuItem>
-            <MenuItem value="goalies">Goalies</MenuItem>
+            <MenuItem value='players'>Players</MenuItem>
+            <MenuItem value='goalies'>Goalies</MenuItem>
           </Select>
           <Select
             style={{ marginRight: 10 }}
             value={seasonId}
             onChange={(event) => setSeasonId(event.target.value)}
           >
-            <MenuItem disabled value="">
+            <MenuItem disabled value=''>
               SELECT A SEASON
             </MenuItem>
             {seasons.map((season) => (
@@ -182,11 +181,11 @@ export default function MasterStats() {
             value={seasonType}
             onChange={(event) => setSeasonType(event.target.value)}
           >
-            <MenuItem disabled value="">
+            <MenuItem disabled value=''>
               SELECT A SEASON TYPE
             </MenuItem>
-            <MenuItem value="normal">Normal</MenuItem>
-            <MenuItem value="playoff">Playoffs</MenuItem>
+            <MenuItem value='normal'>Normal</MenuItem>
+            <MenuItem value='playoff'>Playoffs</MenuItem>
           </Select>
           {playerType !== 'goalies' ? (
             <Select
@@ -194,11 +193,11 @@ export default function MasterStats() {
               value={positionFilter}
               onChange={(event) => setPositionFilter(event.target.value)}
             >
-              <MenuItem value="all">All Players</MenuItem>
-              <MenuItem value="C">Center</MenuItem>
-              <MenuItem value="LW">Left Wing</MenuItem>
-              <MenuItem value="RW">Right Wing</MenuItem>
-              <MenuItem value="D">Defence</MenuItem>
+              <MenuItem value='all'>All Players</MenuItem>
+              <MenuItem value='C'>Center</MenuItem>
+              <MenuItem value='LW'>Left Wing</MenuItem>
+              <MenuItem value='RW'>Right Wing</MenuItem>
+              <MenuItem value='D'>Defence</MenuItem>
             </Select>
           ) : null}
         </FormGroup>
