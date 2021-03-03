@@ -14,6 +14,10 @@ router.get('/:name', async (req, res) => {
     const [[details]] = await db.raw(
       getPlayerDetails.replace('!!{playerName}!!', name)
     );
+    if (!details) {
+      res.status(404).json({ message: 'not found' });
+      return;
+    }
     const [playerStats] = await db.raw(
       getPlayerStatsSql.replace('!!{playerName}!!', name)
     );
