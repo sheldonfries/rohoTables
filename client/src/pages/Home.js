@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../requester';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -47,11 +47,11 @@ export default function Home() {
 
   return (
     <Container>
-      <div className="input-select-container">
-        <InputLabel id="season-select">Season</InputLabel>
+      <div className='input-select-container'>
+        <InputLabel id='season-select'>Season</InputLabel>
         <Select
-          placeholder="Season"
-          labelId="season-select"
+          placeholder='Season'
+          labelId='season-select'
           value={seasonId}
           onChange={(event) => setSeasonId(event.target.value)}
         >

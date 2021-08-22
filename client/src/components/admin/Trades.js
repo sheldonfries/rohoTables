@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../requester';
 import Select from 'react-select';
 import Grid from '@material-ui/core/Grid';
 import TeamSelector from './TeamSelector';

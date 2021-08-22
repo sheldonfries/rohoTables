@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../requester';
 import Select from 'react-select';
 
 export default function Transactions() {
@@ -116,7 +116,7 @@ export default function Transactions() {
         value={teamName}
         onChange={(event) => setTeamName(event.target.value)}
       >
-        <option disabled value="">
+        <option disabled value=''>
           SELECT A TEAM
         </option>
         {teams.map((team) => (
@@ -127,23 +127,23 @@ export default function Transactions() {
       </select>
       <br />
       <select value={type} onChange={(event) => setType(event.target.value)}>
-        <option value="" disable>
+        <option value='' disable>
           SELECT A TYPE
         </option>
-        <option value="Minors">Send Down</option>
-        <option value="NHL">Call Up</option>
-        <option value="Waivers">Waive</option>
-        <option value="Cleared">Cleared</option>
-        <option value="Claimed">Claimed</option>
-        <option value="Release">Released</option>
-        <option value="Retired">Retired</option>
+        <option value='Minors'>Send Down</option>
+        <option value='NHL'>Call Up</option>
+        <option value='Waivers'>Waive</option>
+        <option value='Cleared'>Cleared</option>
+        <option value='Claimed'>Claimed</option>
+        <option value='Release'>Released</option>
+        <option value='Retired'>Retired</option>
       </select>
       {type === 'Claimed' ? (
         <select
           value={claimedTeamId}
           onChange={(event) => setClaimedTeamId(event.target.value)}
         >
-          <option disabled value="">
+          <option disabled value=''>
             SELECT A TEAM
           </option>
           {teams
@@ -157,7 +157,7 @@ export default function Transactions() {
       ) : null}
       <Select
         isMulti
-        name="players"
+        name='players'
         value={selectedPlayerOptions}
         onChange={(options) => {
           setSelectedPlayerOptions(options);

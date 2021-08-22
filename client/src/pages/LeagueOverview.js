@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../requester';
+
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 
@@ -49,8 +50,8 @@ export default function LeagueOverview() {
               render: (rowData) => (
                 <img
                   src={`/assets/logos/${rowData.name}.png`}
-                  width="30px"
-                  height="30px"
+                  width='30px'
+                  height='30px'
                 />
               ),
             },

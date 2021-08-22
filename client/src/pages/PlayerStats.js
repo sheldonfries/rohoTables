@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
-import PlayersTable from '../components/PlayersTable';
-import Grid, { GridSpacing } from '@material-ui/core/Grid';
+import axios from '../requester';
+import { withRouter } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
 
 function PlayerStats(props) {
   const { match } = props;

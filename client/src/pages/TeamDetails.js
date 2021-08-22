@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../requester';
 import { Link, withRouter } from 'react-router-dom';
 import converter from 'number-to-words';
 import PlayersTable from '../components/PlayersTable';
@@ -27,7 +27,7 @@ function TeamDetails(props) {
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <PlayersTable
-          title="Forwards"
+          title='Forwards'
           players={team.players.filter(
             (player) =>
               player.status === 'NHL' &&
@@ -36,7 +36,7 @@ function TeamDetails(props) {
           )}
         />
         <PlayersTable
-          title="Defense"
+          title='Defense'
           players={team.players.filter(
             (player) =>
               player.status === 'NHL' &&
@@ -45,7 +45,7 @@ function TeamDetails(props) {
           )}
         />
         <PlayersTable
-          title="Goaltenders"
+          title='Goaltenders'
           players={team.players.filter(
             (player) =>
               player.status === 'NHL' &&
@@ -55,21 +55,21 @@ function TeamDetails(props) {
         />
         {/* retained */}
         <PlayersTable
-          title="Retained"
+          title='Retained'
           players={team.players.filter(
             (player) => player.status === 'Retained'
           )}
         />
         <PlayersTable
-          title="Buyouts"
+          title='Buyouts'
           players={team.players.filter((player) => player.status === 'Buyout')}
         />
         <PlayersTable
-          title="Waivers"
+          title='Waivers'
           players={team.players.filter((player) => player.status === 'Waivers')}
         />
         <PlayersTable
-          title="In The System"
+          title='In The System'
           players={team.players.filter(
             (player) =>
               player.status === 'Minors' && player.contract_type === 'signed'
@@ -77,14 +77,14 @@ function TeamDetails(props) {
         />
       </Grid>
       <Grid item xs={3}>
-        <SimpleTable title="General Manager" rows={[team.gmName]} />
-        <SimpleTable title="Total Cap Hit" rows={[team.capHit]} />
-        <SimpleTable title="Cap Space" rows={[team.capSpace]} />
-        <SimpleTable title="Salary Retained" rows={[team.retained]} />
-        <SimpleTable title="Buyouts" rows={[team.buyout]} />
-        <SimpleTable title="Average Age" rows={[team.averageAge]} />
+        <SimpleTable title='General Manager' rows={[team.gmName]} />
+        <SimpleTable title='Total Cap Hit' rows={[team.capHit]} />
+        <SimpleTable title='Cap Space' rows={[team.capSpace]} />
+        <SimpleTable title='Salary Retained' rows={[team.retained]} />
+        <SimpleTable title='Buyouts' rows={[team.buyout]} />
+        <SimpleTable title='Average Age' rows={[team.averageAge]} />
         <SimpleTable
-          title="Drafts"
+          title='Drafts'
           rows={team.draftPicks.map(
             ({ id, season, round, original_team_name }) =>
               `${season} ${original_team_name} ${converter.toOrdinal(round)}`
