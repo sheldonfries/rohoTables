@@ -4,6 +4,7 @@ import PlayerDetails from './pages/PlayerDetails';
 import TeamDetails from './pages/TeamDetails';
 import MasterStats from './pages/MasterStats';
 import AdminHome from './pages/AdminHome';
+import Uploader from './pages/Uploader';
 
 const routes = [
   {
@@ -47,6 +48,12 @@ const routes = [
     Component: AdminHome,
     mainNav: false,
     label: 'Home',
+  },
+  {
+    path: '/uploader',
+    Component: Uploader,
+    mainNav: false,
+    label: 'Uploader',
   },
 ];
 
