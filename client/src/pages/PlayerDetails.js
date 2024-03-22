@@ -72,7 +72,6 @@ function PlayerDetails(props) {
           },
           { title: 'Years', field: 'contract_duration' },
           { title: 'Status', field: 'expiry_type' },
-          { title: 'Fav. #', field: 'favNum' },
         ]}
         data={[{ ...player }]}
       />

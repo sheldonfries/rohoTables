@@ -111,7 +111,7 @@ FROM (
     ) AS goalieCount,
     COUNT(
       CASE
-        WHEN p.contract_type = 'signed' THEN 1
+        WHEN p.status <> 'retained' THEN 1
         ELSE NULL
       END
     ) contractCount,
