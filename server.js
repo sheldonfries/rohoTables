@@ -12,7 +12,6 @@ server.use(express.json({ limit: '50mb' }));
 server.use('/api', api);
 
 server.use((req, res, next) => {
-  console.log('here');
   if (req.path.indexOf('.') === -1) {
     req.url += '.html';
   }
