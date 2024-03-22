@@ -57,10 +57,7 @@ FROM (
         WHEN p.status = 'NHL'
         AND p.contract_type = 'signed'
         AND (
-          ps.Pos LIKE 'C%'
-          OR ps.Pos LIKE 'LW%'
-          OR ps.Pos LIKE 'RW%'
-          OR p.pos LIKE 'C%'
+          p.pos LIKE 'C%'
           OR p.pos LIKE 'LW%'
           OR p.pos LIKE 'RW%'
         ) THEN 1
@@ -72,9 +69,7 @@ FROM (
         WHEN p.status = 'NHL'
         AND p.contract_type = 'signed'
         AND (
-          ps.Pos LIKE 'LD%'
-          OR ps.Pos LIKE 'RD%'
-          OR p.pos LIKE 'LD%'
+          p.pos LIKE 'LD%'
           OR p.pos LIKE 'RD%'
         ) THEN 1
         ELSE NULL
@@ -84,16 +79,14 @@ FROM (
       CASE
         WHEN p.status = 'NHL'
         AND p.contract_type = 'signed'
-        AND (
-          p.pos LIKE 'G%'
-          OR gs.id
-        ) THEN 1
+        AND p.pos LIKE 'G%'
+        THEN 1
         ELSE NULL
       END
     ) AS goalieCount,
     COUNT(
       CASE
-        WHEN p.status <> 'retained' THEN 1
+        WHEN p.status IN ('NHL', 'minors') THEN 1
         ELSE NULL
       END
     ) contractCount,
@@ -106,29 +99,7 @@ FROM (
     ) minorsCount
   FROM teams AS t
   LEFT JOIN players AS p ON t.id = p.team_id
-  LEFT JOIN players_stats AS ps ON ps.Name = p.name
-    AND ps.season_id = (
-      SELECT
-        s2.id
-      FROM seasons AS s2
-      ORDER BY
-        season
-      LIMIT
-        1
-    )
-    AND ps.season_type = 'normal'
-  LEFT JOIN goalies_stats AS gs ON gs.Name = p.name
-    AND gs.season_id = (
-      SELECT
-        s2.id
-      FROM seasons AS s2
-      ORDER BY
-        season
-      LIMIT
-        1
-    )
-    AND gs.season_type = 'normal'
-    WHERE t.id <> 31
+  WHERE t.id <> 31
   GROUP BY
     t.name
 ) AS t1 `;
