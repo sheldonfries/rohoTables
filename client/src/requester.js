@@ -4,7 +4,7 @@ import Axios from 'axios';
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
-const APIBASE = isDev ? '' : 'https://roho-table.herokuapp.com';
+const APIBASE = isDev ? '' : 'http://146.235.205.152:5000';
 
 const requester = Axios.create({ baseURL: APIBASE });
 

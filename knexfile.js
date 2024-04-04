@@ -1,6 +1,6 @@
 // Update with your config settings.
 // console.log(process.env.DATABASE_IP);
-if (!process.env.DATABASE_IP) require('dotenv').config();
+if (process.env.NODE_ENV == "production") require('dotenv').config();
 
 module.exports = {
   development: {
@@ -50,8 +50,14 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    client: 'mysql',
+    connection: {
+      host: process.env.DATABASE_IP,
+      database: process.env.DATABASE_NAME,
+      port: process.env.DATABASE_PORT,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+    },
     searchPath: ['knex', 'public'],
 
     pool: {

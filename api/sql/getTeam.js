@@ -8,7 +8,7 @@ module.exports = {
      p.pos AS position
       , p.age, 
       p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness
-    FROM players AS p
+    FROM !!{playersTable}!! AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC
     `,

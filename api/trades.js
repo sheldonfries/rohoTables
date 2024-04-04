@@ -41,11 +41,14 @@ router.post('/', async (req, res) => {
         const oldPlayer = await db('players').where({ id: rPlayer.id }).first();
         const updateObj = { team_id: team.id };
         if (rPlayer.retained) {
+          const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
           const retained = rPlayer.retained;
           updateObj.salary = parseFloat(oldPlayer.salary) - retained;
           delete oldPlayer.id;
           oldPlayer.status = 'Retained';
           oldPlayer.salary = retained;
+          oldPlayer.created_at = currentDate;
+          oldPlayer.updated_at = currentDate;
           await db('players').insert(oldPlayer);
         }
         await db('players').update(updateObj).where({ id: rPlayer.id });

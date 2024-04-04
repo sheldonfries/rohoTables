@@ -5,17 +5,43 @@ import converter from 'number-to-words';
 import PlayersTable from '../components/PlayersTable';
 import Grid, { GridSpacing } from '@material-ui/core/Grid';
 import SimpleTable from '../components/SimpleTable';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
 
 function TeamDetails(props) {
   const { match } = props;
   const [team, setTeam] = useState(null);
+  const [seasons, setSeasons] = useState([]);
+  const [seasonName, setSeasonName] = useState(null);
+  const [currentSeasonName, setCurrentSeasonName] = useState(null);
+  useEffect(() => {
+    fetchSeasons();
+  }, []);
   useEffect(() => {
     fetchTeam(match.params.name);
-  }, []);
+  }, [seasonName]);
+
+  async function fetchSeasons() {
+    try {
+      const res = await axios.get('/api/seasons');
+      setSeasons(res.data);
+      const name = res.data[res.data.length - 1].season;
+      setSeasonName(name);
+      setCurrentSeasonName(name);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function fetchTeam(name) {
     try {
-      const res = await axios.get(`/api/teams/${name}`);
+      let apiLocation = `/api/teams/${name}`
+      if (seasonName != null && seasonName != currentSeasonName)
+        apiLocation += `/${seasonName}`;
+
+      const res = await axios.get(apiLocation);
       setTeam(res.data);
     } catch (error) {
       console.log(error);
@@ -24,6 +50,25 @@ function TeamDetails(props) {
 
   if (team === null) return null;
   return (
+    <div>
+      <FormControl fullWidth margin='normal' style={{paddingLeft: "10px"}}>
+        <FormGroup row>
+          <Select
+              style={{ marginRight: 10 }}
+              value={seasonName}
+              onChange={(event) => setSeasonName(event.target.value)}
+            >
+              <MenuItem disabled value=''>
+                SELECT A SEASON
+              </MenuItem>
+              {seasons.map((season) => (
+                <MenuItem key={season.season} value={season.season}>
+                  {season.season}
+                </MenuItem>
+              ))}
+            </Select>
+        </FormGroup>
+      </FormControl>
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <PlayersTable
@@ -92,6 +137,7 @@ function TeamDetails(props) {
         />
       </Grid>
     </Grid>
+    </div>
   );
 }
 
