@@ -14,8 +14,8 @@ function TeamDetails(props) {
   const { match } = props;
   const [team, setTeam] = useState(null);
   const [seasons, setSeasons] = useState([]);
-  const [seasonName, setSeasonName] = useState(null);
-  const [currentSeasonName, setCurrentSeasonName] = useState(null);
+  const [seasonName, setSeasonName] = useState("");
+  const [currentSeasonName, setCurrentSeasonName] = useState("");
   useEffect(() => {
     fetchSeasons();
   }, []);
@@ -37,8 +37,8 @@ function TeamDetails(props) {
 
   async function fetchTeam(name) {
     try {
-      let apiLocation = `/api/teams/${name}`
-      if (seasonName != null && seasonName != currentSeasonName)
+      let apiLocation = `/api/teams/${name}`;
+      if (seasonName.length > 0 && currentSeasonName.length > 0 && seasonName != currentSeasonName)
         apiLocation += `/${seasonName}`;
 
       const res = await axios.get(apiLocation);
