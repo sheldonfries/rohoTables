@@ -85,4 +85,10 @@ JOIN teams t on t.id = a.team_id
 WHERE p.name = '!!{playerName}!!'
 ORDER BY s.id DESC
     `,
+  getPlayerComparables: `
+
+  SELECT p.name AS comparable_for
+  FROM players p
+  WHERE p.draft_comparable = '!!{playerName}!!'
+      `,
 };

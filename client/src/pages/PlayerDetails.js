@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
 import MaterialTable from 'material-table';
 import styled from 'styled-components';
+
 function PlayerDetails(props) {
   const { match } = props;
   const [player, setPlayer] = useState(null);
@@ -161,6 +162,32 @@ function PlayerDetails(props) {
           ]}
           data={[{ ...player }]}
         />
+      ) : null}
+      {player.comparables.length > 0 ? (
+        <MaterialTable
+          title='Comparable For'
+            options={{
+              search: false,
+              paging: false,
+              // showTitle: false,
+              padding: 'dense',
+              // toolbar: false,
+            }}
+            columns={[
+              {
+                title: 'Name',
+                field: 'comparable_for',
+                render: ({ comparable_for }) => {
+                  return (
+                    <Link to={`/players/${comparable_for}`}>
+                      {comparable_for}
+                    </Link>
+                  );
+                },
+              },
+            ]}
+            data={player.comparables}
+          />
       ) : null}
     </div>
   );
