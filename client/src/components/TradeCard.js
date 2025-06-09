@@ -53,7 +53,7 @@ export default function Trade({ trade }) {
       date={trade.created_at}
       team1={trade.team_name_1}
       team2={trade.team_name_2}
-      text={`${trade.team_name_1} trades ${items1String} to ${trade.team_name_2} in exchange for  ${items2String}`}
+      text={`${trade.team_name_1} trade ${items1String} to ${trade.team_name_2} in exchange for  ${items2String}`}
     />
   );
 }

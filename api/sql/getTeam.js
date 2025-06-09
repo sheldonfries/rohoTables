@@ -7,7 +7,7 @@ module.exports = {
      p.contract_type, 
      p.pos AS position
       , p.age, 
-      p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness
+      p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness, p.totalGP
     FROM !!{playersTable}!! AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC
@@ -42,7 +42,9 @@ FROM (
     ) AS gmName,
     SUM(
       CASE
-        WHEN p.status IN ('NHL', 'Retained', 'Buyout') THEN p.salary
+        WHEN p.status IN ('NHL', 'Retained') THEN p.salary
+        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
+        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
         ELSE 0
       END
     ) AS capHit,
@@ -54,10 +56,17 @@ FROM (
     ) AS retained,
     SUM(
       CASE
-        WHEN p.status = 'Buyout' THEN p.salary
+        WHEN p.status = 'Retained' THEN 1
         ELSE 0
       END
-    ) AS buyout,
+    ) AS retainedCount,
+    SUM(
+      CASE
+        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
+        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
+        ELSE 0
+      END
+    ) AS buried,
     ROUND(
       IFNULL(AVG(
         CASE

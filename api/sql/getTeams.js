@@ -27,7 +27,9 @@ FROM (
     ) AS gmName,
     SUM(
       CASE
-        WHEN p.status IN ('NHL', 'Retained', 'Buyout') THEN p.salary
+        WHEN p.status IN ('NHL', 'Retained') THEN p.salary
+        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
+        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
         ELSE 0
       END
     ) AS capHit,
@@ -39,10 +41,17 @@ FROM (
     ) AS retained,
     SUM(
       CASE
-        WHEN p.status = 'Buyout' THEN p.salary
+        WHEN p.status = 'Retained' THEN 1
         ELSE 0
       END
-    ) AS buyout,
+    ) AS retainedCount,
+    SUM(
+      CASE
+        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
+        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
+        ELSE 0
+      END
+    ) AS buried,
     ROUND(
       IFNULL(AVG(
         CASE

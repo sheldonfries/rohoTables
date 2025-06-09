@@ -8,7 +8,7 @@ module.exports = {
     END
     FROM players p1 where p1.name = p.draft_comparable) as is_draft_comparable_local,
   (SELECT name from teams t WHERE t.id=p.draft_team_id) as draft_team_name, 
-  (SELECT season FROM seasons s WHERE s.id = p.draft_season_id) AS draft_season_name 
+  (SELECT season FROM seasons s WHERE s.id = p.draft_season_id) AS draft_season_name
   FROM players p WHERE name =  '!!{playerName}!!'
     `,
   getPlayerStatsSql: `
@@ -87,8 +87,51 @@ ORDER BY s.id DESC
     `,
   getPlayerComparables: `
 
-  SELECT p.name AS comparable_for
+  SELECT DISTINCT p.name AS comparable_for
   FROM players p
   WHERE p.draft_comparable = '!!{playerName}!!'
+      `,
+  getPlayerTrades: `
+
+  SELECT
+	  b.season as season,
+    SUBSTRING_INDEX(b.players, ';', 1) AS players_1,
+    SUBSTRING_INDEX(b.players, ';', -1) AS players_2,
+    SUBSTRING_INDEX(b.receiving_team, ';', 1) AS team_1,
+    SUBSTRING_INDEX(b.receiving_team, ';', -1) AS team_2
+  FROM (SELECT 
+		a.id AS id,
+		a.season AS season,
+		GROUP_CONCAT(a.players
+			SEPARATOR ';') AS players,
+		GROUP_CONCAT(a.receiving_team
+			SEPARATOR ';') AS receiving_team
+	  FROM
+		(SELECT 
+			t.id AS id,
+				s.season AS season,
+				CONCAT_WS(', ', GROUP_CONCAT(p.name
+					SEPARATOR ', '), GROUP_CONCAT(CONCAT(d.season, ' ', te3.name, ' ', d.round)
+					SEPARATOR ', ')) AS players,
+				te.name AS receiving_team
+		  FROM
+			trade_items ti
+		JOIN trades t ON t.id = ti.trade_id
+		LEFT JOIN players p ON p.id = ti.player_id
+		LEFT JOIN teams te ON te.id = ti.receiving_team_id
+		LEFT JOIN seasons s ON s.id = t.season_id
+		LEFT JOIN draft_picks d ON d.id = ti.draft_pick_id
+		LEFT JOIN teams te3 ON te3.id = d.team_id_original
+		WHERE
+			t.id IN (SELECT 
+					t.id
+				FROM
+					trade_items ti
+				JOIN trades t ON t.id = ti.trade_id
+				JOIN players p ON p.id = ti.player_id
+				WHERE
+					p.name = '!!{playerName}!!')
+		GROUP BY t.id , s.season , te.name) a
+	GROUP BY a.id , a.season) b
       `,
 };

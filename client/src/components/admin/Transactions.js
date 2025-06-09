@@ -90,14 +90,20 @@ export default function Transactions() {
           return player.status === 'Waivers';
         }
         case 'Minors': {
-          return player.age <= 24 && player.status === 'NHL';
+          return (
+            (player.pos === 'G') 
+            ? player.totalGP < 45 && player.age < 24 && player.status === 'NHL'
+            : player.totalGP < 140 && player.age < 24 && player.status === 'NHL'
+          );
         }
         case 'NHL': {
           return player.status === 'Minors';
         }
         case 'Waivers': {
           return (
-            player.age > 24 && player.salary <= 2 && player.status === 'NHL'
+            (player.pos === 'G') 
+            ? (player.totalGP >= 45 || player.age >= 24) && player.status === 'NHL'
+            : (player.totalGP >= 140 || player.age >= 24) && player.status === 'NHL'
           );
         }
 

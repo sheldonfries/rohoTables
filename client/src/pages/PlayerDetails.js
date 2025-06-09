@@ -89,6 +89,91 @@ function PlayerDetails(props) {
         stats={player.goaliePlayoffStats}
         pos='G'
       />
+      {player.trades.length > 0 ? (
+        <MaterialTable
+          title='Trade History'
+            options={{
+              search: false,
+              paging: false,
+              // showTitle: false,
+              padding: 'dense',
+              // toolbar: false,
+            }}
+            columns={[
+              {
+                title: 'Season',
+                field: 'season'
+              },
+              {
+                title: 'Team',
+                field: 'team_1',
+                render: (rowData) =>
+                rowData.team_1 ? (
+                  <img
+                    src={`/assets/logos/${rowData.team_1}.png`}
+                    width='30px'
+                    height='30px'
+                  />
+                ) : null,
+              },
+              {
+                title: 'Received',
+                field: 'players_1',
+                render: (rowData) => {
+                  const players = rowData.players_1.split(", ").map((player, index) => {
+                    return (
+                      <span key={index}>
+                        {/\d/.test(player) ? (
+                          player
+                        ) : (
+                          <Link to={`/players/${player}`}>
+                            {player}
+                          </Link>
+                        )}
+                        {index < rowData.players_1.split(", ").length - 1 ? ', ' : ''}
+                      </span>
+                    );
+                  });
+                  return <>{players}</>;
+                },
+              },
+              {
+                title: 'Team',
+                field: 'team_2',
+                render: (rowData) =>
+                rowData.team_2 ? (
+                  <img
+                    src={`/assets/logos/${rowData.team_2}.png`}
+                    width='30px'
+                    height='30px'
+                  />
+                ) : null,
+              },
+              {
+                title: 'Received',
+                field: 'players_2',
+                render: (rowData) => {
+                  const players = rowData.players_2.split(", ").map((player, index) => {
+                    return (
+                      <span key={index}>
+                        {/\d/.test(player) ? (
+                          player
+                        ) : (
+                          <Link to={`/players/${player}`}>
+                            {player}
+                          </Link>
+                        )}
+                        {index < rowData.players_2.split(", ").length - 1 ? ', ' : ''}
+                      </span>
+                    );
+                  });
+                  return <>{players}</>;
+                },
+              },
+            ]}
+            data={player.trades}
+          />
+      ) : null}
       {player.awards.length > 0 ? (
         <MaterialTable
           title='Awards'

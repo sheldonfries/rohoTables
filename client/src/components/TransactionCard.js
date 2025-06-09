@@ -12,7 +12,7 @@ export default function TransactionCard({ transaction }) {
       break;
     }
     case 'NHL': {
-      text = `${team_name} recalls ${player_name} to the NHL`;
+      text = `${team_name} recall ${player_name} to the NHL`;
       break;
     }
     case 'Waivers': {
@@ -24,7 +24,7 @@ export default function TransactionCard({ transaction }) {
       break;
     }
     case 'Claimed': {
-      text = `${team_name} claims ${player_name} off waivers`;
+      text = `${team_name} claim ${player_name} off waivers`;
       break;
     }
     case 'Sign': {
@@ -32,11 +32,11 @@ export default function TransactionCard({ transaction }) {
       break;
     }
     case 'Resign': {
-      text = `${team_name} re-signs ${player_name}`;
+      text = `${team_name} re-sign ${player_name}`;
       break;
     }
     case 'Release': {
-      text = `${team_name} releases ${player_name}`;
+      text = `${team_name} release ${player_name}`;
       break;
     }
     case 'Retired': {

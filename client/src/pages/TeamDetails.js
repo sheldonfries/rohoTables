@@ -106,6 +106,15 @@ function TeamDetails(props) {
           )}
         />
         <PlayersTable
+          title='Buried'
+          players={team.players.filter(
+            (player) =>
+              (player.position.match(/^G/)) ? 
+              (player.totalGP >= 45 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
+              : (player.totalGP >= 140 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
+          )}
+        />
+        <PlayersTable
           title='Buyouts'
           players={team.players.filter((player) => player.status === 'Buyout')}
         />
