@@ -22,10 +22,11 @@
     "styled-components": "^5.1.0"
   },
   "scripts": {
-    "start": "export SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
-    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "client": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npx serve -s -n build"
   },
   "eslintConfig": {
     "extends": "react-app"

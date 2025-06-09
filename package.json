@@ -2,10 +2,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "server": "npm start",
-    "client": "npm run --prefix client start",
-    "dev": "npm run server & npm run client",
-    "serve": "npm run server && cd client & serve -s build"
+    "server": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm start",
+    "client": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run --prefix client start",
+    "dev": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run server & /home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run client",
+    "serve": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run server & cd client && /home/ubuntu/.nvm/versions/node/v14.21.3/bin/npx serve -s -n build"
   },
   "engines": {
     "node": "14.x"
