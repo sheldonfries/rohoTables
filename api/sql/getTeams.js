@@ -28,8 +28,8 @@ FROM (
     SUM(
       CASE
         WHEN p.status IN ('NHL', 'Retained') THEN p.salary
-        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
-        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
+        WHEN (p.status IN ('minors', 'Waivers') AND p.pos = 'G' AND p.totalGP >= 45 AND p.salary > 1) THEN p.salary - 1
+        WHEN (p.status IN ('minors', 'Waivers') AND p.pos <> 'G' AND p.totalGP >= 140 AND p.salary > 1) THEN p.salary - 1
         ELSE 0
       END
     ) AS capHit,
@@ -47,8 +47,8 @@ FROM (
     ) AS retainedCount,
     SUM(
       CASE
-        WHEN (p.status = 'minors' AND p.pos = 'G' AND p.totalGP >= 45) THEN p.salary - 1
-        WHEN (p.status = 'minors' AND p.pos <> 'G' AND p.totalGP >= 140) THEN p.salary - 1
+        WHEN (p.status IN ('minors', 'Waivers') AND p.pos = 'G' AND p.totalGP >= 45 AND p.salary > 1) THEN p.salary - 1
+        WHEN (p.status IN ('minors', 'Waivers') AND p.pos <> 'G' AND p.totalGP >= 140 AND p.salary > 1) THEN p.salary - 1
         ELSE 0
       END
     ) AS buried,

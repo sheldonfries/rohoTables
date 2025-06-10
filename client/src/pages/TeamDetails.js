@@ -112,6 +112,8 @@ function TeamDetails(props) {
               (player.position.match(/^G/)) ? 
               (player.totalGP >= 45 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
               : (player.totalGP >= 140 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
+          ).map(
+            (player) => ({ ...player, salary: player.salary - 1})
           )}
         />
         <PlayersTable
@@ -135,7 +137,7 @@ function TeamDetails(props) {
         <SimpleTable title='Total Cap Hit' rows={[team.capHit]} />
         <SimpleTable title='Cap Space' rows={[team.capSpace]} />
         <SimpleTable title='Salary Retained' rows={[team.retained]} />
-        <SimpleTable title='Buyouts' rows={[team.buyout]} />
+        <SimpleTable title='Salary Buried' rows={[team.buried]} />
         <SimpleTable title='Average Age' rows={[team.averageAge]} />
         <SimpleTable
           title='Drafts'

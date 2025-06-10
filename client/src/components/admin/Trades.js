@@ -14,6 +14,8 @@ export default function Trades() {
   const [drafts, setDrafts] = useState({ drafts1: [], drafts2: [] });
   const [leavingPlayers, setLeavingPlayers] = useState({ t1: [], t2: [] });
   const [leavingDrafts, setLeavingDrafts] = useState({ t1: [], t2: [] });
+  const [confirmedTrade, setConfirmedTrade] = useState(false);
+
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -113,6 +115,10 @@ export default function Trades() {
     setLeavingDrafts({ t1: [], t2: [] });
   }
 
+  function undo() {
+
+  }
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={6}>
@@ -168,6 +174,11 @@ export default function Trades() {
       <button style={{ margin: '0 auto' }} onClick={submit}>
         SUBMIT
       </button>
+      { confirmedTrade ? 
+        <button style={{ margin: '0 auto' }} onClick={undo}>
+          UNDO
+        </button>
+      : null }
     </Grid>
   );
 }
