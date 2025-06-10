@@ -133,6 +133,7 @@ ORDER BY s.id DESC
 					p.name = '!!{playerName}!!')
 		GROUP BY t.id , s.season , te.name) a
 	GROUP BY a.id , a.season) b
+	WHERE SUBSTRING_INDEX(b.players, ';', 1) != SUBSTRING_INDEX(b.players, ';', -1)
 	ORDER BY b.id DESC
       `,
 };
