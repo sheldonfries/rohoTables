@@ -133,5 +133,6 @@ ORDER BY s.id DESC
 					p.name = '!!{playerName}!!')
 		GROUP BY t.id , s.season , te.name) a
 	GROUP BY a.id , a.season) b
+	ORDER BY b.id DESC
       `,
 };
