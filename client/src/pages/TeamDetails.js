@@ -113,7 +113,7 @@ function TeamDetails(props) {
               (player.totalGP >= 45 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
               : (player.totalGP >= 140 || player.age >= 24) && player.status === 'Minors' && player.salary > 1
           ).map(
-            (player) => ({ ...player, salary: player.salary - 1})
+            (player) => ({ ...player, salary: Number((player.salary - 1).toFixed(4))})
           )}
         />
         <PlayersTable
