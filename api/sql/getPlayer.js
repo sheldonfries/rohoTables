@@ -8,7 +8,8 @@ module.exports = {
     END
     FROM players p1 where p1.name = p.draft_comparable) as is_draft_comparable_local,
   (SELECT name from teams t WHERE t.id=p.draft_team_id) as draft_team_name, 
-  (SELECT season FROM seasons s WHERE s.id = p.draft_season_id) AS draft_season_name
+  (SELECT season FROM seasons s WHERE s.id = p.draft_season_id) AS draft_season_name,
+  (SELECT COUNT(*) FROM players p2 WHERE p2.name = p.name AND p2.status = 'Retained') AS retention_count
   FROM players p WHERE name =  '!!{playerName}!!'
     `,
   getPlayerStatsSql: `

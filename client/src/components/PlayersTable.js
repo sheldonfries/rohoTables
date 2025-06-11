@@ -50,6 +50,16 @@ export default function PlayersTable(props) {
             { title: 'Handedness', field: 'handedness' },
             { title: 'Age', field: 'age', type: 'numeric' },
             { title: 'Cap', field: 'salary', type: 'numeric' },
+            { 
+              title: 'Ret Count', 
+              field: 'retention_count', 
+              type: 'numeric',
+              cellStyle: (e, rowData) => {
+                  if (rowData.retention_count == 2) {
+                    return { color: "red", "font-weight": "bold" }
+                  }
+              }
+            },
             { title: 'Years', field: 'contract_duration', type: 'numeric' },
             { title: 'Status', field: 'expiry_type' },
           ]}

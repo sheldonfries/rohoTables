@@ -7,7 +7,8 @@ module.exports = {
      p.contract_type, 
      p.pos AS position
       , p.age, 
-      p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness, p.totalGP
+      p.salary, p.contract_duration, p.expiry_type, p.type, p.handedness, p.totalGP,
+    (SELECT COUNT(*) FROM players p2 WHERE p2.name = p.name AND p2.status = 'Retained') AS retention_count
     FROM !!{playersTable}!! AS p
     WHERE p.team_id = !!{teamId}!!
     ORDER BY p.salary DESC

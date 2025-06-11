@@ -71,6 +71,15 @@ function PlayerDetails(props) {
             title: 'Salary',
             field: 'salary',
           },
+          { 
+              title: 'Ret Count', 
+              field: 'retention_count',
+              cellStyle: (e, rowData) => {
+                  if (rowData.retention_count == 2) {
+                    return { color: "red", "font-weight": "bold" }
+                  }
+              }
+            },
           { title: 'Years', field: 'contract_duration' },
           { title: 'Status', field: 'expiry_type' },
         ]}
