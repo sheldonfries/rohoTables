@@ -8,12 +8,12 @@ FOR EACH ROW
 BEGIN
 	UPDATE players
 	SET totalGP = (
-		SELECT SUM(gp) 
-        FROM players_stats 
-        WHERE name = NEW.name 
-        AND season_type = 'Normal' 
+		SELECT SUM(gp)
+        FROM players_stats ps
+        WHERE ps.name = NEW.name 
+        AND ps.season_type = 'Normal' 
         GROUP BY name
-	)
+	) + COALESCE(initalGP, 0)
 	WHERE name = NEW.name;
 END$$
 

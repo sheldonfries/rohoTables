@@ -13,7 +13,7 @@ BEGIN
         WHERE name = NEW.name 
         AND season_type = 'Normal' 
         GROUP BY name
-	)
+	) + COALESCE(initalGP, 0)
 	WHERE name = NEW.name;
 END$$
 
