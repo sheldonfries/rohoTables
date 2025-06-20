@@ -55,6 +55,8 @@ export default function Transactions() {
       templateBody.status = 'Waivers';
     } else if (type === 'Retired') {
       templateBody.status = 'Retired';
+    } else if (type === 'Buyout') {
+      templateBody.status = 'Buyout';
     }
     for (let selectedPlayerOption of selectedPlayerOptions) {
       const { value: id } = selectedPlayerOption;
@@ -143,6 +145,7 @@ export default function Transactions() {
         <option value='Claimed'>Claimed</option>
         <option value='Release'>Released</option>
         <option value='Retired'>Retired</option>
+        <option value='Buyout'>Buyout</option>
       </select>
       {type === 'Claimed' ? (
         <select

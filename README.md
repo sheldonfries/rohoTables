@@ -5,11 +5,17 @@
 3. npm install in the main directory, and in the client directory.
 4. npm start in server and client folders
 
-# (Re-)deployment
+# Automated (Re-)deployment
+1. SSH into host Oracle Cloud machine
+2. Run ./deploy.sh. Optionally, provide --client-only or --server-only flags if only one portion needs to be redeployed.
 
-1. Pull changes from git
-2. rm -rf build in the client folder (if needed)
-3. npm run build the client
-4. rm -rf /var/www/html/build to empty the deployment folder
-5. cp -r build /var/www/html to copy build folder to the deployment folder
-6. sudo systemctl restart rgmg.service to restart the server code
+# Manual (Re-)deployment
+
+1. SSH into host Oracle Cloud machine
+2. Change to code directory (e.g. ~/code/rohoTables/)
+3. Pull changes from git
+4. rm -rf build in the client folder (if needed)
+5. npm run build the client
+6. sudo rm -rf /var/www/html/build to empty the deployment folder
+7. sudo cp -r build /var/www/html to copy build folder to the deployment folder
+8. sudo systemctl restart rgmg.service to restart the server

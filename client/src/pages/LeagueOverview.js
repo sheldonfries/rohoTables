@@ -68,6 +68,7 @@ export default function LeagueOverview() {
             { title: 'Retained', field: 'retainedCount', type: 'numeric' },
             { title: 'Retention Hit', field: 'retained', type: 'numeric' },
             { title: 'Buried Hit', field: 'buried', type: 'numeric' },
+            { title: 'Buyout', field: 'buyout', type: 'numeric' },
             { title: 'Average Age', field: 'averageAge', type: 'numeric' },
             { title: 'Forwards', field: 'forwardCount', type: 'numeric' },
             { title: 'Defense', field: 'defenceCount', type: 'numeric' },
