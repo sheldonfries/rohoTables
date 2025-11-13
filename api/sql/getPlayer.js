@@ -1,7 +1,7 @@
 module.exports = {
   getPlayerDetails: `
   SELECT *, 
-  (SELECT 
+  EXISTS (SELECT 
     CASE 
       WHEN p1.name IS NOT NULL THEN true
       ELSE false
