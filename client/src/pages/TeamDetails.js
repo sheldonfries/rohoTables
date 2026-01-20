@@ -11,9 +11,9 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
+import CapStat from '../components/CapStat';
 
 function TeamDetails(props) {
   const { match } = props;
@@ -21,12 +21,18 @@ function TeamDetails(props) {
   const [seasons, setSeasons] = useState([]);
   const [seasonName, setSeasonName] = useState("");
   const [currentSeasonName, setCurrentSeasonName] = useState("");
+  const [groupedPicks, setGroupedPicks] = useState({});
   useEffect(() => {
     fetchSeasons();
   }, []);
   useEffect(() => {
     fetchTeam(match.params.name);
   }, [seasonName]);
+  useEffect(() => {
+    if (team) {
+      groupPicksBySeason(team.draftPicks);
+    }
+  }, [team]);
 
   async function fetchSeasons() {
     try {
@@ -53,86 +59,112 @@ function TeamDetails(props) {
     }
   }
 
+  async function groupPicksBySeason(picks) {
+    const picksBySeason = team.draftPicks.reduce((acc, pick) => {
+      const { season } = pick;
+      if (!acc[season]) {
+        acc[season] = [];
+      }
+      acc[season].push(pick);
+      return acc;
+    }, {});
+    setGroupedPicks(picksBySeason);
+  }
+
   if (team === null) return null;
   return (
     <Container maxWidth="xl" style={{ paddingTop: 16, paddingBottom: 16 }}>
-      <FormControl fullWidth margin='normal' style={{paddingLeft: "10px"}}>
-        <FormGroup row>
-          <Select
-              style={{ marginRight: 10 }}
-              value={seasonName}
-              onChange={(event) => setSeasonName(event.target.value)}
-            >
-              <MenuItem disabled value=''>
-                SELECT A SEASON
-              </MenuItem>
-              {seasons.map((season) => (
-                <MenuItem key={season.season} value={season.season}>
-                  {season.season}
-                </MenuItem>
-              ))}
-            </Select>
-        </FormGroup>
-      </FormControl>
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={12} style={{ order: 1, textAlign: "center" }}>
-          <Card variant="outlined" style={{ marginBottom: 16, padding: 16 }}>
-            <Typography variant="h6" gutterBottom>
-              Team Info
-            </Typography>
-            <Grid container spacing={1} textAlign="center">
-              <Grid item xs={6}>
-                <Typography variant="caption">GENERAL MANAGER</Typography>
-                <Typography variant="body1">{team.gmName}</Typography>
+        <Grid item xs={12} style={{ order: 1 }}>
+          <Card variant="outlined" style={{ padding: 16, backgroundColor: "#C8102E", color: "white", borderRadius: "15px 15px 0 0" }}>
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={1}>
+                <Avatar style={{ width: 125, height: 125, bgcolor: 'white', color: '#1a237e', fontSize: '2rem', border: '2px solid white' }} src={`/assets/logos/${team.name}.png`} alt={team.name}/>
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="caption">AVERAGE AGE</Typography>
-                <Typography variant="body1">{team.averageAge}</Typography>
+              <Grid item xs={12} md={7} sm container>
+                <Grid item xs container direction="column">
+                  <Typography variant="h3" fontWeight="bold">{team.city} {team.name}</Typography>
+                  <Typography variant="subtitle1" style={{ opacity: 0.8 }}>General Manager: {team.gmName}</Typography>
+                  <Typography variant="subtitle1" style={{ opacity: 0.8 }}>Average Age: {team.averageAge}</Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          </Card>
-
-          {/* Cap Overview */}
-          <Card variant="outlined" style={{ marginBottom: 16, padding: 16 }}>
-            <Typography variant="h6" gutterBottom>
-              Cap Overview
-            </Typography>
-            <Grid container spacing={1} textAlign="center">
-              <Grid item xs={6}>
-                <Typography variant="caption">TOTAL CAP HIT</Typography>
-                <Typography variant="body1">${team.capHit}M</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="caption">CAP SPACE</Typography>
-                <Typography variant="body1">${team.capSpace}M</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="caption">RETAINED</Typography>
-                <Typography variant="body1">${team.retained}M</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="caption">BURIED</Typography>
-                <Typography variant="body1">${team.buried}M</Typography>
+              <Grid item xs={12} md={4}>
+                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6} md={3}>
+                      <CapStat label="Total Cap Hit" value={team.capHit} />
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <CapStat 
+                        label="Cap Space" 
+                        value={team.capSpace} 
+                        color={team.capSpace > 0 ? 'success' : 'error'} 
+                      />
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <CapStat label="Retained" value={team.retained} />
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <CapStat label="Buried" value={team.buried} />
+                    </Grid>
+                  </Grid>
+                </Box>
               </Grid>
             </Grid>
           </Card>
 
           {/* Draft Picks */}
-          <Card variant="outlined" style={{ marginBottom: 16, padding: 16 }}>
+          <Card variant="outlined" style={{ marginBottom: 16, padding: 16, borderRadius: "0 0 15px 15px" }}>
             <Typography variant="h6" gutterBottom>
               Draft Picks
             </Typography>
-            <List dense>
-              {team.draftPicks.map(({ id, season, round, original_team_name }) => (
-                <ListItem key={id} style={{ justifyContent: "center" }}>
-                  {season} {original_team_name} {converter.toOrdinal(round)}
-                </ListItem>
-              ))}
-            </List>
+            <Box sx={{ mt: 2 }}>
+              {Object.entries(groupedPicks)
+                .sort(([yearA], [yearB]) => yearA - yearB)
+                .map(([season, picks]) => (
+                  <Box key={season} style={{ display: 'flex', marginBottom: 1, alignItems: 'baseline' }}>
+                    <Typography 
+                      variant="subtitle2" 
+                      style={{ fontWeight: 'bold', minWidth: '50px', color: 'primary.main' }}
+                    >
+                      {season}:
+                    </Typography>
+
+                    <Typography variant="body2" style={{ marginLeft: 1, color: 'text.secondary' }}>
+                      {picks.map((pick, index) => (
+                        <span key={pick.id}>
+                          {pick.original_team_name} {converter.toOrdinal(pick.round)}
+                          {index < picks.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </Typography>
+                  </Box>
+                ))}
+            </Box>
           </Card>
         </Grid>
-        <Grid item xs={12} style={{ order: 2 }}>
+        <Grid item  xs={12} style={{ order: 2 }}>
+          <FormControl fullWidth margin='normal' style={{paddingLeft: "10px"}}>
+          <FormGroup row>
+            <Select
+                style={{ marginRight: 10 }}
+                value={seasonName}
+                onChange={(event) => setSeasonName(event.target.value)}
+              >
+                <MenuItem disabled value=''>
+                  SELECT A SEASON
+                </MenuItem>
+                {seasons.map((season) => (
+                  <MenuItem key={season.season} value={season.season}>
+                    {season.season}
+                  </MenuItem>
+                ))}
+              </Select>
+          </FormGroup>
+        </FormControl>
+      </Grid>
+        <Grid item xs={12} style={{ order: 3 }}>
           <PlayersTable
             title='Forwards'
             players={team.players.filter(

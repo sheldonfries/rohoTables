@@ -32,6 +32,7 @@ module.exports = {
   FROM (
     SELECT
       t.id,
+      t.city,
       t.name,
       (
         SELECT u2.username
