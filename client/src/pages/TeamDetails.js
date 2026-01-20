@@ -77,10 +77,10 @@ function TeamDetails(props) {
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={12} style={{ order: 1 }}>
-          <Card variant="outlined" style={{ padding: 16, backgroundColor: "#C8102E", color: "white", borderRadius: "15px 15px 0 0" }}>
+          <Card variant="outlined" style={{ padding: 16, backgroundColor: `${team.primaryColor}`, color: `${team.secondaryColor}`, borderRadius: "15px 15px 0 0" }}>
             <Grid container spacing={3} alignItems="center">
               <Grid item xs={12} md={1}>
-                <Avatar style={{ width: 125, height: 125, bgcolor: 'white', color: '#1a237e', fontSize: '2rem', border: '2px solid white' }} src={`/assets/logos/${team.name}.png`} alt={team.name}/>
+                <Avatar style={{ width: 125, height: 125, bgcolor: 'white', color: '#1a237e', fontSize: '2rem' }} src={`/assets/logos/${team.name}.png`} alt={team.name} imgProps={{ style: { objectFit: 'contain' } }}/>
               </Grid>
               <Grid item xs={12} md={7} sm container>
                 <Grid item xs container direction="column">

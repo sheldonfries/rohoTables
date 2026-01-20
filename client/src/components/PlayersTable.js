@@ -22,7 +22,7 @@ export default function PlayersTable(props) {
           }}
           columns={[
             {
-              title: '',
+              title: 'Nationality',
               field: 'country',
               render: (rowData) => (
                 <img src={`/assets/flags/${rowData.country}.png`} />

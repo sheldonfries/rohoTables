@@ -34,6 +34,8 @@ module.exports = {
       t.id,
       t.city,
       t.name,
+      t.primary_color AS primaryColor,
+      t.secondary_color AS secondaryColor,
       (
         SELECT u2.username
         FROM users u2
