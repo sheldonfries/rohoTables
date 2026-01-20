@@ -6,9 +6,7 @@ router.get('/seasons/:seasonId/type/:seasonType', async (req, res) => {
   try {
     const { seasonId, seasonType } = req.params;
     const [stats] = await db.raw(
-      getPlayersStatsSql
-        .replace('!!{seasonId}!!', seasonId)
-        .replace('!!{seasonType}!!', seasonType)
+      getPlayersStatsSql, [seasonId, seasonType]
     );
     res.status(200).json(stats);
   } catch (error) {

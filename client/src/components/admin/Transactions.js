@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../requester';
-import Select from 'react-select';
+import {
+  Box,
+  Grid,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select as MuiSelect,
+  MenuItem,
+  Button,
+  Typography,
+} from "@material-ui/core";
+import Select from "react-select";
 
 export default function Transactions() {
   const [teams, setTeams] = useState([]);
@@ -119,66 +130,110 @@ export default function Transactions() {
   }
 
   return (
-    <div>
-      <select
-        value={teamName}
-        onChange={(event) => setTeamName(event.target.value)}
-      >
-        <option disabled value=''>
-          SELECT A TEAM
-        </option>
-        {teams.map((team) => (
-          <option value={team.name} key={team.id}>
-            {team.name}
-          </option>
-        ))}
-      </select>
-      <br />
-      <select value={type} onChange={(event) => setType(event.target.value)}>
-        <option value='' disable>
-          SELECT A TYPE
-        </option>
-        <option value='Minors'>Send Down</option>
-        <option value='NHL'>Call Up</option>
-        <option value='Waivers'>Waive</option>
-        <option value='Cleared'>Cleared</option>
-        <option value='Claimed'>Claimed</option>
-        <option value='Release'>Released</option>
-        <option value='Retired'>Retired</option>
-        <option value='Buyout'>Buyout</option>
-      </select>
-      {type === 'Claimed' ? (
-        <select
-          value={claimedTeamId}
-          onChange={(event) => setClaimedTeamId(event.target.value)}
-        >
-          <option disabled value=''>
-            SELECT A TEAM
-          </option>
-          {teams
-            .filter((team) => team.name !== teamName)
-            .map((team) => (
-              <option value={team.id} key={team.id}>
-                {team.name}
-              </option>
-            ))}
-        </select>
-      ) : null}
-      <Select
-        isMulti
-        name='players'
-        value={selectedPlayerOptions}
-        onChange={(options) => {
-          setSelectedPlayerOptions(options);
-        }}
-        options={filterPlayers().map((player) => ({
-          value: player.id,
-          label: player.name,
-        }))}
-      />
+    <Box maxWidth={700} mx="auto" mt={3}>
+      <Paper elevation={3} style={{ padding: 24 }}>
+        <Typography variant="h6" gutterBottom>
+          Player Transaction
+        </Typography>
 
-      <button onClick={submit}>SUBMIT</button>
-    </div>
+        <Grid container spacing={2}>
+          {/* Team */}
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Team</InputLabel>
+              <MuiSelect
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              >
+                <MenuItem disabled value="">
+                  Select a team
+                </MenuItem>
+                {teams.map((team) => (
+                  <MenuItem key={team.id} value={team.name}>
+                    {team.name}
+                  </MenuItem>
+                ))}
+              </MuiSelect>
+            </FormControl>
+          </Grid>
+
+          {/* Type */}
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Transaction Type</InputLabel>
+              <MuiSelect
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <MenuItem disabled value="">
+                  Select a type
+                </MenuItem>
+                <MenuItem value="Minors">Send Down</MenuItem>
+                <MenuItem value="NHL">Call Up</MenuItem>
+                <MenuItem value="Waivers">Waive</MenuItem>
+                <MenuItem value="Cleared">Cleared</MenuItem>
+                <MenuItem value="Claimed">Claimed</MenuItem>
+                <MenuItem value="Release">Released</MenuItem>
+                <MenuItem value="Retired">Retired</MenuItem>
+                <MenuItem value="Buyout">Buyout</MenuItem>
+              </MuiSelect>
+            </FormControl>
+          </Grid>
+
+          {/* Claimed Team */}
+          {type === "Claimed" && (
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Claimed By</InputLabel>
+                <MuiSelect
+                  value={claimedTeamId}
+                  onChange={(e) => setClaimedTeamId(e.target.value)}
+                >
+                  <MenuItem disabled value="">
+                    Select a team
+                  </MenuItem>
+                  {teams
+                    .filter((team) => team.name !== teamName)
+                    .map((team) => (
+                      <MenuItem key={team.id} value={team.id}>
+                        {team.name}
+                      </MenuItem>
+                    ))}
+                </MuiSelect>
+              </FormControl>
+            </Grid>
+          )}
+
+          {/* Players */}
+          <Grid item xs={12}>
+            <Typography variant="subtitle2" gutterBottom>
+              Players
+            </Typography>
+            <Select
+              isMulti
+              value={selectedPlayerOptions}
+              onChange={setSelectedPlayerOptions}
+              options={filterPlayers().map((player) => ({
+                value: player.id,
+                label: player.name,
+              }))}
+            />
+          </Grid>
+
+          {/* Submit */}
+          <Grid item xs={12} style={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submit}
+              disabled={!teamName || !type || !selectedPlayerOptions || selectedPlayerOptions.length === 0}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Box>
   );
 }
 // send down, call up, waive, cleared, retired,

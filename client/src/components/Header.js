@@ -1,14 +1,11 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
+import { Hidden, IconButton, MenuItem, Menu, AppBar, Toolbar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import routes from '../routes';
 import { withRouter, matchPath } from 'react-router';
+
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -69,32 +66,64 @@ function Header(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon onClick={handleClick} />
+        <Toolbar style={{ position: "relative" }}>
+          {/* LEFT SIDE — DESKTOP NAV */}
+          <Hidden smDown>
+            <div style={{ display: "flex", gap: 20 }}>
+              {routes
+                .filter(r => r.mainNav)
+                .map(route => (
+                  <Typography
+                    key={route.path}
+                    variant="button"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleRouteChange(route.path)}
+                  >
+                    {route.label}
+                  </Typography>
+                ))}
+            </div>
+          </Hidden>
+
+          {/* LEFT SIDE — MOBILE HAMBURGER */}
+          <Hidden mdUp>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+              onClick={handleClick}
+            >
+              <MenuIcon />
+            </IconButton>
+
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
               {routes
-                .filter((route) => route.mainNav)
-                .map((route, index) => (
+                .filter(r => r.mainNav)
+                .map(route => (
                   <MenuItem
-                    key={index}
+                    key={route.path}
                     onClick={() => handleRouteChange(route.path)}
                   >
                     {route.label}
                   </MenuItem>
                 ))}
             </Menu>
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          </Hidden>
+
+          {/* CENTER TITLE */}
+          <Typography
+            variant="h6"
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
             {title}
           </Typography>
         </Toolbar>

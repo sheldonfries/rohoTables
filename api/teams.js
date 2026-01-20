@@ -9,15 +9,9 @@ const {
 
 async function queryTables(name, playerTable)
 {
-  const [[details]] = await db.raw(
-    getTeamDetailsSql.replace('!!{teamName}!!', name)
-  );
-  const [players] = await db.raw(
-    getPlayersSql.replace('!!{teamId}!!', details.id).replace('!!{playersTable}!!', playerTable)
-  );
-  const [draftPicks] = await db.raw(
-    getDraftPicksSQL.replace('!!{teamId}!!', details.id)
-  );
+  const [[details]] = await db.raw(getTeamDetailsSql, [name]);
+  const [players] = await db.raw(getPlayersSql, [playerTable, details.id]);
+  const [draftPicks] = await db.raw(getDraftPicksSQL, [details.id]);
   const result = { ...details, players, draftPicks };
   return result;
 }

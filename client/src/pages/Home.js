@@ -23,27 +23,38 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (seasonId) {
-      axios
-        .get(`/api/trades?season_id=${seasonId}`)
-        .then((res) => {
-          setTrades(res.data);
-        })
-        .catch((error) => console.log(error));
-      axios
-        .get(`/api/transactions?season_id=${seasonId}`)
-        .then((res) => {
-          setTransactions(res.data);
-        })
-        .catch((error) => console.log(error));
-    }
+    if (!seasonId) return;
+
+    const tradesController = new AbortController();
+    const transactionsController = new AbortController();
+
+    axios.get(`/api/trades?season_id=${seasonId}`, {
+      signal: tradesController.signal
+    })
+      .then(res => setTrades(res.data))
+      .catch(err => {
+        if (err.name !== 'CanceledError') console.error(err);
+      });
+
+    axios.get(`/api/transactions?season_id=${seasonId}`, {
+      signal: transactionsController.signal
+    })
+      .then(res => setTransactions(res.data))
+      .catch(err => {
+        if (err.name !== 'CanceledError') console.error(err);
+      });
+
+    return () => {
+      tradesController.abort();
+      transactionsController.abort();
+    };
   }, [seasonId]);
 
-  const events = [...transactions, ...trades].sort((a, b) => {
-    const t =
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    return t;
-  });
+  const events = React.useMemo(() => {
+    return [...transactions, ...trades].sort(
+      (a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  }, [transactions, trades]);
 
   return (
     <Container>

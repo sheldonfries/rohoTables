@@ -4,7 +4,7 @@ import axios from '../requester';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 
 export default function LeagueOverview() {
   const [teams, setTeams] = useState([]);

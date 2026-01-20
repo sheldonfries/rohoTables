@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../requester';
 import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import styled from 'styled-components';
 
 function PlayerDetails(props) {
