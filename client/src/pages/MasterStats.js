@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../requester';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,6 +12,7 @@ const playerCols = [
   {
     title: 'Name',
     field: 'name',
+    width: 150,
     cellStyle: { whiteSpace: 'nowrap' },
     // headerStyle: { whiteSpace: 'nowrap', minWidth: 200, width: 200 },
     render: (rowData) => (
@@ -24,6 +25,7 @@ const playerCols = [
     sorting: false,
     cellStyle: { padding: 0 },
     headerStyle: { padding: 0 },
+    width: 50,
     render: (rowData) =>
       rowData.team_name ? (
         <img
@@ -60,6 +62,7 @@ const goalieCols = [
   {
     title: 'Name',
     field: 'name',
+    width: 150,
     cellStyle: { whiteSpace: 'nowrap' },
     // headerStyle: { whiteSpace: 'nowrap', minWidth: 200, width: 200 },
     render: (rowData) => (
@@ -69,6 +72,7 @@ const goalieCols = [
   {
     title: 'Team',
     field: 'team_name',
+    width: 50,
     render: (rowData) =>
       rowData.team_name ? (
         <img
@@ -100,35 +104,60 @@ export default function MasterStats() {
   const [playerType, setPlayerType] = useState('players');
   const [players, setPlayers] = useState([]);
   const [positionFilter, setPositionFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetchSeasons();
+    let isMounted = true;
+    setLoading(true);
+
+    fetchSeasons().then(res => {
+      if (isMounted) setSeasons(res.data);
+    }).finally(() => {
+      if (isMounted) setLoading(false);
+    });
+
+    return () => { isMounted = false };
   }, []);
+
   useEffect(() => {
-    fetchPlayers();
+    let isMounted = true;
+    setLoading(true);
+
+    fetchPlayers().then(data => {
+      if (isMounted) setPlayers(data);
+    }).finally(() => {
+      if (isMounted) setLoading(false);
+    });
+
+    return () => { isMounted = false };
   }, [seasonId, seasonType, playerType]);
+
   useEffect(() => {
     setPositionFilter('all');
   }, [playerType]);
+
   async function fetchSeasons() {
+    let res = null;
     try {
-      const res = await axios.get('/api/seasons');
-      setSeasons(res.data);
+      res = await axios.get('/api/seasons');
+      // setSeasons(res.data);
       // set last season as current
       setSeasonId(res.data[res.data.length - 1].id);
     } catch (error) {
       console.log(error);
     }
+    return res;
   }
 
   async function fetchPlayers() {
     try {
-      setPlayers([]);
       const res = await axios.get(
         `/api/seasons/${seasonId}/stats/type/${seasonType}/${playerType}`
       );
-      setPlayers(res.data);
+      return res.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return [];
     }
   }
 
@@ -148,81 +177,77 @@ export default function MasterStats() {
   }
 
   return (
-    <div>
-      <FormControl fullWidth margin='normal'>
-        <FormGroup row>
-          <Select
-            value={playerType}
-            onChange={(event) => setPlayerType(event.target.value)}
-            style={{ marginLeft: 10, marginRight: 10 }}
-          >
-            <MenuItem disabled value=''>
-              SELECT A PLAYER TYPE
+    <div style={{ width: "100%", marginTop: 16, marginBottom: 8, overflowX: "auto" }}>
+      <FormGroup row>
+        <Select
+          value={playerType}
+          onChange={(event) => setPlayerType(event.target.value)}
+          style={{ marginLeft: 10, marginRight: 10 }}
+        >
+          <MenuItem disabled value=''>
+            SELECT A PLAYER TYPE
+          </MenuItem>
+          <MenuItem value='players'>Players</MenuItem>
+          <MenuItem value='goalies'>Goalies</MenuItem>
+        </Select>
+        <Select
+          style={{ marginRight: 10 }}
+          value={seasonId}
+          onChange={(event) => setSeasonId(event.target.value)}
+        >
+          <MenuItem disabled value=''>
+            SELECT A SEASON
+          </MenuItem>
+          {seasons.map((season) => (
+            <MenuItem key={season.id} value={season.id}>
+              {season.season}
             </MenuItem>
-            <MenuItem value='players'>Players</MenuItem>
-            <MenuItem value='goalies'>Goalies</MenuItem>
-          </Select>
+          ))}
+        </Select>
+        <Select
+          style={{ marginRight: 10 }}
+          value={seasonType}
+          onChange={(event) => setSeasonType(event.target.value)}
+        >
+          <MenuItem disabled value=''>
+            SELECT A SEASON TYPE
+          </MenuItem>
+          <MenuItem value='normal'>Normal</MenuItem>
+          <MenuItem value='playoff'>Playoffs</MenuItem>
+        </Select>
+        {playerType !== 'goalies' ? (
           <Select
             style={{ marginRight: 10 }}
-            value={seasonId}
-            onChange={(event) => setSeasonId(event.target.value)}
+            value={positionFilter}
+            onChange={(event) => setPositionFilter(event.target.value)}
           >
-            <MenuItem disabled value=''>
-              SELECT A SEASON
-            </MenuItem>
-            {seasons.map((season) => (
-              <MenuItem key={season.id} value={season.id}>
-                {season.season}
-              </MenuItem>
-            ))}
+            <MenuItem value='all'>All Players</MenuItem>
+            <MenuItem value='C'>Center</MenuItem>
+            <MenuItem value='LW'>Left Wing</MenuItem>
+            <MenuItem value='RW'>Right Wing</MenuItem>
+            <MenuItem value='D'>Defence</MenuItem>
           </Select>
-          <Select
-            style={{ marginRight: 10 }}
-            value={seasonType}
-            onChange={(event) => setSeasonType(event.target.value)}
-          >
-            <MenuItem disabled value=''>
-              SELECT A SEASON TYPE
-            </MenuItem>
-            <MenuItem value='normal'>Normal</MenuItem>
-            <MenuItem value='playoff'>Playoffs</MenuItem>
-          </Select>
-          {playerType !== 'goalies' ? (
-            <Select
-              style={{ marginRight: 10 }}
-              value={positionFilter}
-              onChange={(event) => setPositionFilter(event.target.value)}
-            >
-              <MenuItem value='all'>All Players</MenuItem>
-              <MenuItem value='C'>Center</MenuItem>
-              <MenuItem value='LW'>Left Wing</MenuItem>
-              <MenuItem value='RW'>Right Wing</MenuItem>
-              <MenuItem value='D'>Defence</MenuItem>
-            </Select>
-          ) : null}
-        </FormGroup>
-      </FormControl>
-      {
-        <MaterialTable
-          icons={tableIcons}
-          data={filterPlayers(players)}
-          columns={playerType === 'players' ? playerCols : goalieCols}
-          options={{
-            pageSize: 25,
-            pageSizeOptions: [25, 50, 100, 500, 1000],
-            emptyRowsWhenPaging: false,
-            padding: 'dense',
-            exportButton: true,
-            exportAllData: true,
-            exportFileName: `${playerType}Season${seasonId}`,
-            showTitle: false,
-            // fixedColumns: {
-            //   // left: 1,
-            //   //   // right: 0
-            // },
-          }}
-        />
-      }
+        ) : null}
+      </FormGroup>
+      <MaterialTable
+        icons={tableIcons}
+        data={loading ? [] : filterPlayers(players)}
+        columns={playerType === 'players' ? playerCols : goalieCols}
+        options={{
+          pageSize: 25,
+          pageSizeOptions: [25, 50, 100, 500, 1000],
+          emptyRowsWhenPaging: false,
+          padding: 'dense',
+          exportButton: true,
+          exportAllData: true,
+          exportFileName: `${playerType}Season${seasonId}`,
+          showTitle: false,
+          fixedColumns: {
+             left: 2,
+             right: 0
+           },
+        }}
+      />
     </div>
   );
 }

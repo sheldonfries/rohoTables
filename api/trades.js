@@ -76,43 +76,54 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const { season_id } = req.query;
-    const whereObj = {};
-    if (season_id) {
-      whereObj['trades.season_id'] = season_id;
-    }
-    const trades = await db('trades')
-      .select('*')
+
+    const trades = await db('trades as t')
+      .leftJoin('teams as team1', 't.team_id_1', 'team1.id')
+      .leftJoin('teams as team2', 't.team_id_2', 'team2.id')
       .select(
-        db.raw(
-          '(SELECT name FROM teams WHERE trades.team_id_1 = teams.id LIMIT 1) AS team_name_1'
-        )
+        't.*',
+        'team1.name as team_name_1',
+        'team2.name as team_name_2'
       )
+      .modify(qb => {
+        if (season_id) {
+          qb.where('t.season_id', season_id);
+        }
+      })
+      .orderBy('t.created_at', 'desc');
+
+    // Fetch all trade_items in one query
+    const tradeIds = trades.map(t => t.id);
+    const tradeItems = await db('trade_items as ti')
+      .leftJoin('players as p', 'ti.player_id', 'p.id')
+      .leftJoin('draft_picks as dp', 'ti.draft_pick_id', 'dp.id')
+      .leftJoin('teams as dpt', 'dp.team_id_original', 'dpt.id')
       .select(
-        db.raw(
-          '(SELECT name FROM teams WHERE trades.team_id_2 = teams.id LIMIT 1) AS team_name_2'
-        )
+        'ti.trade_id',
+        'ti.receiving_team_id',
+        'p.name',
+        'dp.season as draft_season',
+        'dp.round as draft_round',
+        'dpt.name as draft_original_team_name'
       )
-      .where(whereObj)
-      .orderBy('created_at', 'desc');
-    for (let trade of trades) {
-      const trade_items = await db('trade_items as ti')
-        .select(
-          'ti.receiving_team_id',
-          'dpt.name as draft_original_team_name',
-          'dp.season as draft_season',
-          'dp.round as draft_round',
-          'p.name'
-        )
-        .leftJoin('players as p', 'ti.player_id', '=', 'p.id')
-        .leftJoin('draft_picks as dp', 'ti.draft_pick_id', '=', 'dp.id')
-        .leftJoin('teams as dpt', 'dp.team_id_original', '=', 'dpt.id')
-        .where({ ['ti.trade_id']: trade.id });
-      trade.trade_items = trade_items;
-    }
+      .whereIn('ti.trade_id', tradeIds);
+
+    // Map trade_items into their corresponding trades
+    const tradeItemsByTrade = tradeItems.reduce((acc, item) => {
+      if (!acc[item.trade_id]) acc[item.trade_id] = [];
+      acc[item.trade_id].push(item);
+      return acc;
+    }, {});
+
+    trades.forEach(trade => {
+      trade.trade_items = tradeItemsByTrade[trade.id] || [];
+    });
+
     res.status(200).send(trades);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
     res.status(500).send();
   }
 });
+
 module.exports = router;
