@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
+import { Container } from '@material-ui/core';
 
 const playerCols = [
   {
@@ -177,8 +178,8 @@ export default function MasterStats() {
   }
 
   return (
-    <div style={{ width: "100%", marginTop: 16, marginBottom: 8, overflowX: "auto" }}>
-      <FormGroup row>
+    <Container maxWidth="xl" style={{ width: "100%", marginTop: 16, marginBottom: 8, overflowX: "auto" }}>
+      <FormGroup row style={{ marginBottom: 16 }}>
         <Select
           value={playerType}
           onChange={(event) => setPlayerType(event.target.value)}
@@ -248,6 +249,6 @@ export default function MasterStats() {
            },
         }}
       />
-    </div>
+    </Container>
   );
 }

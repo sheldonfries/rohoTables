@@ -5,13 +5,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import TradeCard from '../components/TradeCard';
 import TransactionCard from '../components/TransactionCard';
-import styled from 'styled-components';
+import { PaginatedSection } from '../components/PaginatedSection';
+import { Grid, Container } from '@material-ui/core';
 
 export default function Home() {
   const [seasons, setSeasons] = useState([]);
   const [seasonId, setSeasonId] = useState('');
   const [trades, setTrades] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [waivers, setWaivers] = useState([]);
   useEffect(() => {
     axios
       .get('/api/seasons')
@@ -22,6 +24,12 @@ export default function Home() {
       .catch((error) => console.log(error));
   }, []);
 
+  const sortEvents = React.useCallback((events) => {
+    return [...events].sort(
+      (a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  });
+
   useEffect(() => {
     if (!seasonId) return;
 
@@ -31,7 +39,10 @@ export default function Home() {
     axios.get(`/api/trades?season_id=${seasonId}`, {
       signal: tradesController.signal
     })
-      .then(res => setTrades(res.data))
+      .then(res => {
+        const trades = sortEvents(res.data);
+        setTrades(trades);
+      })
       .catch(err => {
         if (err.name !== 'CanceledError') console.error(err);
       });
@@ -39,7 +50,19 @@ export default function Home() {
     axios.get(`/api/transactions?season_id=${seasonId}`, {
       signal: transactionsController.signal
     })
-      .then(res => setTransactions(res.data))
+      .then(res => {
+        const transactions = sortEvents(res.data);
+        const [waivers, rest] = transactions.reduce((acc, tx) => {
+          if (tx.to === 'Waivers' || tx.to === 'Cleared') {
+            acc[0].push(tx);
+          } else {
+            acc[1].push(tx);
+          }
+          return acc;
+        }, [[], []]);
+        setWaivers(waivers);
+        setTransactions(rest);
+      })
       .catch(err => {
         if (err.name !== 'CanceledError') console.error(err);
       });
@@ -50,14 +73,8 @@ export default function Home() {
     };
   }, [seasonId]);
 
-  const events = React.useMemo(() => {
-    return [...transactions, ...trades].sort(
-      (a,b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-  }, [transactions, trades]);
-
   return (
-    <Container>
+    <Container maxWidth="xl" style={{ marginTop: 10, marginBottom: 10 }}>
       <div className='input-select-container'>
         <InputLabel id='season-select'>Season</InputLabel>
         <Select
@@ -73,20 +90,35 @@ export default function Home() {
           ))}
         </Select>
       </div>
-      {events.map((event) =>
-        !!('to' in event) ? (
-          <TransactionCard transaction={event} />
-        ) : (
-          <TradeCard trade={event} />
-        )
-      )}
+      <Container maxWidth="xl" style={{ marginTop: 20, marginBottom: 20 }}>
+        <Grid container spacing={3} alignItems="flex-start">
+          
+          {/* Transactions Section */}
+          <PaginatedSection 
+            title="Transactions"
+            data={transactions}
+            renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
+          />
+
+          {/* Waivers Column */}
+          <PaginatedSection 
+            title="Waivers"
+            data={waivers}
+            renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
+          />
+
+          {/* Trades Column */}
+          <PaginatedSection 
+            title="Trades"
+            data={trades}
+            renderItem={(trade) => <TradeCard key={trade.id} trade={trade} />}
+          />
+
+        </Grid>
+      </Container>
     </Container>
   );
 }
-
-const Container = styled.div`
-  margin: 10px;
-`;
 // to: ""
 // player_name: "Bret Hedican"
 // team_name: "Thrashers"
