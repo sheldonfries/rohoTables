@@ -66,17 +66,33 @@ function Header(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar style={{ position: "relative" }}>
-          {/* LEFT SIDE — DESKTOP NAV */}
+        <Toolbar>
+          {/* 1. LOGO / PLACEHOLDER (Left Side) */}
+          <Typography
+            variant="h6"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleRouteChange('/')}
+          >
+            {"RGMG"}
+          </Typography>
+
+          {/* 2. SPACER (Fills the middle) */}
+          <div style={{ flexGrow: 1 }} />
+
+          {/* 3. DESKTOP NAV ITEMS (Right Side) */}
           <Hidden smDown>
-            <div style={{ display: "flex", gap: 20 }}>
+            <div style={{ display: "flex", gap: "20px" }}>
               {routes
-                .filter(r => r.mainNav)
-                .map(route => (
+                .filter((r) => r.mainNav)
+                .map((route) => (
                   <Typography
                     key={route.path}
                     variant="button"
-                    style={{ cursor: "pointer" }}
+                    style={{ 
+                      cursor: "pointer", 
+                      marginLeft: 20, // Alternative to gap if browser support is old
+                      fontWeight: location.pathname === route.path ? 'bold' : 'normal' 
+                    }}
                     onClick={() => handleRouteChange(route.path)}
                   >
                     {route.label}
@@ -85,11 +101,10 @@ function Header(props) {
             </div>
           </Hidden>
 
-          {/* LEFT SIDE — MOBILE HAMBURGER */}
+          {/* 4. MOBILE HAMBURGER (Right Side on Mobile) */}
           <Hidden mdUp>
             <IconButton
-              edge="start"
-              className={classes.menuButton}
+              edge="end" // Changed from 'start' to align right on mobile
               color="inherit"
               aria-label="menu"
               onClick={handleClick}
@@ -99,12 +114,13 @@ function Header(props) {
 
             <Menu
               anchorEl={anchorEl}
+              keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
               {routes
-                .filter(r => r.mainNav)
-                .map(route => (
+                .filter((r) => r.mainNav)
+                .map((route) => (
                   <MenuItem
                     key={route.path}
                     onClick={() => handleRouteChange(route.path)}
@@ -114,18 +130,6 @@ function Header(props) {
                 ))}
             </Menu>
           </Hidden>
-
-          {/* CENTER TITLE */}
-          <Typography
-            variant="h6"
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-          >
-            {title}
-          </Typography>
         </Toolbar>
       </AppBar>
     </div>

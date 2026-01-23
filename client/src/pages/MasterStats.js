@@ -236,17 +236,16 @@ export default function MasterStats() {
         columns={playerType === 'players' ? playerCols : goalieCols}
         options={{
           pageSize: 25,
-          pageSizeOptions: [25, 50, 100, 500, 1000],
+          pageSizeOptions: [25, 50, 100],
           emptyRowsWhenPaging: false,
-          padding: 'dense',
           exportButton: true,
           exportAllData: true,
           exportFileName: `${playerType}Season${seasonId}`,
           showTitle: false,
-          fixedColumns: {
-             left: 2,
-             right: 0
-           },
+          //fixedColumns: {
+          //   left: 2,
+          //   right: 0
+          // },
         }}
       />
     </Container>
