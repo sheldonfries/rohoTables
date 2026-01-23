@@ -1,5 +1,6 @@
 import React from 'react';
 import GeneralTransactionCard from './GeneralTransactionCard';
+import { Divider } from '@material-ui/core';
 
 export default function TransactionCard({ transaction }) {
   const { team_name, to, player_name, created_at } = transaction;
@@ -47,7 +48,10 @@ export default function TransactionCard({ transaction }) {
 
   const Text = <> </>;
   return (
-    <GeneralTransactionCard date={created_at} team1={team_name} text={text} />
+    <>
+      <GeneralTransactionCard date={created_at} team1={team_name} text={text} />
+      <Divider style={{ marginBottom: 8 }} />
+    </>
   );
 }
 

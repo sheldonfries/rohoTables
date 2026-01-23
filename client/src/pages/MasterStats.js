@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
+import { Container } from '@material-ui/core';
 
 const playerCols = [
   {
@@ -177,8 +178,8 @@ export default function MasterStats() {
   }
 
   return (
-    <div style={{ width: "100%", marginTop: 16, marginBottom: 8, overflowX: "auto" }}>
-      <FormGroup row>
+    <Container maxWidth="xl" style={{ width: "100%", marginTop: 16, marginBottom: 8, overflowX: "auto" }}>
+      <FormGroup row style={{ marginBottom: 16 }}>
         <Select
           value={playerType}
           onChange={(event) => setPlayerType(event.target.value)}
@@ -235,19 +236,18 @@ export default function MasterStats() {
         columns={playerType === 'players' ? playerCols : goalieCols}
         options={{
           pageSize: 25,
-          pageSizeOptions: [25, 50, 100, 500, 1000],
+          pageSizeOptions: [25, 50, 100],
           emptyRowsWhenPaging: false,
-          padding: 'dense',
           exportButton: true,
           exportAllData: true,
           exportFileName: `${playerType}Season${seasonId}`,
           showTitle: false,
-          fixedColumns: {
-             left: 2,
-             right: 0
-           },
+          //fixedColumns: {
+          //   left: 2,
+          //   right: 0
+          // },
         }}
       />
-    </div>
+    </Container>
   );
 }

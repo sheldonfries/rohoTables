@@ -1,60 +1,43 @@
 import React from 'react';
 import GeneralTransactionCard from './GeneralTransactionCard';
 import { Link } from 'react-router-dom';
+import { Divider } from '@material-ui/core';
 
 export default function Trade({ trade }) {
-  const players1String = trade.trade_items
-    .filter(
-      (item) =>
-        item.draft_round === null && item.receiving_team_id === trade.team_id_2
-    )
-    .reduce((playersString, player) => `${playersString}, ${player.name}`, '')
-    .slice(1);
-  const draft1String = trade.trade_items
-    .filter(
-      (item) =>
-        item.draft_round !== null && item.receiving_team_id === trade.team_id_2
-    )
-    .reduce(
-      (draftString, draft) =>
-        `${draftString}, ${draft.draft_season} ${draft.draft_original_team_name} ${draft.draft_round}`,
-      ''
-    )
-    .slice(1);
+  // Helper function to process items for a specific receiving team
+  const formatItems = (receivingTeamId) => {
+    const items = trade.trade_items
+      .filter((item) => item.receiving_team_id === receivingTeamId)
+      .map((item) => {
+        // If it's a draft pick
+        if (item.draft_round !== null) {
+          return `${item.draft_season} ${item.draft_original_team_name} ${item.draft_round}`;
+        }
+        // If it's a player
+        return item.name;
+      });
 
-  const items1String = (players1String + draft1String).replace(
-    /,(?=[^,]*$)/,
-    ' and'
-  );
-  const players2String = trade.trade_items
-    .filter(
-      (item) =>
-        item.draft_round === null && item.receiving_team_id === trade.team_id_1
-    )
-    .reduce((playersString, player) => `${playersString}, ${player.name}`, '')
-    .slice(1);
-  const draft2String = trade.trade_items
-    .filter(
-      (item) =>
-        item.draft_round !== null && item.receiving_team_id === trade.team_id_1
-    )
-    .reduce(
-      (draftString, draft) =>
-        `${draftString}, ${draft.draft_season} ${draft.draft_original_team_name} ${draft.draft_round}`,
-      ''
-    )
-    .slice(1);
-  const items2String = (players2String + draft2String).replace(
-    /,(?=[^,]*$)/,
-    ' and'
-  );
+    if (items.length === 0) return "future considerations";
+    if (items.length === 1) return items[0];
+    
+    // Join all but the last item with commas, then add "and" before the last item
+    const lastItem = items.pop();
+    return `${items.join(", ")} and ${lastItem}`;
+  };
+
+  const items1String = formatItems(trade.team_id_2);
+  const items2String = formatItems(trade.team_id_1);
+
   return (
-    <GeneralTransactionCard
-      date={trade.created_at}
-      team1={trade.team_name_1}
-      team2={trade.team_name_2}
-      text={`${trade.team_name_1} trade ${items1String} to ${trade.team_name_2} in exchange for  ${items2String}`}
-    />
+    <>
+      <GeneralTransactionCard
+        date={trade.created_at}
+        team1={trade.team_name_1}
+        team2={trade.team_name_2}
+        text={`${trade.team_name_1} trade ${items1String} to ${trade.team_name_2} in exchange for ${items2String}`}
+      />
+      <Divider style={{ marginBottom: 8 }} />
+    </>
   );
 }
 // receiving_team_id: 29
