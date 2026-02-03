@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography';
 
-export default function CapStat({ label, value, color = 'white', isCurrency = true }) {
+export default function HeroItem({ label, value, color = 'white', isCurrency = false }) {
   // Determine if we use the "success" green or "error" red based on value
   const getStatusColor = () => {
     if (color === 'success') return '#4caf50';

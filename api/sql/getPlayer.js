@@ -2,11 +2,13 @@ module.exports = {
   getPlayerDetails: `
     SELECT 
       p.*,
+      CONCAT(t.city, ' ', t.name) AS team_name,
       dt.name AS draft_team_name,
       ds.season AS draft_season_name,
       EXISTS (SELECT 1 FROM players p1 WHERE p1.name = p.draft_comparable) AS is_draft_comparable_local,
       (SELECT COUNT(*) FROM players p2 WHERE p2.name = p.name AND p2.status = 'Retained') AS retention_count
     FROM players p
+    LEFT JOIN teams t ON t.id = p.team_id
     LEFT JOIN teams dt ON dt.id = p.draft_team_id
     LEFT JOIN seasons ds ON ds.id = p.draft_season_id
     WHERE p.name = ?
