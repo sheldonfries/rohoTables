@@ -127,10 +127,9 @@ export default function PlayersTable(props) {
           options={{
             search: false,
             paging: false,
-            // showTitle: false,
+            showTitle: false,
             padding: 'dense',
-
-            // toolbar: false,
+            toolbar: false,
           }}
           columns={pos === 'G' ? goalieCols : playerCols}
           data={stats}

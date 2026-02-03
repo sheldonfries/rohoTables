@@ -13,7 +13,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
-import CapStat from '../components/CapStat';
+import HeroItem from '../components/HeroItem';
 
 function TeamDetails(props) {
   const { match } = props;
@@ -93,20 +93,21 @@ function TeamDetails(props) {
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={6} md={3}>
-                      <CapStat label="Total Cap Hit" value={team.capHit} />
+                      <HeroItem label="Total Cap Hit" value={team.capHit} isCurrency />
                     </Grid>
                     <Grid item xs={6} md={3}>
-                      <CapStat 
+                      <HeroItem 
                         label="Cap Space" 
                         value={team.capSpace} 
                         color={team.capSpace > 0 ? 'success' : 'error'} 
+                        isCurrency
                       />
                     </Grid>
                     <Grid item xs={6} md={3}>
-                      <CapStat label="Retained" value={team.retained} />
+                      <HeroItem label="Retained" value={team.retained} isCurrency />
                     </Grid>
                     <Grid item xs={6} md={3}>
-                      <CapStat label="Buried" value={team.buried} />
+                      <HeroItem label="Buried" value={team.buried} isCurrency />
                     </Grid>
                   </Grid>
                 </Box>
