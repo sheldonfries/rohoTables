@@ -3,10 +3,11 @@ import axios from '../requester';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import { Box, Container, Grid } from '@material-ui/core';
 import TradeCard from '../components/TradeCard';
 import TransactionCard from '../components/TransactionCard';
 import { PaginatedSection } from '../components/PaginatedSection';
-import { Grid, Container } from '@material-ui/core';
+import { PlayerSearch } from '../components/PlayerSearch';
 
 export default function Home() {
   const [seasons, setSeasons] = useState([]);
@@ -74,48 +75,61 @@ export default function Home() {
   }, [seasonId]);
 
   return (
-    <Container maxWidth="xl" style={{ marginTop: 10, marginBottom: 10 }}>
-      <div className='input-select-container'>
-        <InputLabel id='season-select'>Season</InputLabel>
-        <Select
-          placeholder='Season'
-          labelId='season-select'
-          value={seasonId}
-          onChange={(event) => setSeasonId(event.target.value)}
-        >
-          {seasons.map((season) => (
-            <MenuItem key={season.id} value={season.id}>
-              {season.season}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <Container maxWidth="xl" style={{ marginTop: 20, marginBottom: 20 }}>
-        <Grid container spacing={3} alignItems="flex-start">
-          
-          {/* Transactions Section */}
-          <PaginatedSection 
-            title="Transactions"
-            data={transactions}
-            renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
-          />
-
-          {/* Waivers Column */}
-          <PaginatedSection 
-            title="Waivers"
-            data={waivers}
-            renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
-          />
-
-          {/* Trades Column */}
-          <PaginatedSection 
-            title="Trades"
-            data={trades}
-            renderItem={(trade) => <TradeCard key={trade.id} trade={trade} />}
-          />
-
+    <Container maxWidth="xl" style={{ marginTop: 20, marginBottom: 20 }}>
+      <Grid container spacing={2} alignItems="flex-end" style={{ padding: 2 }}>
+        <Grid item xs={4} sm={1}>
+          <Box className="input-select-container">
+            <InputLabel id="season-select" sx={{ fontSize: '0.75rem', fontWeight: 'bold', mb: 0.5 }}>
+              SEASON
+            </InputLabel>
+            <Select
+              fullWidth
+              size="small"
+              labelId="season-select"
+              value={seasonId}
+              onChange={(event) => setSeasonId(event.target.value)}
+              style={{ backgroundColor: '#fff', borderRadius: '8px' }}
+            >
+              {seasons.map((season) => (
+                <MenuItem key={season.id} value={season.id}>
+                  {season.season}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
         </Grid>
-      </Container>
+        {/* Spacer / Middle (Optional) */}
+        <Grid item xs={false} sm={true} />
+
+        {/* Right Side: Search */}
+        <Grid item xs={8} sm={3}>
+          <PlayerSearch />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} alignItems="flex-start">
+        
+        {/* Transactions Section */}
+        <PaginatedSection 
+          title="Transactions"
+          data={transactions}
+          renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
+        />
+
+        {/* Waivers Column */}
+        <PaginatedSection 
+          title="Waivers"
+          data={waivers}
+          renderItem={(tx) => <TransactionCard key={tx.id} transaction={tx} />}
+        />
+
+        {/* Trades Column */}
+        <PaginatedSection 
+          title="Trades"
+          data={trades}
+          renderItem={(trade) => <TradeCard key={trade.id} trade={trade} />}
+        />
+
+      </Grid>
     </Container>
   );
 }

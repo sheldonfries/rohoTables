@@ -7,6 +7,7 @@ const stats = require('./stats');
 const seasons = require('./seasons');
 const transactions = require('./transactions');
 const trades = require('./trades');
+const search = require('./search');
 
 router.use('/uploader', playerStatsUploader);
 router.use('/teams', teams);
@@ -15,5 +16,6 @@ router.use('/stats', stats);
 router.use('/seasons', seasons);
 router.use('/transactions', transactions);
 router.use('/trades', trades);
+router.use('/search', search);
 
 module.exports = router;

@@ -1,8 +1,24 @@
 module.exports = {
+  searchPlayers: `
+    SELECT 
+      p.*,
+      CASE 
+        WHEN t.city = t.name THEN t.name
+        ELSE CONCAT(t.city, ' ', t.name) 
+      END AS team_name
+    FROM players p
+    LEFT JOIN teams t ON t.id = p.team_id
+    WHERE p.status = 'NHL' 
+    AND p.name LIKE ?
+  `,
+
   getPlayerDetails: `
     SELECT 
       p.*,
-      CONCAT(t.city, ' ', t.name) AS team_name,
+      CASE 
+        WHEN t.city = t.name THEN t.name
+        ELSE CONCAT(t.city, ' ', t.name) 
+      END AS team_name
       dt.name AS draft_team_name,
       ds.season AS draft_season_name,
       EXISTS (SELECT 1 FROM players p1 WHERE p1.name = p.draft_comparable) AS is_draft_comparable_local,
