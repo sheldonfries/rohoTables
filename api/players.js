@@ -6,7 +6,7 @@ const {
   getPlayerAwardsSql,
   getPlayerDetails,
   getPlayerComparables,
-  getPlayerTrades
+  getPlayerTrades,
 } = require('./sql/getPlayer');
 
 router.get('/:name', async (req, res) => {
