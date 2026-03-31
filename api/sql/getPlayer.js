@@ -18,7 +18,7 @@ module.exports = {
       CASE 
         WHEN t.city = t.name THEN t.name
         ELSE CONCAT(t.city, ' ', t.name) 
-      END AS team_name
+      END AS team_name,
       dt.name AS draft_team_name,
       ds.season AS draft_season_name,
       EXISTS (SELECT 1 FROM players p1 WHERE p1.name = p.draft_comparable) AS is_draft_comparable_local,

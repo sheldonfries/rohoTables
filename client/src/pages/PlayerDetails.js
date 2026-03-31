@@ -295,19 +295,24 @@ function PlayerDetails(props) {
                 Comparables
               </Typography>
               {player.draft_comparable ? (
-                <Typography variant="body2"><strong>Comparable:</strong> {player.draft_comparable}</Typography>
+                <Typography variant="body2">
+                  <strong>Comparable: </strong> 
+                  <Link to={`/players/${player.draft_comparable}`}>
+                    {player.draft_comparable}
+                  </Link>
+                </Typography>
               ) : null}
               {player.comparables.length > 0 ? (
                 <Typography variant="body2">
                   <strong>Comparable for: </strong>
-                  {player.comparables && player.comparables.map((compName, index) => (
-                    <>
-                      <Link to={`/players/${compName}`}>
-                        {compName}
+                  {player.comparables.map((comp, index) => (
+                    <React.Fragment key={index}>
+                      <Link to={`/players/${comp.comparable_for}`}>
+                        {comp.comparable_for}
                       </Link>
                       {/* Add a comma and space if it's not the last item in the list */}
                       {index < player.comparables.length - 1 ? ', ' : ''}
-                    </>
+                    </React.Fragment>
                   ))}
                 </Typography>
               ) : null}
