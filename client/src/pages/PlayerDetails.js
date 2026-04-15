@@ -30,6 +30,30 @@ function PlayerDetails(props) {
     }
   }
 
+  const ordinalRules = new Intl.PluralRules("en", { type: "ordinal" });
+
+  const suffixes = { one: "st", two: "nd", few: "rd", other: "th" };
+
+  function getOrdinal(n) {
+    const rule = ordinalRules.select(n);
+    return `${n}${suffixes[rule]}`;
+  }
+
+  function getEndYear(yearRange) {
+    const [startYear, endYY] = yearRange.split("-");
+    const startYYYY = Number(startYear);
+    const century = startYear.slice(0, -2);
+    let endYYYY = Number(century + endYY);
+
+    // If the end year is before the start year, it must have rolled to the next century
+    if (endYYYY <= startYYYY) {
+      endYYYY += 100;
+    }
+
+    return endYYYY;
+  }
+
+
   if (error)
     return (
       <div
@@ -72,7 +96,7 @@ function PlayerDetails(props) {
               {player.team_name}
             </Typography>
             <Typography variant="subtitle1" style={{ marginTop: 4 }}>
-              {player.pos} • {player.type}
+              {player.pos} • {player.handedness[0]}H • {player.type}
             </Typography>
           </Grid>
 
@@ -92,8 +116,10 @@ function PlayerDetails(props) {
                 <Typography variant="body1" style={{ fontWeight: 'bold' }}><img src={`/assets/flags/${player.country}.png`} /></Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant="overline">Handedness</Typography>
-                <Typography variant="body1" style={{ fontWeight: 'bold' }}>{player.handedness}</Typography>
+                <Typography variant="overline">Drafted</Typography>
+                <Typography variant="body1" style={{ fontWeight: 'bold' }}>
+                  {player.draft_team_id ? `${getEndYear(player.draft_season_name)}: ${getOrdinal(player.draft_overall)} (${player.draft_team_name})` : 'Undrafted'}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="overline">Expiry Status</Typography>
@@ -111,10 +137,10 @@ function PlayerDetails(props) {
       {/* --- MAIN CONTENT AREA --- */}
       <Grid container spacing={3}>
         {/* Left Side: Stats (70% width) */}
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <Box mb={4}>
-            <Paper elevation={0} style={{ padding: 20, marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
-              <Typography variant="h5" style={{ fontWeight: 700, marginBottom: 16 }}>Regular Season Stats</Typography>
+            <Paper elevation={0} style={{ marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
+              <Typography variant="h5" style={{ padding: 20,fontWeight: 700, marginBottom: 16 }}>Regular Season Stats</Typography>
               {player.normalStats.length > 0 || player.goalieNormalStats.length > 0 ? (
                 <>
                   <PlayerStatsTable title='Regular Season' stats={player.normalStats} />
@@ -129,8 +155,8 @@ function PlayerDetails(props) {
           </Box>
           {player.playoffStats.length > 0 || player.goaliePlayoffStats.length > 0 ? (
             <Box>
-              <Paper elevation={0} style={{ padding: 20, marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
-                <Typography variant="h5" style={{ fontWeight: 700, marginBottom: 16 }}>Playoff Stats</Typography>
+              <Paper elevation={0} style={{ marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
+                <Typography variant="h5" style={{ padding: 20,fontWeight: 700, marginBottom: 16 }}>Playoff Stats</Typography>
                 <PlayerStatsTable title='Playoffs' stats={player.playoffStats} />
                 <PlayerStatsTable
                   title='Playoffs'
@@ -143,24 +169,7 @@ function PlayerDetails(props) {
         </Grid>
 
         {/* Right Side: Draft & Awards (30% width) */}
-        <Grid item xs={12} md={4}>
-          <Paper elevation={0} style={{ padding: 20, marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
-            <Typography variant="h6" style={{ fontWeight: 700, borderBottom: '2px solid #f0f0f0', paddingBottom: 8, marginBottom: 16 }}>
-              Draft Info
-            </Typography>
-            {player.draft_team_id ? (
-              <>
-                <Typography variant="body2"><img
-                  src={`/assets/logos/${player.draft_team_name}.png`}
-                  width='30px'
-                  height='30px'
-                /></Typography>
-                <Typography variant="body2"><strong>Year:</strong> {player.draft_season_name}</Typography>
-                <Typography variant="body2"><strong>Overall:</strong> {player.draft_overall}</Typography>
-              </>
-            ) : <Typography variant="body2">Undrafted</Typography>}
-          </Paper>
-
+        <Grid item xs={12}>
           {player.trades.length > 0 ? (
             <Paper elevation={0} style={{ padding: 20, marginBottom: 24, border: '1px solid #e0e0e0', borderRadius: 8 }}>
               <Typography variant="h6" style={{ fontWeight: 700, borderBottom: '2px solid #f0f0f0', paddingBottom: 8, marginBottom: 16}}>

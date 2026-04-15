@@ -113,7 +113,7 @@ export default function PlayersTable(props) {
       totalRow.sog && totalRow.g
         ? Math.round((totalRow.g / totalRow.sog) * 100)
         : 0;
-    totalRow.faceoff_percent = totalRow.faceoff_percent / stats.length;
+    totalRow.faceoff_percent = Math.round(totalRow.faceoff_percent / stats.length);
     totalRow.atoi = divideTimeString(totalRow.atoi, stats.length);
     totalRow.appt = divideTimeString(totalRow.appt, stats.length);
     totalRow.apkt = divideTimeString(totalRow.apkt, stats.length);
