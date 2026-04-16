@@ -53,7 +53,6 @@ function PlayerDetails(props) {
     return endYYYY;
   }
 
-
   if (error)
     return (
       <div
@@ -69,6 +68,7 @@ function PlayerDetails(props) {
       </div>
     );
   if (!player) return null;
+
   return (
     <Container maxWidth="xl" style={{ marginTop: 24 }}>
       {/* --- HERO SECTION --- */}
@@ -76,12 +76,13 @@ function PlayerDetails(props) {
         <Grid container spacing={4} alignItems="center">
           {/* Column 1: Picture */}
           <Grid item xs={12} md={2} style={{ textAlign: 'center' }}>
-            <Avatar 
-              variant="rounded"
-              //src={picture ?? null}
+            <Avatar
               style={{ width: 140, height: 140, margin: '0 auto' }}
             >
-              {player.name ? player.name[0] : "P"}
+              { player.headshot
+                ? <img src={player.headshot} alt={player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> 
+                : player.name[0] 
+              } 
             </Avatar>
           </Grid>
 
