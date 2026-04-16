@@ -1,3 +1,4 @@
+const axios = require('axios');
 const router = require('express').Router();
 const db = require('../db');
 const {
@@ -24,8 +25,19 @@ router.get('/:name', async (req, res) => {
     const [awards] = await db.raw(getPlayerAwardsSql, [name]);
     const [comparables] = await db.raw(getPlayerComparables, [name]);
     const [trades] = await db.raw(getPlayerTrades, [name]);
+
+    let headshot = null;
+    if (details.nhl_id) {
+      try {
+        const nhlRes = await axios.get(`https://api-web.nhle.com/v1/player/${details.nhl_id}/landing`);
+        headshot = nhlRes.data.headshot ?? null;
+      } catch {
+        // Non-critical, continue without it
+      }
+    }
+
     if (playerStats) {
-      const returnObj = { ...details, awards, comparables, trades };
+      const returnObj = { ...details, awards, comparables, trades, headshot };
 
       returnObj.goalieNormalStats = goalieStats.filter(
         (stats) => stats.season_type === 'normal'
