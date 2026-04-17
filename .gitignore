@@ -1,6 +1,6 @@
 node_modules
 dev.sqlite3
-.env
+.env*
 /client/public/assets
 package-dev.json
 package-lock-dev.json

@@ -137,11 +137,6 @@ export function PlayerSearch() {
                     py: 1.5
                   }}
                 >
-                  <ListItemAvatar>
-                    <Avatar style={{ width: 40, height: 40, backgroundColor: '#1a237e', fontSize: '0.875rem' }}>
-                      {player.img}
-                    </Avatar>
-                  </ListItemAvatar>
                   <ListItemText 
                     primary={
                       <Typography variant="body2" style={{ fontWeight: 'bold' }}>
