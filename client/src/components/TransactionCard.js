@@ -44,6 +44,9 @@ export default function TransactionCard({ transaction }) {
       text = `${player_name} retires`;
       break;
     }
+    default: {
+      text = `${team_name} transaction involving ${player_name}`;
+    }
   }
 
   const Text = <> </>;

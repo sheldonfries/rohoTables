@@ -54,7 +54,7 @@ export default function Home() {
       .then(res => {
         const transactions = sortEvents(res.data);
         const [waivers, rest] = transactions.reduce((acc, tx) => {
-          if (tx.to === 'Waivers' || tx.to === 'Cleared') {
+          if (tx.to === 'Waivers' || tx.to === 'Cleared' || tx.to === 'Claimed') {
             acc[0].push(tx);
           } else {
             acc[1].push(tx);
