@@ -151,7 +151,7 @@ function PlayerDetails(props) {
                     pos='G'
                   />
                 </>
-              ) : <Typography variant="body1">No stats available.</Typography> }
+              ) : <Typography variant="body1" style={{ marginLeft: 20, marginBottom: 20 }}>No stats available.</Typography> }
             </Paper>
           </Box>
           {player.playoffStats.length > 0 || player.goaliePlayoffStats.length > 0 ? (
