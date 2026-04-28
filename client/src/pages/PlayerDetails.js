@@ -4,12 +4,17 @@ import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
 import MaterialTable from '@material-table/core';
 import styled from 'styled-components';
-import { Paper, Typography, Grid, Box, Container, Avatar } from '@material-ui/core';
+import { Paper, Typography, Grid, Box, Container, Avatar, Chip, Divider, Hidden } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function PlayerDetails(props) {
   const { match } = props;
   const [player, setPlayer] = useState(null);
   const [error, setError] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     fetchPlayer(match.params.name);
@@ -87,7 +92,7 @@ function PlayerDetails(props) {
           </Grid>
 
           {/* Column 2: Main Details */}
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={4}>
             <Box display="flex" alignItems="center" mb={1}>
               <Typography variant="h4" style={{ fontWeight: 800 }}>
                 {player.name}
@@ -96,20 +101,43 @@ function PlayerDetails(props) {
             <Typography variant="h6" color="textSecondary">
               {player.team_name}
             </Typography>
-            <Typography variant="subtitle1" style={{ marginTop: 4 }}>
-              {player.pos} • {player.handedness[0]}H • {player.type}
+            <Typography variant="subtitle1" style={{ marginTop: 8, gap: 8, display: 'flex', flexWrap: 'wrap' }}>
+              <Chip label={player.pos} variant="outlined" size="small" />
+              <Chip label={`${player.handedness[0]}H`} variant="outlined" size="small" />
+              <Chip label={player.type} variant="outlined" size="small" />
+              { player.pos === 'G' && player.starter === 'Y' && (
+                <Chip
+                  label="Starter"
+                  size="small"
+                  icon={<CheckCircleIcon style={{ color: '#0F6E56' }} />}
+                  style={{
+                    backgroundColor: '#E1F5EE',
+                    color: '#0F6E56',
+                    borderRadius: 99,
+                    border: '0.5px solid #5DCAA5',
+                    fontWeight: 500,
+                    fontSize: 11,
+                  }}
+                />
+              )}
             </Typography>
           </Grid>
 
+          <Hidden smDown>
+            <Grid item style={{ display: 'flex', alignSelf: 'stretch' }}>
+              <Divider orientation="vertical" flexItem />
+            </Grid>
+          </Hidden>
+
           {/* Column 3: Secondary Details */}
           <Grid item xs={12} md={5}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{ textAlign: isMobile ? null : 'right' }}>
               <Grid item xs={4}>
                 <Typography variant="overline">Age</Typography>
                 <Typography variant="body1" style={{ fontWeight: 'bold' }}>{player.age}</Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant="overline">Salary / Years</Typography>
+                <Typography variant="overline">Contract</Typography>
                 <Typography variant="body1" style={{ fontWeight: 'bold' }}>{player.salary} ({player.contract_duration} yrs)</Typography>
               </Grid>
               <Grid item xs={4}>
