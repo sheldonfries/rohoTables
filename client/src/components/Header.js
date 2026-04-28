@@ -1,14 +1,11 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
+import { Hidden, IconButton, MenuItem, Menu, AppBar, Toolbar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import routes from '../routes';
 import { withRouter, matchPath } from 'react-router';
+
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -70,33 +67,69 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+          {/* 1. LOGO / PLACEHOLDER (Left Side) */}
+          <Typography
+            variant="h6"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleRouteChange('/')}
           >
-            <MenuIcon onClick={handleClick} />
+            {"RGMG"}
+          </Typography>
+
+          {/* 2. SPACER (Fills the middle) */}
+          <div style={{ flexGrow: 1 }} />
+
+          {/* 3. DESKTOP NAV ITEMS (Right Side) */}
+          <Hidden smDown>
+            <div style={{ display: "flex", gap: "20px" }}>
+              {routes
+                .filter((r) => r.mainNav)
+                .map((route) => (
+                  <Typography
+                    key={route.path}
+                    variant="button"
+                    style={{ 
+                      cursor: "pointer", 
+                      marginLeft: 20, // Alternative to gap if browser support is old
+                      fontWeight: location.pathname === route.path ? 'bold' : 'normal' 
+                    }}
+                    onClick={() => handleRouteChange(route.path)}
+                  >
+                    {route.label}
+                  </Typography>
+                ))}
+            </div>
+          </Hidden>
+
+          {/* 4. MOBILE HAMBURGER (Right Side on Mobile) */}
+          <Hidden mdUp>
+            <IconButton
+              edge="end" // Changed from 'start' to align right on mobile
+              color="inherit"
+              aria-label="menu"
+              onClick={handleClick}
+            >
+              <MenuIcon />
+            </IconButton>
+
             <Menu
               anchorEl={anchorEl}
+              keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
               {routes
-                .filter((route) => route.mainNav)
-                .map((route, index) => (
+                .filter((r) => r.mainNav)
+                .map((route) => (
                   <MenuItem
-                    key={index}
+                    key={route.path}
                     onClick={() => handleRouteChange(route.path)}
                   >
                     {route.label}
                   </MenuItem>
                 ))}
             </Menu>
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            {title}
-          </Typography>
+          </Hidden>
         </Toolbar>
       </AppBar>
     </div>

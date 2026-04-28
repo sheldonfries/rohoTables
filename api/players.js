@@ -1,3 +1,4 @@
+const axios = require('axios');
 const router = require('express').Router();
 const db = require('../db');
 const {
@@ -6,37 +7,37 @@ const {
   getPlayerAwardsSql,
   getPlayerDetails,
   getPlayerComparables,
-  getPlayerTrades
+  getPlayerTrades,
 } = require('./sql/getPlayer');
 
 router.get('/:name', async (req, res) => {
   try {
     let { name } = req.params;
-    name = name.replace("'", "''");
-    const [[details]] = await db.raw(
-      getPlayerDetails.replace('!!{playerName}!!', name)
-    );
+    
+    const [[details]] = await db.raw(getPlayerDetails, [name]);
     if (!details) {
       res.status(404).json({ message: 'not found' });
       return;
     }
-    const [playerStats] = await db.raw(
-      getPlayerStatsSql.replace('!!{playerName}!!', name)
-    );
-    const [goalieStats] = await db.raw(
-      getGoalieStatsSql.replace('!!{playerName}!!', name)
-    );
-    const [awards] = await db.raw(
-      getPlayerAwardsSql.replace('!!{playerName}!!', name)
-    );
-    const [comparables] = await db.raw(
-      getPlayerComparables.replace('!!{playerName}!!', name)
-    );
-    const [trades] = await db.raw(
-      getPlayerTrades.replace('!!{playerName}!!', name)
-    );
+
+    const [playerStats] = await db.raw(getPlayerStatsSql, [name]);
+    const [goalieStats] = await db.raw(getGoalieStatsSql, [name]);
+    const [awards] = await db.raw(getPlayerAwardsSql, [name]);
+    const [comparables] = await db.raw(getPlayerComparables, [name]);
+    const [trades] = await db.raw(getPlayerTrades, [name]);
+
+    let headshot = null;
+    if (details.nhl_id) {
+      try {
+        const nhlRes = await axios.get(`https://api-web.nhle.com/v1/player/${details.nhl_id}/landing`);
+        headshot = nhlRes.data.headshot ?? null;
+      } catch {
+        // Non-critical, continue without it
+      }
+    }
+
     if (playerStats) {
-      const returnObj = { ...details, awards, comparables, trades };
+      const returnObj = { ...details, awards, comparables, trades, headshot };
 
       returnObj.goalieNormalStats = goalieStats.filter(
         (stats) => stats.season_type === 'normal'

@@ -2,15 +2,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "server": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm start",
-    "client": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run --prefix client start",
-    "dev": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run server & /home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run client",
-    "serve": "/home/ubuntu/.nvm/versions/node/v14.21.3/bin/npm run server & cd client && /home/ubuntu/.nvm/versions/node/v14.21.3/bin/npx serve -s -n build"
+    "server": "npm start",
+    "client": "npm run --prefix client start",
+    "dev": "npm run server & npm run client",
+    "serve": "npm run server && cd client & serve -s build"
   },
   "engines": {
     "node": "14.x"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "cors": "^2.8.5",
     "csv-parser": "^2.3.2",
     "csv-string": "^3.1.8",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 
 export default function PlayersTable(props) {
   const { players, title } = props;
@@ -8,7 +8,7 @@ export default function PlayersTable(props) {
   if (players.length === 0) return null;
   return (
     <div>
-      <div style={{ margin: '10px 0' }}>
+      <div style={{ marginBottom: 16 }}>
         <MaterialTable
           options={{
             search: false,
@@ -22,7 +22,7 @@ export default function PlayersTable(props) {
           }}
           columns={[
             {
-              title: '',
+              title: 'Nationality',
               field: 'country',
               render: (rowData) => (
                 <img src={`/assets/flags/${rowData.country}.png`} />

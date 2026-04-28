@@ -4,7 +4,8 @@ import axios from '../requester';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
+import Container from '@material-ui/core/Container';
 
 export default function LeagueOverview() {
   const [teams, setTeams] = useState([]);
@@ -22,70 +23,68 @@ export default function LeagueOverview() {
   }
 
   return (
-    <div>
-      <div style={{ maxWidth: '98%', margin: '10px auto' }}>
-        <MaterialTable
-          icons={tableIcons}
-          options={{
-            search: false,
-            paging: false,
-            showTitle: false,
-            padding: 'dense',
-            toolbar: false,
-          }}
-          columns={[
-            {
-              title: '',
-              field: '',
-              cellStyle: {
-                // width: 35,
-                // maxWidth: 35,
-                paddingRight: 0,
-              },
-              headerStyle: {
-                paddingRight: 0,
-                // width: 35,
-                // maxWidth: 35,
-              },
-              render: (rowData) => (
-                <img
-                  src={`/assets/logos/${rowData.name}.png`}
-                  width='30px'
-                  height='30px'
-                />
-              ),
+    <Container maxWidth="xl" style={{ marginTop: 10, marginBottom: 10 }}>
+      <MaterialTable
+        icons={tableIcons}
+        options={{
+          search: false,
+          paging: false,
+          showTitle: false,
+          padding: 'dense',
+          toolbar: false,
+        }}
+        columns={[
+          {
+            title: '',
+            field: '',
+            cellStyle: {
+              // width: 35,
+              // maxWidth: 35,
+              paddingRight: 0,
             },
-            {
-              title: 'Team',
-              field: 'name',
-              render: (rowData) => (
-                <Link to={`/teams/${rowData.name}`}>{rowData.name}</Link>
-              ),
+            headerStyle: {
+              paddingRight: 0,
+              // width: 35,
+              // maxWidth: 35,
             },
-            { title: 'Manager', field: 'gmName' },
-            { title: 'Cap Hit', field: 'capHit', type: 'numeric' },
-            { title: 'Cap Space', field: 'capSpace', type: 'numeric' },
-            { title: 'Retained', field: 'retainedCount', type: 'numeric' },
-            { title: 'Retention Hit', field: 'retained', type: 'numeric' },
-            { title: 'Buried Hit', field: 'buried', type: 'numeric' },
-            { title: 'Buyout', field: 'buyout', type: 'numeric' },
-            { title: 'Average Age', field: 'averageAge', type: 'numeric' },
-            { title: 'Forwards', field: 'forwardCount', type: 'numeric' },
-            { title: 'Defense', field: 'defenceCount', type: 'numeric' },
-            { title: 'Goalies', field: 'goalieCount', type: 'numeric' },
+            render: (rowData) => (
+              <img
+                src={`/assets/logos/${rowData.name}.png`}
+                width='30px'
+                height='30px'
+              />
+            ),
+          },
+          {
+            title: 'Team',
+            field: 'name',
+            render: (rowData) => (
+              <Link to={`/teams/${rowData.name}`}>{rowData.name}</Link>
+            ),
+          },
+          { title: 'Manager', field: 'gmName' },
+          { title: 'Cap Hit', field: 'capHit', type: 'numeric' },
+          { title: 'Cap Space', field: 'capSpace', type: 'numeric' },
+          { title: 'Retained', field: 'retainedCount', type: 'numeric' },
+          { title: 'Retention Hit', field: 'retained', type: 'numeric' },
+          { title: 'Buried Hit', field: 'buried', type: 'numeric' },
+          { title: 'Buyout', field: 'buyout', type: 'numeric' },
+          { title: 'Average Age', field: 'averageAge', type: 'numeric' },
+          { title: 'Forwards', field: 'forwardCount', type: 'numeric' },
+          { title: 'Defense', field: 'defenceCount', type: 'numeric' },
+          { title: 'Goalies', field: 'goalieCount', type: 'numeric' },
 
-            { title: 'Minors', field: 'minorsCount', type: 'numeric' },
-            { title: 'Players', field: 'playerCount', type: 'numeric' },
-            {
-              title: 'Contracts',
-              field: 'contractCount',
-              type: 'numeric',
-            },
-          ]}
-          data={teams}
-        />
-      </div>
-    </div>
+          { title: 'Minors', field: 'minorsCount', type: 'numeric' },
+          { title: 'Players', field: 'playerCount', type: 'numeric' },
+          {
+            title: 'Contracts',
+            field: 'contractCount',
+            type: 'numeric',
+          },
+        ]}
+        data={teams}
+      />
+    </Container>
   );
 }
 // "name": "Avalanche",

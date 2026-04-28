@@ -3,22 +3,24 @@ const helmet = require('helmet');
 const path = require('path');
 const cors = require('cors');
 const api = require('./api/index');
-
 const server = express();
 
-server.use(helmet());
+if (process.env.NODE_ENV !== 'development') {
+  server.use(helmet());
+}
 server.use(cors());
 server.use(express.json({ limit: '50mb' }));
+
+// API routes first
 server.use('/api', api);
 
-server.use((req, res, next) => {
-  if (req.path.indexOf('.') === -1) {
-    req.url += '.html';
-  }
-  next();
-}, express.static(path.join(__dirname, 'public')));
+// Serve public assets
+server.use(express.static(path.join(__dirname, 'public')));
 
-server.use('/client', express.static(path.join(__dirname, 'client', 'build')));
+// Serve React build static files
+server.use(express.static(path.join(__dirname, 'client', 'build')));
+
+// Catch-all must be last — serves index.html for any unmatched route
 server.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });

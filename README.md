@@ -19,3 +19,9 @@
 6. sudo rm -rf /var/www/html/build to empty the deployment folder
 7. sudo cp -r build /var/www/html to copy build folder to the deployment folder
 8. sudo systemctl restart rgmg.service to restart the server
+
+# Local Development Hosting
+1. Ensure local .env file is pointing to development database
+2. Install cloudflared if not already installed
+3. npm build the client and then npm run the server
+4. cloudflared tunnel --url http://localhost:5000 to start the local hosting

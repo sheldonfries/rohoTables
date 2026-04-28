@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../requester';
-import Select from 'react-select';
-import Grid from '@material-ui/core/Grid';
 import TeamSelector from './TeamSelector';
 import TradePickSelector from './TradePickSelector';
 import TradePlayersSelector from './TradePlayersSelector';
+import {
+  Grid,
+  Paper,
+  Box,
+  Typography,
+  Divider,
+  Button,
+  Container,
+} from "@material-ui/core";
 
 export default function Trades() {
   const [teams, setTeams] = useState([]);
@@ -120,65 +127,130 @@ export default function Trades() {
   }
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={6}>
-        <TeamSelector
-          teams={teams.filter((team) => team.id != team2Id)}
-          setSelectedTeam={setTeam1Id}
-          value={team1Id}
-        />
-        {team1Id ? (
-          <>
-            <TradePlayersSelector
-              players={players.players1}
-              selectedPlayers={leavingPlayers.t1}
-              setSelectedPlayers={(players) => {
-                setLeavingPlayers({ ...leavingPlayers, t1: players });
-              }}
-            />
-            <TradePickSelector
-              picks={drafts.drafts1}
-              setSelectedPicks={(drafts) => {
-                setLeavingDrafts({ ...leavingDrafts, t1: drafts });
-              }}
-              selectedPicks={leavingDrafts.t1}
-            />
-          </>
-        ) : null}
+    <Container maxWidth="lg">
+      <Grid container spacing={4} mx="auto">
+        {/* TEAM 1 */}
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: 16, height: "100%" }}>
+            <Typography variant="h6" gutterBottom>
+              Team 1
+            </Typography>
+
+            <Divider style={{ marginBottom: 16 }} />
+
+            <Box mb={2}>
+              <TeamSelector
+                teams={teams.filter((team) => team.id !== team2Id)}
+                setSelectedTeam={setTeam1Id}
+                value={team1Id}
+              />
+            </Box>
+
+            {team1Id && (
+              <>
+                <Box mb={2}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Players Leaving
+                  </Typography>
+                  <TradePlayersSelector
+                    players={players.players1}
+                    selectedPlayers={leavingPlayers.t1}
+                    setSelectedPlayers={(players) =>
+                      setLeavingPlayers({ ...leavingPlayers, t1: players })
+                    }
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Draft Picks Leaving
+                  </Typography>
+                  <TradePickSelector
+                    picks={drafts.drafts1}
+                    selectedPicks={leavingDrafts.t1}
+                    setSelectedPicks={(drafts) =>
+                      setLeavingDrafts({ ...leavingDrafts, t1: drafts })
+                    }
+                  />
+                </Box>
+              </>
+            )}
+          </Paper>
+        </Grid>
+
+        {/* TEAM 2 */}
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: 16, height: "100%" }}>
+            <Typography variant="h6" gutterBottom>
+              Team 2
+            </Typography>
+
+            <Divider style={{ marginBottom: 16 }} />
+
+            <Box mb={2}>
+              <TeamSelector
+                teams={teams.filter((team) => team.id !== team1Id)}
+                setSelectedTeam={setTeam2Id}
+                value={team2Id}
+              />
+            </Box>
+
+            {team2Id && (
+              <>
+                <Box mb={2}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Players Leaving
+                  </Typography>
+                  <TradePlayersSelector
+                    players={players.players2}
+                    selectedPlayers={leavingPlayers.t2}
+                    setSelectedPlayers={(players) =>
+                      setLeavingPlayers({ ...leavingPlayers, t2: players })
+                    }
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Draft Picks Leaving
+                  </Typography>
+                  <TradePickSelector
+                    picks={drafts.drafts2}
+                    selectedPicks={leavingDrafts.t2}
+                    setSelectedPicks={(drafts) =>
+                      setLeavingDrafts({ ...leavingDrafts, t2: drafts })
+                    }
+                  />
+                </Box>
+              </>
+            )}
+          </Paper>
+        </Grid>
+
+        {/* ACTIONS */}
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="center" mt={2} gridGap={16}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submit}
+              disabled={!team1Id || !team2Id}
+            >
+              Submit Trade
+            </Button>
+
+            {confirmedTrade && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={undo}
+              >
+                Undo
+              </Button>
+            )}
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <TeamSelector
-          teams={teams.filter((team) => team.id != team1Id)}
-          setSelectedTeam={setTeam2Id}
-          value={team2Id}
-        />
-        {team2Id ? (
-          <>
-            <TradePlayersSelector
-              players={players.players2}
-              selectedPlayers={leavingPlayers.t2}
-              setSelectedPlayers={(players) => {
-                setLeavingPlayers({ ...leavingPlayers, t2: players });
-              }}
-            />
-            <TradePickSelector
-              picks={drafts.drafts2}
-              setSelectedPicks={(drafts) => {
-                setLeavingDrafts({ ...leavingDrafts, t2: drafts });
-              }}
-              selectedPicks={leavingDrafts.t2}
-            />
-          </>
-        ) : null}
-      </Grid>
-      <button style={{ margin: '0 auto' }} onClick={submit}>
-        SUBMIT
-      </button>
-      { confirmedTrade ? 
-        <button style={{ margin: '0 auto' }} onClick={undo}>
-          UNDO
-        </button>
-      : null }
-    </Grid>
+    </Container>
   );
 }
