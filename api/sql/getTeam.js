@@ -15,6 +15,7 @@ module.exports = {
       p.type, 
       p.handedness, 
       p.totalGP,
+      p.starter,
       (SELECT COUNT(*) FROM players p2 WHERE p2.name = p.name AND p2.status = 'Retained') AS retention_count
     FROM ?? AS p
     WHERE p.team_id = ?

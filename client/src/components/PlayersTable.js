@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MaterialTable from '@material-table/core';
+import { Chip } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
 
 export default function PlayersTable(props) {
   const { players, title } = props;
 
   if (players.length === 0) return null;
+
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
@@ -42,7 +45,11 @@ export default function PlayersTable(props) {
               title: 'Name',
               field: 'name',
               render: (rowData) => (
-                <Link to={`/players/${rowData.name}`}>{rowData.name}</Link>
+                <Link to={`/players/${rowData.name}`}>{rowData.name}
+                  { rowData.position === 'G' && rowData.starter === 'Y' && (
+                    <CheckCircleIcon style={{ color: '#0F6E56', fontSize: 18, marginLeft: 4, verticalAlign: 'center' }} />
+                  )}
+                </Link>
               ),
             },
             { title: 'Pos', field: 'position' },
