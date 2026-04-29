@@ -54,16 +54,21 @@ FROM (
     SUM(
       CASE 
         WHEN p.status = 'NHL' AND p.contract_type = 'signed' 
-             AND p.pos IN ('C','LW','RW','C1','C2','LW1','LW2','RW1','RW2') 
-        THEN 1 
+          AND (
+            p.pos LIKE 'C%'
+            OR p.pos LIKE 'LW%'
+            OR p.pos LIKE 'RW%'
+        ) THEN 1 
         ELSE 0 
       END
     ) AS forwardCount,
     SUM(
       CASE 
         WHEN p.status = 'NHL' AND p.contract_type = 'signed' 
-             AND p.pos IN ('LD','RD','LD1','RD1','LD2','RD2') 
-        THEN 1 
+          AND (
+            p.pos LIKE 'LD%'
+            OR p.pos LIKE 'RD%'
+        ) THEN 1 
         ELSE 0 
       END
     ) AS defenceCount,
