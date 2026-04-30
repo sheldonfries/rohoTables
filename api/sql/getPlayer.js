@@ -3,19 +3,21 @@ module.exports = {
     SELECT 
       p.*,
       CASE 
+        WHEN t.id IS NULL THEN 'Free Agents'
         WHEN t.city = t.name THEN t.name
         ELSE CONCAT(t.city, ' ', t.name) 
       END AS team_name
     FROM players p
     LEFT JOIN teams t ON t.id = p.team_id
-    WHERE p.status = 'NHL' 
-    AND p.name LIKE ?
+    WHERE p.name LIKE ?
+    AND p.status NOT IN ('Retained', 'Buyout');
   `,
 
   getPlayerDetails: `
     SELECT 
       p.*,
       CASE 
+        WHEN t.id IS NULL THEN 'Free Agents'
         WHEN t.city = t.name THEN t.name
         ELSE CONCAT(t.city, ' ', t.name) 
       END AS team_name,

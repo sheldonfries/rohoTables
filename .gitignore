@@ -4,4 +4,4 @@ dev.sqlite3
 /client/public/assets
 package-dev.json
 package-lock-dev.json
-/vscode/settings.json
+/.vscode/settings.json
