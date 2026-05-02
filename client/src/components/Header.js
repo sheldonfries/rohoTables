@@ -3,7 +3,10 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Hidden, IconButton, MenuItem, Menu, AppBar, Toolbar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import Brightness4Icon from '@material-ui/icons/Brightness4'; // moon
+import Brightness7Icon from '@material-ui/icons/Brightness7'; // sun
 import routes from '../routes';
+import { useThemeContext } from '../contexts/ThemeContext';
 import { withRouter, matchPath } from 'react-router';
 
 const useStyles = makeStyles((theme) =>
@@ -25,6 +28,7 @@ const useStyles = makeStyles((theme) =>
 
 function Header(props) {
   const { location, history } = props;
+  const { darkMode, toggleDarkMode } = useThemeContext();
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -68,20 +72,15 @@ function Header(props) {
       <AppBar position="static">
         <Toolbar>
           {/* 1. LOGO / PLACEHOLDER (Left Side) */}
-          <Typography
-            variant="h6"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleRouteChange('/')}
-          >
-            {"RGMG"}
-          </Typography>
-
-          {/* 2. SPACER (Fills the middle) */}
-          <div style={{ flexGrow: 1 }} />
-
-          {/* 3. DESKTOP NAV ITEMS (Right Side) */}
           <Hidden smDown>
-            <div style={{ display: "flex", gap: "20px" }}>
+            <Typography
+              variant="h6"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleRouteChange('/')}
+            >
+              {"RGMG"}
+            </Typography>
+            <div style={{ display: "flex", gap: "20px", marginLeft: 20 }}>
               {routes
                 .filter((r) => r.mainNav)
                 .map((route) => (
@@ -90,7 +89,7 @@ function Header(props) {
                     variant="button"
                     style={{ 
                       cursor: "pointer", 
-                      marginLeft: 20, // Alternative to gap if browser support is old
+                      marginLeft: 20,
                       fontWeight: location.pathname === route.path ? 'bold' : 'normal' 
                     }}
                     onClick={() => handleRouteChange(route.path)}
@@ -101,10 +100,10 @@ function Header(props) {
             </div>
           </Hidden>
 
-          {/* 4. MOBILE HAMBURGER (Right Side on Mobile) */}
+          {/* 2. MOBILE HAMBURGER (Left Side on Mobile) */}
           <Hidden mdUp>
             <IconButton
-              edge="end" // Changed from 'start' to align right on mobile
+              edge="start"
               color="inherit"
               aria-label="menu"
               onClick={handleClick}
@@ -130,6 +129,16 @@ function Header(props) {
                 ))}
             </Menu>
           </Hidden>
+
+          {/* 3. SPACER (Fills the middle) */}
+          <div style={{ flexGrow: 1 }} />
+
+          {/* 4. LIGHT/DARK MODE TOGGLE */}
+          <div style={{ display: "flex", gap: "20px" }}>
+            <IconButton onClick={toggleDarkMode} color="inherit">
+              {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

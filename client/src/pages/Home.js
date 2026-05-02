@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../requester';
+import { useTheme } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,6 +11,7 @@ import { PaginatedSection } from '../components/PaginatedSection';
 import { PlayerSearch } from '../components/PlayerSearch';
 
 export default function Home() {
+  const theme = useTheme();
   const [seasons, setSeasons] = useState([]);
   const [seasonId, setSeasonId] = useState('');
   const [trades, setTrades] = useState([]);
@@ -79,16 +81,13 @@ export default function Home() {
       <Grid container spacing={2} alignItems="flex-end" style={{ padding: 2 }}>
         <Grid item xs={4} sm={1}>
           <Box className="input-select-container">
-            <InputLabel id="season-select" sx={{ fontSize: '0.75rem', fontWeight: 'bold', mb: 0.5 }}>
-              SEASON
-            </InputLabel>
             <Select
               fullWidth
               size="small"
               labelId="season-select"
               value={seasonId}
               onChange={(event) => setSeasonId(event.target.value)}
-              style={{ backgroundColor: '#fff', borderRadius: '8px' }}
+              style={{ backgroundColor: theme.palette.background.paper, paddingLeft: 10 }}
             >
               {seasons.map((season) => (
                 <MenuItem key={season.id} value={season.id}>

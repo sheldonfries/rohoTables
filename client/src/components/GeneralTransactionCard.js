@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container, Grid } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 
 export default function GeneralTransactionCard(props) {
   const { date, team1, team2, text } = props;
+  const theme = useTheme();
 
   return (
-    <Container style={{ paddingTop: 8, paddingBottom: 8, border: '1px solid #eeeddd', borderRadius: 8 }}>
+    <Container style={{ paddingTop: 8, paddingBottom: 8, border: `1px solid ${theme.palette.divider}`, borderRadius: 8 }}>
       <Grid container spacing={2} alignItems="center">
         {/* Changed flexDirection to row and added a gap for spacing between logos */}
         <Grid 
