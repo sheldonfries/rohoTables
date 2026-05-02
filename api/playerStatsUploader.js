@@ -3,6 +3,39 @@ const csv = require('csv-string');
 const db = require('../db');
 const removeAccents = require('remove-accents');
 
+const AHL_TO_NHL = {
+  'Albany': 'Devils',
+  'Iowa': 'Wild',
+  'Binghamton': 'Senators',
+  'Bridgeport': 'Islanders',
+  'Utica': 'Canucks',
+  'Grand Rapids': 'Red Wings',
+  "St. John's": 'Canadiens',
+  'Hartford': 'Rangers',
+  'Hershey': 'Capitals',
+  'Texas': 'Stars',
+  'Bakersfield': 'Oilers',
+  'Ontario': 'Kings',
+  'Manitoba': 'Jets',
+  'Milwaukee': 'Predators',
+  'Rockford': 'Blackhawks',
+  'Stockton': 'Flames',
+  'Chicago': 'Blues',
+  'Lehigh Valley': 'Flyers',
+  'San Diego': 'Ducks',
+  'Providence': 'Bruins',
+  'Rochester': 'Sabres',
+  'San Antonio': 'Avalanche',
+  'Springfield': 'Panthers',
+  'Syracuse': 'Lightning',
+  'Toronto': 'Maple Leafs',
+  'Wilkes-Barre/Scranton': 'Penguins',
+  'San Jose': 'Sharks',
+  'Tucson': 'Coyotes',
+  'Cleveland': 'Blue Jackets',
+  'Charlotte': 'Hurricanes',
+};
+
 router.post('/playerStats', async (req, res) => {
   try {
     const { csvString } = req.body;
@@ -152,92 +185,7 @@ async function addNewData(table, data, headers, season_id) {
 
 function checkTeam(row) {
   row.Name = removeAccents(row.Name);
-  // switch (row.Team) {
-  //   case 'Albany':
-  //     row.Team = 'Devils';
-  //     break;
-  //   case 'Houston':
-  //     row.Team = 'Wild';
-  //     break;
-  //   case 'Binghamton':
-  //     row.Team = 'Senators';
-  //     break;
-  //   case 'Bridgeport':
-  //     row.Team = 'Islanders';
-  //     break;
-  //   case 'Chicago':
-  //     row.Team = 'Thrashers';
-  //     break;
-  //   case 'Grand Rapids':
-  //     row.Team = 'Red Wings';
-  //     break;
-  //   case 'Hamilton':
-  //     row.Team = 'Canadiens';
-  //     break;
-  //   case 'Hartford':
-  //     row.Team = 'Rangers';
-  //     break;
-  //   case 'Hershey':
-  //     row.Team = 'Capitals';
-  //     break;
-  //   case 'Iowa':
-  //     row.Team = 'Stars';
-  //     break;
-  //   case 'Lowell':
-  //     row.Team = 'Devils';
-  //     break;
-  //   case 'Manchester':
-  //     row.Team = 'Kings';
-  //     break;
-  //   case 'Manitoba':
-  //     row.Team = 'Canucks';
-  //     break;
-  //   case 'Milwaukee':
-  //     row.Team = 'Predators';
-  //     break;
-  //   case 'Norfolk':
-  //     row.Team = 'Blackhawks';
-  //     break;
-  //   case 'Omaha':
-  //     row.Team = 'Flames';
-  //     break;
-  //   case 'Peoria':
-  //     row.Team = 'Blues';
-  //     break;
-  //   case 'Philadelphia':
-  //     row.Team = 'Flyers';
-  //     break;
-  //   case 'Portland':
-  //     row.Team = 'Ducks';
-  //     break;
-  //   case 'Providence':
-  //     row.Team = 'Bruins';
-  //     break;
-  //   case 'Rochester':
-  //     row.Team = 'Sabres';
-  //     break;
-  //   case 'San Antonio':
-  //     row.Team = 'Coyotes';
-  //     break;
-  //   case 'Springfield':
-  //     row.Team = 'Lightning';
-  //     break;
-  //   case 'Syracuse':
-  //     row.Team = 'Columbus';
-  //     break;
-  //   case 'Toronto':
-  //     row.Team = 'Maple Leafs';
-  //     break;
-  //   case 'Wilkes-Barre/Scranton':
-  //     row.Team = 'Penguins';
-  //     break;
-  //   case 'Worcester':
-  //     row.Team = 'Sharks';
-  //     break;
-  //   case 'Wilkes-Barre/Scranton':
-  //     row.Team = 'Penguins';
-  //     break;
-  // }
+  row.Team = AHL_TO_NHL[row.Team] ?? row.Team;
 }
 
 module.exports = router;
