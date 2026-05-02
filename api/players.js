@@ -27,7 +27,10 @@ router.get('/:name', async (req, res) => {
     const [trades] = await db.raw(getPlayerTrades, [name]);
 
     let headshot = null;
-    if (details.nhl_id) {
+    if (details.player_picture_override) {
+      // Manual override takes priority — no API call needed
+      headshot = details.player_picture_override;
+    } else if (details.nhl_id) {
       try {
         const nhlRes = await axios.get(`https://api-web.nhle.com/v1/player/${details.nhl_id}/landing`);
         headshot = nhlRes.data.headshot ?? null;
