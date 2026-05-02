@@ -4,8 +4,9 @@ import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
 import MaterialTable from '@material-table/core';
 import styled from 'styled-components';
-import { Paper, Typography, Grid, Box, Container, Avatar, Chip, Divider, Hidden } from '@material-ui/core';
+import { Paper, Typography, Grid, Box, Container, Avatar, Chip, Divider, Hidden, CircularProgress } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
+import PersonIcon from '@material-ui/icons/Person';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -13,6 +14,8 @@ function PlayerDetails(props) {
   const { match } = props;
   const [player, setPlayer] = useState(null);
   const [error, setError] = useState(null);
+  const [headshotLoaded, setHeadshotLoaded] = useState(false);
+  const [headshotError, setHeadshotError] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -81,13 +84,24 @@ function PlayerDetails(props) {
         <Grid container spacing={4} alignItems="center">
           {/* Column 1: Picture */}
           <Grid item xs={12} md={2} style={{ textAlign: 'center' }}>
-            <Avatar
-              style={{ width: 140, height: 140, margin: '0 auto' }}
-            >
-              { player.headshot
-                ? <img src={player.headshot} alt={player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> 
-                : player.name[0] 
-              } 
+            <Avatar style={{ width: 140, height: 140, margin: '0 auto' }}>
+              {player.headshot && !headshotError ? (
+                <>
+                  {!headshotLoaded && (
+                    <PersonIcon style={{ width: 80, height: 80, color: 'var(--color-text-tertiary)', position: 'absolute' }} />
+                  )}
+                  <img
+                    src={player.headshot}
+                    alt={player.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: headshotLoaded ? 'block' : 'none' }}
+                    onLoad={() => setHeadshotLoaded(true)}
+                    onError={() => setHeadshotError(true)}
+                  />
+                </>
+              ) : (
+                // No headshot or failed to load — fall back to initials
+                player.name[0]
+              )}
             </Avatar>
           </Grid>
 
