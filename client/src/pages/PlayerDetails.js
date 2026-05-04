@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../requester';
 import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
-import MaterialTable from '@material-table/core';
+import MaterialTable from 'material-table';
 import styled from 'styled-components';
 import { Paper, Typography, Grid, Box, Container, Avatar, Chip, Divider, Hidden, CircularProgress } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';

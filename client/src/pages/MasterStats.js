@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../requester';
-import MaterialTable from '@material-table/core';
+import MaterialTable from 'material-table';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 import MenuItem from '@material-ui/core/MenuItem';

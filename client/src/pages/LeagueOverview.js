@@ -4,7 +4,7 @@ import axios from '../requester';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 
-import MaterialTable from '@material-table/core';
+import MaterialTable from 'material-table';
 import Container from '@material-ui/core/Container';
 
 export default function LeagueOverview() {
