@@ -29,7 +29,6 @@ function PlayerDetails(props) {
       setPlayer(null);
       const res = await axios.get(`/api/players/${name}`);
       setPlayer(res.data);
-      console.log(res.data);
     } catch (error) {
       if (error.response.status === 404) {
         setError('Player not found.');
