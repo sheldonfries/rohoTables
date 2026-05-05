@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../requester';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { Link } from 'react-router-dom';
 import tableIcons from '../tableIcons';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -162,6 +162,29 @@ export default function MasterStats() {
     }
   }
 
+  function downloadCSV(cols, data) {
+    const csvRows = [];
+    const headers = cols.map(col => col.title);
+    csvRows.push(headers.join(','));
+
+    // Loop over the rows
+    for (const row of data) {
+      csvRows.push(row.join(','));
+    }
+    console.log(data);
+    console.log(csvRows);
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'player_stats.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   function filterPlayers(players) {
     if (!players || typeof players !== 'object') return [];
     return players.filter((player) => {
@@ -232,7 +255,8 @@ export default function MasterStats() {
       </FormGroup>
       <MaterialTable
         icons={tableIcons}
-        data={loading ? [] : filterPlayers(players)}
+        data={filterPlayers(players)}
+        isLoading={loading}
         columns={playerType === 'players' ? playerCols : goalieCols}
         options={{
           pageSize: 25,
@@ -241,6 +265,12 @@ export default function MasterStats() {
           exportButton: true,
           exportAllData: true,
           exportFileName: `${playerType}Season${seasonId}`,
+          exportMenu: [
+            {
+              label: "Export CSV",
+              exportFunc: (cols, datas) => downloadCSV(cols, datas),
+            },
+          ],
           showTitle: false,
           //fixedColumns: {
           //   left: 2,

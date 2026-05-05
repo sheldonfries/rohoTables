@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { Chip } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
 
