@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MaterialTable from '@material-table/core';
+import MaterialTable from 'material-table';
 
 const playerCols = [
   { title: 'Season', field: 'season' },

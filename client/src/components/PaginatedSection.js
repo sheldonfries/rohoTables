@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Grid, Paper, Box, Typography } from '@material-ui/core';
-import Pagination from '@material-ui/lab/Pagination'; // Correct v4 import
+import { useTheme } from '@material-ui/core/styles';
+import Pagination from '@material-ui/lab/Pagination';
 
 export function PaginatedSection({ title, data, renderItem, itemsPerPage = 10 }) {
+  const theme = useTheme();
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -19,16 +21,16 @@ export function PaginatedSection({ title, data, renderItem, itemsPerPage = 10 })
         elevation={0} 
         style={{ 
           padding: 16, 
-          backgroundColor: '#fff', 
-          border: '1px solid #e0e0e0', 
+          backgroundColor: theme.palette.background.paper, 
+          border: '1px solid ' + theme.palette.divider, 
           borderRadius: 12,
           display: 'flex',
           flexDirection: 'column',
           minHeight: '550px' 
         }}
       >
-        <Box pb={1} mb={2} style={{ borderBottom: '2px solid #f0f0f0' }}>
-          <Typography variant="h5" style={{ fontWeight: 800, color: '#333' }}>
+        <Box pb={1} mb={2} style={{ borderBottom: '2px solid ' + theme.palette.divider }}>
+          <Typography variant="h5" style={{ fontWeight: 800, color: theme.palette.text.primary }}>
             {title}
           </Typography>
         </Box>

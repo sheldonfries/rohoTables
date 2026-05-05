@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../requester';
 import { Link, withRouter } from 'react-router-dom';
 import PlayerStatsTable from '../components/PlayerStatsTable';
-import MaterialTable from '@material-table/core';
+import MaterialTable from 'material-table';
 import styled from 'styled-components';
 import { Paper, Typography, Grid, Box, Container, Avatar, Chip, Divider, Hidden, CircularProgress } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
@@ -29,7 +29,6 @@ function PlayerDetails(props) {
       setPlayer(null);
       const res = await axios.get(`/api/players/${name}`);
       setPlayer(res.data);
-      console.log(res.data);
     } catch (error) {
       if (error.response.status === 404) {
         setError('Player not found.');
